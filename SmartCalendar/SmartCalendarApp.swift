@@ -9,7 +9,7 @@ import SwiftUI
 struct SmartCalendarApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoginView()
         }
     }
 }
