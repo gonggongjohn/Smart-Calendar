@@ -12,8 +12,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //123456
-        //123456
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnGeo = findViewById(R.id.btn_geo);
