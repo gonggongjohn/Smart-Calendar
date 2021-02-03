@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11A71AECE45294E6F32BEDA5 /* libPods-SmartCalendar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 727A424A618187171CFD9A5E /* libPods-SmartCalendar.a */; };
 		2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */; };
 		2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */; };
 		2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9756C225BD2D1A006378D0 /* LoginView.swift */; };
 		2C9756C525BD2D1A006378D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C9756C425BD2D1A006378D0 /* Assets.xcassets */; };
 		2C9756C825BD2D1A006378D0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C9756C725BD2D1A006378D0 /* Preview Assets.xcassets */; };
+		2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */; };
+		2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,11 @@
 		2C9756C425BD2D1A006378D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C9756C725BD2D1A006378D0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2C9756C925BD2D1A006378D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUtils.swift; sourceTree = "<group>"; };
+		727A424A618187171CFD9A5E /* libPods-SmartCalendar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SmartCalendar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA9222126C1DEBE9C6DC4AFB /* Pods-SmartCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartCalendar.debug.xcconfig"; path = "Target Support Files/Pods-SmartCalendar/Pods-SmartCalendar.debug.xcconfig"; sourceTree = "<group>"; };
+		C836BE72373751D9252F7826 /* Pods-SmartCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartCalendar.release.xcconfig"; path = "Target Support Files/Pods-SmartCalendar/Pods-SmartCalendar.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11A71AECE45294E6F32BEDA5 /* libPods-SmartCalendar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,6 +48,7 @@
 			isa = PBXGroup;
 			children = (
 				2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */,
+				2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -48,6 +58,8 @@
 			children = (
 				2C9756BF25BD2D1A006378D0 /* SmartCalendar */,
 				2C9756BE25BD2D1A006378D0 /* Products */,
+				3158BDF6441040863DE0EC57 /* Pods */,
+				EF007FAB784711CD6995BD22 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,6 +77,7 @@
 				2C6E7F4125BDA55700AEC5BC /* utils */,
 				2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */,
 				2C9756C225BD2D1A006378D0 /* LoginView.swift */,
+				2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */,
 				2C9756C425BD2D1A006378D0 /* Assets.xcassets */,
 				2C9756C925BD2D1A006378D0 /* Info.plist */,
 				2C9756C625BD2D1A006378D0 /* Preview Content */,
@@ -80,6 +93,24 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		3158BDF6441040863DE0EC57 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AA9222126C1DEBE9C6DC4AFB /* Pods-SmartCalendar.debug.xcconfig */,
+				C836BE72373751D9252F7826 /* Pods-SmartCalendar.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		EF007FAB784711CD6995BD22 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				727A424A618187171CFD9A5E /* libPods-SmartCalendar.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -87,6 +118,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2C9756CC25BD2D1A006378D0 /* Build configuration list for PBXNativeTarget "SmartCalendar" */;
 			buildPhases = (
+				7A7B8FD2C293E3376859F9DF /* [CP] Check Pods Manifest.lock */,
 				2C9756B925BD2D1A006378D0 /* Sources */,
 				2C9756BA25BD2D1A006378D0 /* Frameworks */,
 				2C9756BB25BD2D1A006378D0 /* Resources */,
@@ -144,12 +176,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7A7B8FD2C293E3376859F9DF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SmartCalendar-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2C9756B925BD2D1A006378D0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */,
 				2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */,
+				2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */,
 				2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */,
 				2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */,
 			);
@@ -276,6 +335,7 @@
 		};
 		2C9756CD25BD2D1A006378D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA9222126C1DEBE9C6DC4AFB /* Pods-SmartCalendar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -298,6 +358,7 @@
 		};
 		2C9756CE25BD2D1A006378D0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C836BE72373751D9252F7826 /* Pods-SmartCalendar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
