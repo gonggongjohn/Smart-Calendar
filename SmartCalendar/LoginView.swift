@@ -12,7 +12,7 @@ struct LoginView: View {
     @State var isLoginSuccess: Bool = false
     var body: some View {
         NavigationView{
-            VStack(spacing: 40.0){
+            VStack(spacing: 50.0){
                 Text("Smart Calendar")
                     .font(.title)
                 VStack{
