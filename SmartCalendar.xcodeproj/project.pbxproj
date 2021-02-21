@@ -18,6 +18,8 @@
 		2C9756C825BD2D1A006378D0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C9756C725BD2D1A006378D0 /* Preview Assets.xcassets */; };
 		2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */; };
 		2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */; };
+		4004B01725E28CA50063FA89 /* BaiduOcr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4004B01625E28CA50063FA89 /* BaiduOcr.swift */; };
+		4004B01A25E290CE0063FA89 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4004B01925E290CE0063FA89 /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		2C9756C925BD2D1A006378D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUtils.swift; sourceTree = "<group>"; };
+		4004B01625E28CA50063FA89 /* BaiduOcr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaiduOcr.swift; path = SmartCalendar/BaiduOcr.swift; sourceTree = SOURCE_ROOT; };
+		4004B01925E290CE0063FA89 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		727A424A618187171CFD9A5E /* libPods-SmartCalendar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SmartCalendar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9222126C1DEBE9C6DC4AFB /* Pods-SmartCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartCalendar.debug.xcconfig"; path = "Target Support Files/Pods-SmartCalendar/Pods-SmartCalendar.debug.xcconfig"; sourceTree = "<group>"; };
 		C836BE72373751D9252F7826 /* Pods-SmartCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartCalendar.release.xcconfig"; path = "Target Support Files/Pods-SmartCalendar/Pods-SmartCalendar.release.xcconfig"; sourceTree = "<group>"; };
@@ -53,8 +57,10 @@
 		2C6E7F4125BDA55700AEC5BC /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				4004B01625E28CA50063FA89 /* BaiduOcr.swift */,
 				2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */,
 				2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */,
+				4004B01925E290CE0063FA89 /* SwiftyJSON.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -217,11 +223,13 @@
 				2C1C413325E17981000B7712 /* StatisticView.swift in Sources */,
 				2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */,
 				2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */,
+				4004B01A25E290CE0063FA89 /* SwiftyJSON.swift in Sources */,
 				2C1C413C25E179D8000B7712 /* UserView.swift in Sources */,
 				2C1C412F25E16C2F000B7712 /* CalendarView.swift in Sources */,
 				2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */,
 				2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */,
 				2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */,
+				4004B01725E28CA50063FA89 /* BaiduOcr.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
