@@ -2,8 +2,6 @@
 //  BaiduOcr.swift
 //  SmartCalendar
 //
-//  Created by 郑贝妮 on 2021/2/21.
-//
 
 import UIKit
 
