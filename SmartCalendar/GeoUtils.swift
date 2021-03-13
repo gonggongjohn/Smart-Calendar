@@ -50,14 +50,14 @@ class GeoUtils: NSObject, CLLocationManagerDelegate, ObservableObject{
             }
             else{
                 for placemark in placemarks!{
-                    self.geoHistory.geoList.append((location, placemark.name!))
+                    self.geoHistory.appendItem(geo: location, name: placemark.name!)
                 }
             }
         })
         print("Location Updated!")
     }
     
-    func saveHistory(history: GeoHistory){
+    public func saveHistory(history: GeoHistory){
         do {
             let data = try NSKeyedArchiver.archivedData(withRootObject: history, requiringSecureCoding: true)
             UserDefaults.standard.setValue(data, forKey: "GeoHistory")
@@ -67,7 +67,7 @@ class GeoUtils: NSObject, CLLocationManagerDelegate, ObservableObject{
         }
     }
     
-    func getHistory() -> GeoHistory?{
+    public func getHistory() -> GeoHistory?{
         let data = UserDefaults.standard.data(forKey: "GeoHistory")
         var history: GeoHistory? = nil
         if(data != nil){

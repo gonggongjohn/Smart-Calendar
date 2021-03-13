@@ -7,20 +7,46 @@ import Foundation
 import CoreLocation
 
 class GeoHistory: NSObject, NSSecureCoding{
+    private var geoList: [(geo: CLLocation, name: String)]
+    
     static var supportsSecureCoding: Bool {
         return true
     }
-    
-    var geoList: [(geo: CLLocation, name: String)]
     
     override init() {
         self.geoList = []
     }
     
+    public func appendItem(geo: CLLocation, name: String){
+        self.geoList.append((geo, name))
+    }
+    
+    public func appendLocations(locations: [CLLocation]){
+        self.geoList = []
+        let geoEncoder = CLGeocoder()
+        for location in locations{
+            geoEncoder.reverseGeocodeLocation(location, completionHandler: {
+                (placemarks: [CLPlacemark]?, err: Error?) -> Void in
+                if err != nil && placemarks == nil{
+                    print(err!)
+                }
+                else{
+                    for placemark in placemarks!{
+                        self.geoList.append((location, placemark.name!))
+                    }
+                }
+            })
+        }
+    }
+    
+    public func getHistory() -> [(geo: CLLocation, name: String)]{
+        return self.geoList
+    }
+    
     func encode(with coder: NSCoder) {
         var geoComp: [CLLocation] = []
         var nameComp: [String] = []
-        for item in geoList{
+        for item in self.geoList{
             geoComp.append(item.geo)
             nameComp.append(item.name)
         }

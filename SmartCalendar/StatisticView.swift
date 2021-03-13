@@ -49,7 +49,7 @@ struct MapView: UIViewRepresentable {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         if locations != nil{
-            for location in locations!.geoList{
+            for location in locations!.getHistory(){
                 let annotation = MKPointAnnotation()
                 annotation.title = location.name
                 annotation.coordinate = location.geo.coordinate
