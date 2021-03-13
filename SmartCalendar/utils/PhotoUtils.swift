@@ -9,7 +9,12 @@ import CoreLocation
 
 class PhotoUtils{
     
-    func getLocations() -> [CLLocation] {
+    public func getMetaData() -> PHFetchResult<PHAsset> {
+        PHPhotoLibrary.requestAuthorization { (status) in
+            if status != .authorized {
+                print("No permission!")
+            }
+        }
         let options = PHFetchOptions()
         var dComponents = DateComponents()
         dComponents.year = 2021
@@ -23,9 +28,13 @@ class PhotoUtils{
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         let assetList = PHAsset.fetchAssets(with: options)
         print("Fetch successful!")
+        return assetList
+    }
+    
+    public func getPhotoGeo(assets: PHFetchResult<PHAsset>) -> [CLLocation] {
         var locations: [CLLocation] = []
-        for i in 0 ..< assetList.count {
-            let item = assetList.object(at: i)
+        for i in 0 ..< assets.count {
+            let item = assets.object(at: i)
             let location: CLLocation? = item.location
             if location != nil {
                 locations.append(location!)

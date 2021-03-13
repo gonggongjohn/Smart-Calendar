@@ -13,7 +13,8 @@ struct CalendarView: View {
         VStack{
             Button(action: {
                 let photoUtils = PhotoUtils()
-                let locationList = photoUtils.getLocations()
+                let meta = photoUtils.getMetaData()
+                let locationList = photoUtils.getPhotoGeo(assets: meta)
                 let history = GeoHistory()
                 history.appendLocations(locations: locationList)
                 let geoUtils = GeoUtils()
