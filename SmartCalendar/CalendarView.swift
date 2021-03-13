@@ -10,8 +10,22 @@ struct CalendarView: View {
     @State private var isAddPresented: Bool = false
     
     var body: some View {
-        
         VStack{
+            Button(action: {
+                let photoUtils = PhotoUtils()
+                let meta = photoUtils.getMetaData()
+                let locationList = photoUtils.getPhotoGeo(assets: meta)
+                let history = GeoHistory()
+                history.appendLocations(locations: locationList)
+                let geoUtils = GeoUtils()
+                geoUtils.saveHistory(history: history)
+            }){
+                Text("分析图片")
+                    .font(.title2)
+                    .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                    .background(RoundedRectangle(cornerRadius: 10.0)
+                                    .stroke(Color.black, lineWidth: 2.0))
+            }
             HStack{
                 Button(action: {
                     self.isAddPresented = true

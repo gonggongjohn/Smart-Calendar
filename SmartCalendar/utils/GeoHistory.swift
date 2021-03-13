@@ -11,22 +11,7 @@ class GeoHistory: NSObject, NSSecureCoding{
         return true
     }
     
-    var geoList: [(geo: CLLocation, name: String)]
-    
-    override init() {
-        self.geoList = []
-    }
-    
-    func encode(with coder: NSCoder) {
-        var geoComp: [CLLocation] = []
-        var nameComp: [String] = []
-        for item in geoList{
-            geoComp.append(item.geo)
-            nameComp.append(item.name)
-        }
-        coder.encode(geoComp, forKey: "geoList_geo")
-        coder.encode(nameComp, forKey: "geoList_name")
-    }
+    private var geoList: [(geo: CLLocation, name: String)]
     
     required init?(coder: NSCoder) {
         self.geoList = []
@@ -38,4 +23,49 @@ class GeoHistory: NSObject, NSSecureCoding{
             }
         }
     }
+    
+    func encode(with coder: NSCoder) {
+        var geoComp: [CLLocation] = []
+        var nameComp: [String] = []
+        for item in self.geoList{
+            geoComp.append(item.geo)
+            nameComp.append(item.name)
+        }
+        coder.encode(geoComp, forKey: "geoList_geo")
+        coder.encode(nameComp, forKey: "geoList_name")
+    }
+    
+    override init() {
+        self.geoList = []
+    }
+    
+    public func appendItem(geo: CLLocation, name: String){
+        self.geoList.append((geo, name))
+    }
+    
+    public func appendLocations(locations: [CLLocation]){
+        self.geoList = []
+        let geoEncoder = CLGeocoder()
+        for location in locations{
+            /*
+            geoEncoder.reverseGeocodeLocation(location, completionHandler: {
+                (placemarks: [CLPlacemark]?, err: Error?) -> Void in
+                if err != nil && placemarks == nil{
+                    print(err!)
+                }
+                else{
+                    for placemark in placemarks!{
+                        self.geoList.append((location, placemark.name!))
+                    }
+                }
+            })
+            */
+            self.geoList.append((location, "test"))
+        }
+    }
+    
+    public func getHistoryList() -> [(geo: CLLocation, name: String)]{
+        return self.geoList
+    }
+    
 }

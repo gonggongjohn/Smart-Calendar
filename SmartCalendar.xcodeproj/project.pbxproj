@@ -12,7 +12,9 @@
 		2C1C413325E17981000B7712 /* StatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1C413225E17981000B7712 /* StatisticView.swift */; };
 		2C1C413C25E179D8000B7712 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1C413B25E179D8000B7712 /* UserView.swift */; };
 		2C24CEE825F5106F00068178 /* GeoHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24CEE725F5106F00068178 /* GeoHistory.swift */; };
+		2C5F22E225FB4512004684E6 /* PhotoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F22E125FB4512004684E6 /* PhotoUtils.swift */; };
 		2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */; };
+		2C739E0025FC9AB5005F7E6A /* GeoStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C739DFF25FC9AB5005F7E6A /* GeoStatView.swift */; };
 		2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */; };
 		2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9756C225BD2D1A006378D0 /* LoginView.swift */; };
 		2C9756C525BD2D1A006378D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C9756C425BD2D1A006378D0 /* Assets.xcassets */; };
@@ -29,7 +31,9 @@
 		2C1C413225E17981000B7712 /* StatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticView.swift; sourceTree = "<group>"; };
 		2C1C413B25E179D8000B7712 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		2C24CEE725F5106F00068178 /* GeoHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoHistory.swift; sourceTree = "<group>"; };
+		2C5F22E125FB4512004684E6 /* PhotoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUtils.swift; sourceTree = "<group>"; };
 		2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeoUtils.swift; path = SmartCalendar/GeoUtils.swift; sourceTree = SOURCE_ROOT; };
+		2C739DFF25FC9AB5005F7E6A /* GeoStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoStatView.swift; sourceTree = "<group>"; };
 		2C9756BD25BD2D1A006378D0 /* SmartCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartCalendarApp.swift; sourceTree = "<group>"; };
 		2C9756C225BD2D1A006378D0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -67,6 +71,7 @@
 				2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */,
 				4004B01925E290CE0063FA89 /* SwiftyJSON.swift */,
 				2C24CEE725F5106F00068178 /* GeoHistory.swift */,
+				2C5F22E125FB4512004684E6 /* PhotoUtils.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -97,6 +102,7 @@
 				2C9756C225BD2D1A006378D0 /* LoginView.swift */,
 				2C1C412E25E16C2F000B7712 /* CalendarView.swift */,
 				2C1C413225E17981000B7712 /* StatisticView.swift */,
+				2C739DFF25FC9AB5005F7E6A /* GeoStatView.swift */,
 				2C1C413B25E179D8000B7712 /* UserView.swift */,
 				2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */,
 				2C9756C425BD2D1A006378D0 /* Assets.xcassets */,
@@ -233,10 +239,12 @@
 				4004B01A25E290CE0063FA89 /* SwiftyJSON.swift in Sources */,
 				2C1C413C25E179D8000B7712 /* UserView.swift in Sources */,
 				2C1C412F25E16C2F000B7712 /* CalendarView.swift in Sources */,
+				2C739E0025FC9AB5005F7E6A /* GeoStatView.swift in Sources */,
 				2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */,
 				2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */,
 				2C24CEE825F5106F00068178 /* GeoHistory.swift in Sources */,
 				2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */,
+				2C5F22E225FB4512004684E6 /* PhotoUtils.swift in Sources */,
 				4004B01725E28CA50063FA89 /* BaiduOcr.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
