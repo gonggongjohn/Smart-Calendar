@@ -54,5 +54,10 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>System will get your photo libaray for analysis.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
