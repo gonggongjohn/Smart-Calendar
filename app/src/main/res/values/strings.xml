@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Smart-Calendar</string>
+    <string name="Url">http://mc.mcgo.pw:40018/</string>
 </resources>
