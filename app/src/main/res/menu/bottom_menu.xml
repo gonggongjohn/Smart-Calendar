@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/firstFragment"
+            android:title="日程"
+            android:icon="@drawable/calendar_view_day_24"/>
+    <item
+            android:id="@+id/secondFragment"
+            android:title="统计"
+            android:icon="@drawable/local_play_24"/>
+    <item
+            android:id="@+id/thirdFragment"
+            android:title="我的"
+            android:icon="@drawable/person_24"/>
+</menu>

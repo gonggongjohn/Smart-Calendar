@@ -1,15 +1,14 @@
 package timemaster.smart_calendar.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 import okhttp3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +17,7 @@ import timemaster.smart_calendar.R;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnRegister;
     private EditText editId;
@@ -27,7 +26,6 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
 
         btnLogin = findViewById(R.id.btn_login);
@@ -131,7 +129,7 @@ public class LoginActivity extends Activity {
                     JSONObject jsonObject=new JSONObject(result);
                     if(jsonObject.getString("status").equals("success")){
                         Intent intent = new Intent();
-                        intent.setClass(LoginActivity.this, UsageActivity.class);
+                        intent.setClass(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         Looper.prepare();
                         Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
