@@ -7,7 +7,7 @@ import SwiftUI
 import MapKit
 
 struct GeoStatView: View {
-    @ObservedObject var geoUtils: GeoUtils
+    private var geoUtils: GeoUtils
     private var locHistory: GeoHistory?
     
     init() {

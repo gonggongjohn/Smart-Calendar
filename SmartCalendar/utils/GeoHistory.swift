@@ -6,12 +6,14 @@
 import Foundation
 import CoreLocation
 
-class GeoHistory: NSObject, NSSecureCoding{
+class GeoHistory: NSObject, NSSecureCoding, ObservableObject{
     static var supportsSecureCoding: Bool {
         return true
     }
     
     private var geoList: [(geo: CLLocation, name: String)]
+    @Published var totLoc = 0
+    @Published var phasedLoc = 0
     
     required init?(coder: NSCoder) {
         self.geoList = []
@@ -45,22 +47,24 @@ class GeoHistory: NSObject, NSSecureCoding{
     
     public func appendLocations(locations: [CLLocation]){
         self.geoList = []
-        let geoEncoder = CLGeocoder()
-        for location in locations{
-            /*
-            geoEncoder.reverseGeocodeLocation(location, completionHandler: {
-                (placemarks: [CLPlacemark]?, err: Error?) -> Void in
-                if err != nil && placemarks == nil{
-                    print(err!)
-                }
-                else{
-                    for placemark in placemarks!{
-                        self.geoList.append((location, placemark.name!))
+        self.totLoc = locations.count
+        for i in 0 ..< locations.count{
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(2 * (i + 1))) {
+                let geoEncoder = CLGeocoder()
+                geoEncoder.reverseGeocodeLocation(locations[i], completionHandler: {
+                    (placemarks: [CLPlacemark]?, err: Error?) -> Void in
+                    if err != nil && placemarks == nil{
+                        print(err!)
                     }
-                }
-            })
-            */
-            self.geoList.append((location, "test"))
+                    else{
+                        for placemark in placemarks!{
+                            self.geoList.append((locations[i], placemark.name!))
+                        }
+                        print("loc get!")
+                        self.phasedLoc += 1
+                    }
+                })
+            }
         }
     }
     

@@ -21,6 +21,7 @@
 		2C9756C825BD2D1A006378D0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C9756C725BD2D1A006378D0 /* Preview Assets.xcassets */; };
 		2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */; };
 		2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */; };
+		2CC6F7AC25FFACE4004434D1 /* scene_1615560045.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6F7AB25FFACE4004434D1 /* scene_1615560045.mlmodel */; };
 		2CC8553D25ED37ED00D892D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CC8553C25ED37ED00D892D4 /* MapKit.framework */; };
 		4004B01725E28CA50063FA89 /* BaiduOcr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4004B01625E28CA50063FA89 /* BaiduOcr.swift */; };
 		4004B01A25E290CE0063FA89 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4004B01925E290CE0063FA89 /* SwiftyJSON.swift */; };
@@ -42,6 +43,7 @@
 		2C9756C925BD2D1A006378D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUtils.swift; sourceTree = "<group>"; };
+		2CC6F7AB25FFACE4004434D1 /* scene_1615560045.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = scene_1615560045.mlmodel; sourceTree = "<group>"; };
 		2CC8553C25ED37ED00D892D4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4004B01625E28CA50063FA89 /* BaiduOcr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaiduOcr.swift; path = SmartCalendar/BaiduOcr.swift; sourceTree = SOURCE_ROOT; };
 		4004B01925E290CE0063FA89 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		2C9756BF25BD2D1A006378D0 /* SmartCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				2CC6F7A525FF9EEA004434D1 /* model */,
 				2C6E7F4125BDA55700AEC5BC /* utils */,
 				2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */,
 				2C9756C225BD2D1A006378D0 /* LoginView.swift */,
@@ -118,6 +121,14 @@
 				2C9756C725BD2D1A006378D0 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2CC6F7A525FF9EEA004434D1 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				2CC6F7AB25FFACE4004434D1 /* scene_1615560045.mlmodel */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		3158BDF6441040863DE0EC57 /* Pods */ = {
@@ -241,6 +252,7 @@
 				2C1C412F25E16C2F000B7712 /* CalendarView.swift in Sources */,
 				2C739E0025FC9AB5005F7E6A /* GeoStatView.swift in Sources */,
 				2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */,
+				2CC6F7AC25FFACE4004434D1 /* scene_1615560045.mlmodel in Sources */,
 				2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */,
 				2C24CEE825F5106F00068178 /* GeoHistory.swift in Sources */,
 				2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */,

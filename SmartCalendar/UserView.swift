@@ -18,19 +18,17 @@ struct UserView: View {
         NavigationView{
             Form {
                 NavigationLink(destination: DetailView1()){
-                    Text("个人信息")
+                    Text("我的账户")
                 }
                 NavigationLink(destination: DetailView1()){
                     Text("系统设置")
                 }
                 NavigationLink(destination: DetailView1()){
-                    Text("其他")
+                    Text("关于")
                 }
                 
             }
-            .navigationBarTitle(Text("我的"))//displayMode:.inline
         }
-    
     }
 }
 

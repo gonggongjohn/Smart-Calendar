@@ -6,10 +6,9 @@
 import Foundation
 import CoreLocation
 
-class GeoUtils: NSObject, CLLocationManagerDelegate, ObservableObject{
+class GeoUtils: NSObject, CLLocationManagerDelegate{
     private var lmInstance: CLLocationManager
     private var geoHistory: GeoHistory
-    @Published var lastLoc: CLLocation?
     
     override init() {
         self.geoHistory = GeoHistory()
@@ -41,7 +40,6 @@ class GeoUtils: NSObject, CLLocationManagerDelegate, ObservableObject{
     //覆写更新通知代理方法
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last!
-        self.lastLoc = location
         let geoEncoder = CLGeocoder()
         geoEncoder.reverseGeocodeLocation(location, completionHandler: {
             (placemarks: [CLPlacemark]?, err: Error?) -> Void in

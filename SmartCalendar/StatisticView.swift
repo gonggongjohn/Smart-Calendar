@@ -7,8 +7,8 @@ import SwiftUI
 import MapKit
 
 struct StatisticView: View {
-    let card1=Card(name1:"2021.1.1-2021.1.7",name2:"轨迹图", name3:"快来看看这周你都去了哪些地方")
-    let card2=Card(name1:"2021.1.7", name2:"计划完成度", name3:"今天你做好时间管理了吗？")
+    let card1 = Card(title: "轨迹图", subTitle:"快来看看你都去过哪些地方", icon: "geo_stat_icon")
+    let card2 = Card(title: "日程分布图", subTitle: "今天我都干了些啥？", icon: "schedule_stat_icon")
     private var cardList: [Card] = []
     
     init(){
@@ -25,9 +25,9 @@ struct StatisticView: View {
 
 struct Card: Identifiable {
     var id = UUID()
-    var name1: String
-    var name2: String
-    var name3: String
+    var title: String
+    var subTitle: String
+    var icon: String
 }
 
 struct CardView: View {
@@ -35,21 +35,18 @@ struct CardView: View {
     var body: some View {
         VStack{
             NavigationLink(destination: GeoStatView()){
-                Image("").resizable()
+                Image(card.icon).resizable()
                     .aspectRatio(contentMode: .fit)
             }
             
             HStack{
                 VStack(alignment: .leading) {
-                    Text("\(card.name1)")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                    Text("\(card.name2)")
+                    Text("\(card.title)")
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.primary)
                         .lineLimit(3)
-                    Text("\(card.name3)")
+                    Text("\(card.subTitle)")
                         .foregroundColor(.secondary)
                 }
                 .layoutPriority(100)

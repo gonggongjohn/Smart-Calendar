@@ -23,9 +23,9 @@
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>System will get your location for analysis.</string>
+	<string>我们需要您的位置信息来帮助您记录过去的行程</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>System will get your location for analysis.</string>
+	<string>我们需要您的位置信息来帮助您记录过去的行程</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -53,7 +53,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>System will get your photo libaray for analysis.</string>
+	<string>我们需要您的位置信息来帮助更好的分析您的日程安排</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
