@@ -1,6 +1,7 @@
 package timemaster.smart_calendar.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences sp=getSharedPreferences("status",MODE_PRIVATE);
+        if(sp.getString("status","failure").equals("success")){
+            Intent intent = new Intent();
+            intent.setClass(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         btnLogin = findViewById(R.id.btn_login);
         btnRegister = findViewById(R.id.btn_register);
@@ -128,7 +137,13 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject=new JSONObject(result);
                     if(jsonObject.getString("status").equals("success")){
+                        SharedPreferences sp=getSharedPreferences("status",MODE_PRIVATE);
+                        SharedPreferences.Editor editor=sp.edit();
+                        editor.putString("status","success");
+                        editor.commit();
+
                         Intent intent = new Intent();
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.setClass(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         Looper.prepare();
