@@ -7,18 +7,20 @@ import SwiftUI
 import MapKit
 
 struct StatisticView: View {
-    let card1 = Card(title: "轨迹图", subTitle:"快来看看你都去过哪些地方", icon: "geo_stat_icon")
-    let card2 = Card(title: "日程分布图", subTitle: "今天我都干了些啥？", icon: "schedule_stat_icon")
     private var cardList: [Card] = []
     
     init(){
+        let card1 = Card(title: "轨迹图", subTitle:"快来看看你都去过哪些地方", icon: "geo_stat_icon")
+        let card2 = Card(title: "日程分布图", subTitle: "今天我都干了些啥？", icon: "schedule_stat_icon")
         self.cardList.append(card1)
         self.cardList.append(card2)
     }
     
     var body: some View {
-        List{
-            ForEach(self.cardList){card in CardView(card:card)}
+        NavigationView{
+            List{
+                ForEach(self.cardList){card in CardView(card:card)}
+            }
         }
     }
 }
@@ -34,9 +36,17 @@ struct CardView: View {
     var card: Card
     var body: some View {
         VStack{
-            NavigationLink(destination: GeoStatView()){
-                Image(card.icon).resizable()
-                    .aspectRatio(contentMode: .fit)
+            if card.title == "轨迹图"{
+                NavigationLink(destination: GeoStatView()){
+                    Image(card.icon).resizable()
+                        .aspectRatio(contentMode: .fit)
+                }
+            }
+            else if card.title == "日程分布图" {
+                NavigationLink(destination: ScheduleStatView()){
+                    Image(card.icon).resizable()
+                        .aspectRatio(contentMode: .fit)
+                }
             }
             
             HStack{

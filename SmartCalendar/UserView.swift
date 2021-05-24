@@ -13,11 +13,17 @@ struct DetailView1: View {
 }
 
 struct UserView: View {
+    private var username: String
     @State private var selectedIndex = 0
+    
+    init(username: String) {
+        self.username = username
+    }
+    
     var body: some View {
         NavigationView{
             Form {
-                NavigationLink(destination: DetailView1()){
+                NavigationLink(destination: AccountView(username: self.username)){
                     Text("我的账户")
                 }
                 NavigationLink(destination: DetailView1()){
@@ -34,6 +40,6 @@ struct UserView: View {
 
 struct UserView_Previews: PreviewProvider {
     static var previews: some View {
-        UserView()
+        UserView(username: "")
     }
 }

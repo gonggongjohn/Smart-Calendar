@@ -1,31 +1,25 @@
 //
-//  BaiduOcr.swift
-//  SmartCalendar
-//
+//  Baiduocr.swift
+//  MemorizeApp
 
+import Foundation
 import UIKit
 
-class ViewController: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //获取图片
-        let file = Bundle.main.path(forResource: "xxx", ofType: "jpg")!
-        let fileUrl = URL(fileURLWithPath: file)
-        let fileData = try! Data(contentsOf: fileUrl)
-        //将图片转为base64编码
-        let base64 = fileData.base64EncodedString(options: .endLineWithLineFeed)
-        //继续将base64字符串urlencode，确保只有数字和字母
-        let imageString = base64.addingPercentEncoding(withAllowedCharacters:
-            .alphanumerics)
-      
-        //请求接口
-        request(imageString: imageString!)
-    }
-    
+class BaiduOCR {
     //请求API接口
-    func request(imageString: String) {
-        let httpUrl="https://aip.baidubce.com/rest/2.0/ocr/v1/general?access_token=24.33d799e667620cffb82492fbb6e10041.2592000.1616327811.282335-23647105"
+    public static func requestText(image: UIImage, completion: @escaping ([String]) -> Void){
+        var text: [String] = []
+        // 将图片转化成Data
+        let imageData = image.pngData()
+
+        // 将Data转化成 base64的字符串
+        let base64 = imageData?.base64EncodedString()
+
+        //继续将base64字符串urlencode，确保只有数字和字母
+        let imageString = base64?.addingPercentEncoding(withAllowedCharacters:
+            .alphanumerics)
+
+        let httpUrl="https://aip.baidubce.com/rest/2.0/ocr/v1/general?access_token=24.cde4ac167c5028ae80a65c0f1fe7651c.2592000.1619914601.282335-23919450"
         
         //创建请求对象
         var request = URLRequest(url: URL(string: httpUrl)!)
@@ -37,39 +31,57 @@ class ViewController: UIViewController {
         
         //httpbody
         let httpArg = "&fromdevice=iPhone&clientip=10.10.10.0&detecttype=LocateRecognize" +
-            "&languagetype=CHN_ENG&imagetype=1&image=" + imageString
+            "&languagetype=CHN_ENG&imagetype=1&image=" + imageString!
         request.httpBody = httpArg.data(using: .utf8)
         
         //使用URLSession发起请求
         let session = URLSession.shared
-        let dataTask = session.dataTask(with: request,
-                            completionHandler: {(data, response, error) -> Void in
-                                if error != nil{
-                                    print(error.debugDescription)
-                                }else if let d = data{
-                                    //let str = String(data: d, encoding: .utf8)!
-                                    //print("----- 原始数据 -----\n\(str)")
-                                    //解析数据并显示结果
-                                    self.showResult(data: d)
-                                }
+        let dataTask = session.dataTask(with: request, completionHandler: {
+            (data, response, error) -> Void in
+            if error != nil{
+                print(error.debugDescription)
+            }else{
+                //解析数据
+                let json = try!JSON(data:data!)
+                print(json)
+                for (_,subJson):(String, JSON) in json["words_result"]{
+                    text.append("\(subJson["words"].stringValue)")
+                }
+            }
+            completion(text)
         }) as URLSessionTask
         //使用resume方法启动任务
         dataTask.resume()
     }
     
-    //解析数据
-    func showResult(data:Data) {
-        var result = ""
-        let json = try!JSON(data: data)
-        for (_,subJson):(String, JSON) in json["words_result"]{
-            result.append("\(subJson["words"].stringValue)\n")
-        }
-        print(result)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    public static func requestTable(image: UIImage, completion: @escaping (JSON) -> Void){
+        let imageData = image.pngData()
+        // 将Data转化成 base64的字符串
+        let base64 = imageData?.base64EncodedString()
+        //继续将base64字符串urlencode，确保只有数字和字母
+        //let imageString = base64?.addingPercentEncoding(withAllowedCharacters:
+        //    .alphanumerics)
+        let json_req: [String: Any] = ["image": base64]
+        let jsonData = try? JSONSerialization.data(withJSONObject: json_req)
+        let httpUrl = "http://mc.mcgo.pw:40018/lesson"
+        var request = URLRequest(url: URL(string: httpUrl)!)
+        request.timeoutInterval = 60
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        //使用URLSession发起请求
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request, completionHandler: {
+            (data, response, error) -> Void in
+            if error != nil{
+                print(error.debugDescription)
+            }else{
+                //解析数据
+                let json = try!JSON(data:data!)
+                print(json)
+                completion(json["lessons"])
+            }
+        }) as URLSessionTask
+        //使用resume方法启动任务
+        dataTask.resume()
     }
 }
-
-

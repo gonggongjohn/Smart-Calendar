@@ -41,8 +41,23 @@ class GeoHistory: NSObject, NSSecureCoding, ObservableObject{
         self.geoList = []
     }
     
-    public func appendItem(geo: CLLocation, name: String){
+    public func appendLocation(geo: CLLocation, name: String){
         self.geoList.append((geo, name))
+    }
+    
+    public func appendLocation(geo: CLLocation){
+        let geoEncoder = CLGeocoder()
+        geoEncoder.reverseGeocodeLocation(geo, completionHandler: {
+            (placemarks: [CLPlacemark]?, err: Error?) -> Void in
+            if err != nil && placemarks == nil{
+                print(err!)
+            }
+            else{
+                for placemark in placemarks!{
+                    self.geoList.append((geo, placemark.name!))
+                }
+            }
+        })
     }
     
     public func appendLocations(locations: [CLLocation]){
@@ -66,6 +81,11 @@ class GeoHistory: NSObject, NSSecureCoding, ObservableObject{
                 })
             }
         }
+    }
+    
+    public func appendLocations(from: GeoHistory){
+        let sourceList = from.getHistoryList()
+        self.geoList.append(contentsOf: sourceList)
     }
     
     public func getHistoryList() -> [(geo: CLLocation, name: String)]{

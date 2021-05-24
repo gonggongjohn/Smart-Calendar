@@ -3,11 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		11A71AECE45294E6F32BEDA5 /* libPods-SmartCalendar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 727A424A618187171CFD9A5E /* libPods-SmartCalendar.a */; };
+		2C01800826096E2C00AB698F /* ProfileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01800726096E2C00AB698F /* ProfileUtils.swift */; };
+		2C01800B260972B400AB698F /* PhotoHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01800A260972B400AB698F /* PhotoHistory.swift */; };
+		2C05BE7226199C5100287B1A /* LessonWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C05BE7126199C5100287B1A /* LessonWrapper.swift */; };
+		2C08406D260F3892004C5274 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08406C260F3892004C5274 /* AccountView.swift */; };
+		2C0BC49426010A1B004387A1 /* ScheduleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0BC49326010A1B004387A1 /* ScheduleStatView.swift */; };
+		2C0C980A26243FC600CF75AD /* ScheduleHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0C980926243FC600CF75AD /* ScheduleHistory.swift */; };
+		2C0FC42B2609964C009A0431 /* HistoryDateWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0FC42A2609964C009A0431 /* HistoryDateWrapper.swift */; };
+		2C0FC42E2609B8FA009A0431 /* TimeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0FC42D2609B8FA009A0431 /* TimeHelper.swift */; };
 		2C1C412F25E16C2F000B7712 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1C412E25E16C2F000B7712 /* CalendarView.swift */; };
 		2C1C413325E17981000B7712 /* StatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1C413225E17981000B7712 /* StatisticView.swift */; };
 		2C1C413C25E179D8000B7712 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1C413B25E179D8000B7712 /* UserView.swift */; };
@@ -23,11 +31,20 @@
 		2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */; };
 		2CC6F7AC25FFACE4004434D1 /* scene_1615560045.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6F7AB25FFACE4004434D1 /* scene_1615560045.mlmodel */; };
 		2CC8553D25ED37ED00D892D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CC8553C25ED37ED00D892D4 /* MapKit.framework */; };
+		2CD3F0772602119D00EB15F8 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD3F0762602119D00EB15F8 /* SwiftUICharts */; };
 		4004B01725E28CA50063FA89 /* BaiduOcr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4004B01625E28CA50063FA89 /* BaiduOcr.swift */; };
 		4004B01A25E290CE0063FA89 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4004B01925E290CE0063FA89 /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C01800726096E2C00AB698F /* ProfileUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUtils.swift; sourceTree = "<group>"; };
+		2C01800A260972B400AB698F /* PhotoHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoHistory.swift; sourceTree = "<group>"; };
+		2C05BE7126199C5100287B1A /* LessonWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonWrapper.swift; sourceTree = "<group>"; };
+		2C08406C260F3892004C5274 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		2C0BC49326010A1B004387A1 /* ScheduleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleStatView.swift; sourceTree = "<group>"; };
+		2C0C980926243FC600CF75AD /* ScheduleHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleHistory.swift; sourceTree = "<group>"; };
+		2C0FC42A2609964C009A0431 /* HistoryDateWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDateWrapper.swift; sourceTree = "<group>"; };
+		2C0FC42D2609B8FA009A0431 /* TimeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHelper.swift; sourceTree = "<group>"; };
 		2C1C412E25E16C2F000B7712 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		2C1C413225E17981000B7712 /* StatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticView.swift; sourceTree = "<group>"; };
 		2C1C413B25E179D8000B7712 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
@@ -57,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CD3F0772602119D00EB15F8 /* SwiftUICharts in Frameworks */,
 				2CC8553D25ED37ED00D892D4 /* MapKit.framework in Frameworks */,
 				11A71AECE45294E6F32BEDA5 /* libPods-SmartCalendar.a in Frameworks */,
 			);
@@ -74,6 +92,12 @@
 				4004B01925E290CE0063FA89 /* SwiftyJSON.swift */,
 				2C24CEE725F5106F00068178 /* GeoHistory.swift */,
 				2C5F22E125FB4512004684E6 /* PhotoUtils.swift */,
+				2C01800726096E2C00AB698F /* ProfileUtils.swift */,
+				2C01800A260972B400AB698F /* PhotoHistory.swift */,
+				2C0FC42A2609964C009A0431 /* HistoryDateWrapper.swift */,
+				2C0FC42D2609B8FA009A0431 /* TimeHelper.swift */,
+				2C05BE7126199C5100287B1A /* LessonWrapper.swift */,
+				2C0C980926243FC600CF75AD /* ScheduleHistory.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -106,7 +130,9 @@
 				2C1C412E25E16C2F000B7712 /* CalendarView.swift */,
 				2C1C413225E17981000B7712 /* StatisticView.swift */,
 				2C739DFF25FC9AB5005F7E6A /* GeoStatView.swift */,
+				2C0BC49326010A1B004387A1 /* ScheduleStatView.swift */,
 				2C1C413B25E179D8000B7712 /* UserView.swift */,
+				2C08406C260F3892004C5274 /* AccountView.swift */,
 				2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */,
 				2C9756C425BD2D1A006378D0 /* Assets.xcassets */,
 				2C9756C925BD2D1A006378D0 /* Info.plist */,
@@ -166,6 +192,9 @@
 			dependencies = (
 			);
 			name = SmartCalendar;
+			packageProductDependencies = (
+				2CD3F0762602119D00EB15F8 /* SwiftUICharts */,
+			);
 			productName = SmartCalendar;
 			productReference = 2C9756BD25BD2D1A006378D0 /* SmartCalendar.app */;
 			productType = "com.apple.product-type.application";
@@ -193,6 +222,9 @@
 				Base,
 			);
 			mainGroup = 2C9756B425BD2D1A006378D0;
+			packageReferences = (
+				2CD3F0752602119D00EB15F8 /* XCRemoteSwiftPackageReference "ChartView" */,
+			);
 			productRefGroup = 2C9756BE25BD2D1A006378D0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -245,7 +277,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C1C413325E17981000B7712 /* StatisticView.swift in Sources */,
+				2C0FC42E2609B8FA009A0431 /* TimeHelper.swift in Sources */,
+				2C0BC49426010A1B004387A1 /* ScheduleStatView.swift in Sources */,
 				2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */,
+				2C08406D260F3892004C5274 /* AccountView.swift in Sources */,
+				2C01800B260972B400AB698F /* PhotoHistory.swift in Sources */,
+				2C0FC42B2609964C009A0431 /* HistoryDateWrapper.swift in Sources */,
 				2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */,
 				4004B01A25E290CE0063FA89 /* SwiftyJSON.swift in Sources */,
 				2C1C413C25E179D8000B7712 /* UserView.swift in Sources */,
@@ -254,10 +291,13 @@
 				2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */,
 				2CC6F7AC25FFACE4004434D1 /* scene_1615560045.mlmodel in Sources */,
 				2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */,
+				2C0C980A26243FC600CF75AD /* ScheduleHistory.swift in Sources */,
 				2C24CEE825F5106F00068178 /* GeoHistory.swift in Sources */,
 				2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */,
 				2C5F22E225FB4512004684E6 /* PhotoUtils.swift in Sources */,
 				4004B01725E28CA50063FA89 /* BaiduOcr.swift in Sources */,
+				2C05BE7226199C5100287B1A /* LessonWrapper.swift in Sources */,
+				2C01800826096E2C00AB698F /* ProfileUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +488,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2CD3F0752602119D00EB15F8 /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2CD3F0762602119D00EB15F8 /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD3F0752602119D00EB15F8 /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2C9756B525BD2D1A006378D0 /* Project object */;
 }
