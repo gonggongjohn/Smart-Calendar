@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_first_graph"
+            app:startDestination="@id/calendarFragment">
+
+    <fragment
+            android:id="@+id/scheduleFragment"
+            android:name="team.time.smartcalendar.fragmentsfirst.ScheduleFragment"
+            android:label="fragment_schedule"
+            tools:layout="@layout/fragment_schedule"/>
+    <fragment
+            android:id="@+id/calendarFragment"
+            android:name="team.time.smartcalendar.fragmentsfirst.CalendarFragment"
+            android:label="CalendarFragment">
+        <action
+                android:id="@+id/action_calendarFragment_to_scheduleFragment"
+                app:destination="@id/scheduleFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+</navigation>

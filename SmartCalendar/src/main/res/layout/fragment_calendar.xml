@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="viewModel"
+                type="team.time.smartcalendar.viewmodels.CalendarViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".fragmentsfirst.CalendarFragment">
+
+        <RelativeLayout
+                android:id="@+id/calenderToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@color/DodgerBlue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/calendarLayout">
+
+            <TextView
+                    android:id="@+id/textMonthDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:text="@{viewModel.getMonthDay}"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlSymmetry"/>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/textMonthDay"
+                    android:orientation="vertical"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="12dp"
+                    tools:ignore="RelativeOverlap">
+
+                <TextView
+                        android:id="@+id/textYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@{String.valueOf(viewModel.getYear)}"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"/>
+
+                <TextView
+                        android:id="@+id/textLunar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@{viewModel.getLunar}"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp"/>
+            </LinearLayout>
+
+            <FrameLayout
+                    android:id="@+id/calendarFrameLayout"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/bg_ripple">
+
+                <ImageView
+                        android:id="@+id/calendarIcon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/ic_calendar"/>
+
+                <TextView
+                        android:id="@+id/textCurrentDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="@{String.valueOf(viewModel.getCurrentDay)}"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"/>
+            </FrameLayout>
+        </RelativeLayout>
+
+        <com.haibin.calendarview.CalendarLayout
+                android:id="@+id/calendarLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:default_status="expand"
+                app:calendar_content_view_id="@+id/calendarRecyclerView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/calenderToolbar"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.haibin.calendarview.CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:calendar_padding="10dp"
+                    app:current_month_text_color="#333333"
+                    app:current_month_lunar_text_color="#CFCFCF"
+                    app:min_year="2000"
+                    app:max_year="2100"
+                    app:other_month_text_color="#e1e1e1"
+                    app:other_month_lunar_text_color="#e1e1e1"
+                    app:scheme_text="假"
+                    app:scheme_text_color="#333"
+                    app:scheme_theme_color="#128c4b"
+                    app:selected_lunar_text_color="#CFCFCF"
+                    app:month_view="team.time.smartcalendar.calendar.MeiZuMonthView"
+                    app:week_view="team.time.smartcalendar.calendar.MeiZuWeekView"
+                    app:selected_text_color="#333"
+                    app:current_day_text_color="@color/DodgerBlue"
+                    app:current_day_lunar_text_color="@color/DodgerBlue"
+                    app:selected_theme_color="#80cfcfcf"
+                    app:week_background="#fff"
+                    app:week_text_color="#111111"
+                    app:week_start_with="sun"
+                    app:week_view_scrollable="true"
+                    app:year_view_day_text_color="#333333"
+                    app:year_view_day_text_size="9sp"
+                    app:year_view_month_text_color="#ff0000"
+                    app:year_view_month_text_size="20sp"
+                    app:month_view_show_mode="mode_only_current"
+                    app:year_view_scheme_color="#f17706"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/calendarRecyclerView"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </com.haibin.calendarview.CalendarLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_baseline_add_24"
+                app:tint="@color/white"
+                android:backgroundTint="@color/DodgerBlue"
+                android:id="@+id/btnSchedule"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.95"
+                android:focusable="true"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

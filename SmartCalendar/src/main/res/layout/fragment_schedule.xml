@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".fragmentsfirst.ScheduleFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@color/DodgerBlue"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                android:id="@+id/cl1">
+
+            <ImageView
+                    android:tint="@color/white"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/bg_ripple"
+                    android:src="@drawable/ic_baseline_close_24"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:id="@+id/imageDrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/guideline5"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.15"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/guideline7"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.85"/>
+
+            <ImageView
+                    android:tint="@color/white"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/bg_ripple"
+                    android:src="@drawable/ic_baseline_check_24"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:id="@+id/imageFinish"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline7"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                    android:text="新建日程"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textSchedule"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline7"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl1"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:minHeight="80dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_title_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline8"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="标题"
+                            android:textSize="15sp"
+                            android:id="@+id/editTextTittle"
+                            app:layout_constraintStart_toStartOf="@+id/guideline8"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_add_location_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline9"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="地点"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextPosition"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintStart_toStartOf="@+id/guideline9"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_av_timer_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline11"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="30dp"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline11"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="全天"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextAllDay"
+                            app:layout_constraintStart_toStartOf="@+id/guideline11"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="70dp"/>
+
+                    <Switch
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/switchAllDay"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="25dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline12"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="开始"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextStart"
+                            app:layout_constraintStart_toStartOf="@+id/guideline12"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                    <TextView
+                            android:text="2021年 1月1日 00:00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textStartTime"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="40dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline13"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="结束"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextEnd"
+                            app:layout_constraintStart_toStartOf="@+id/guideline13"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                    <TextView
+                            android:text="2021年 1月1日 00:00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textEndTime"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="40dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_mode_edit_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline10"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="30dp"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline10"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="说明"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextDetail"
+                            app:layout_constraintStart_toStartOf="@+id/guideline10"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
