@@ -6,52 +6,74 @@
 import Foundation
 
 class UserUtils{
-    public static func login(username: String, password: String, completion: @escaping (Bool) -> Void){
-        var connected = false
-        let server = "http://mc.mcgo.pw:40018/login"
-        let url_str = server + "?username=" + username + "&password=" + password
-        var request = URLRequest(url: URL(string: url_str)!)
-        request.httpMethod = "GET"
+    public static func login(username: String, password: String, completion: @escaping (Int) -> Void){
+        let body: [String: Any] = ["username": username, "password": password]
+        let body_str = try? JSONSerialization.data(withJSONObject: body)
+        let server = Config.host + "/user/login"
+        var request = URLRequest(url: URL(string: server)!)
+        request.httpMethod = "POST"
+        request.httpBody = body_str
         request.timeoutInterval = 120
         let session = URLSession.shared
         let task = session.dataTask(with: request) {(data, response, error) in
             if error != nil{
-                print("Failed to connect to server.")
+                print("Error when connecting to server.")
+                print(error!)
             }else{
-                let json = try!JSON(data:data!)
-                print(json["status"])
-                if(json["status"] == "success"){
-                    connected = true
-                }
+                let result = try! JSON(data: data!)
+                completion(result["status"].intValue)
             }
-            completion(connected)
         }as URLSessionTask
         task.resume()
-        print(connected)
     }
     
-    public static func register(username: String, password: String, completion: @escaping (Bool) -> Void){
-        var connected = false
-        let json: [String: Any] = ["username":username,"password":password]
-        let jsonData = try? JSONSerialization.data(withJSONObject: json)
-        let server = "http://mc.mcgo.pw:40018/register"
-        var request = URLRequest(url:URL(string:server)!)
+    public static func register(username: String, password: String, phone: String, completion: @escaping (Bool) -> Void){
+        let body: [String: Any] = ["username": username, "password": password, "phone": phone]
+        let body_str = try? JSONSerialization.data(withJSONObject: body)
+        let server = Config.host + "/user/register"
+        var request = URLRequest(url: URL(string: server)!)
         request.httpMethod = "POST"
-        request.httpBody = jsonData
+        request.httpBody = body_str
         let session = URLSession.shared
         let task = session.dataTask(with: request) {(data, response, error) in
-            do {
-                if error != nil{
-                    print("Failed to connect to server.")
-                }else{
-                    let json = try!JSON(data:data!)
-                    if(json["status"]=="success"){
-                        connected = true
-                    }
+            if error != nil{
+                print("Error when connecting to server.")
+                print(error!)
+            }else{
+                let result = try! JSON(data: data!)
+                if(result["status"] == 1){
+                    completion(true)
                 }
-                completion(connected)
+                else{
+                    completion(false)
+                }
             }
-        }
+        } as URLSessionTask
+        task.resume()
+    }
+    
+    public static func getInfo(completion: @escaping (Bool, [String: String]?) -> Void){
+        let server = Config.host + "/user/info"
+        var request = URLRequest(url: URL(string: server)!)
+        request.httpMethod = "GET"
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) {(data, response, error) in
+            if error != nil{
+                print("Error when connecting to server.")
+                print(error!)
+            }else{
+                let result = try! JSON(data: data!)
+                if(result["status"] == 1){
+                    let username = result["info"]["username"].stringValue
+                    let nickname = result["info"]["nickname"].stringValue
+                    let info_dict: [String: String] = ["username": username, "nickname": nickname]
+                    completion(true, info_dict)
+                }
+                else{
+                    completion(false, nil)
+                }
+            }
+        } as URLSessionTask
         task.resume()
     }
 }

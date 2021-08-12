@@ -173,19 +173,43 @@ class PhotoUtils{
         })
     }
     
-    public static func phaseLessons(image: UIImage, completion completionFather: @escaping (LessonWrapper) -> Void){
-        BaiduOCR.requestTable(image: image, completion: {
-            (json) -> Void in
-            let wrapper = LessonWrapper()
-            for (_,subJson):(String, JSON) in json{
-                let day = subJson["day"].intValue
-                let start = subJson["start"].intValue
-                let end = subJson["end"].intValue
-                let lesson = subJson["lesson"].stringValue
-                wrapper.appendLesson(day: day, deltaStart: start, deltaEnd: end, name: lesson)
+    public static func phaseLessons(image: UIImage, completion completionFather: @escaping (Bool, [Lesson]) -> Void){
+        let img_data = image.pngData()
+        let img_str = img_data?.base64EncodedString()
+        if(img_str == nil){
+            completionFather(false, [])
+        }
+        let body: [String: Any] = ["image": img_str!]
+        let body_str = try? JSONSerialization.data(withJSONObject: body)
+        let server = Config.host + "/inference/lesson_table"
+        var request = URLRequest(url: URL(string: server)!)
+        request.httpMethod = "POST"
+        request.httpBody = body_str
+        request.timeoutInterval = 120
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) {(data, response, error) in
+            if error != nil{
+                print("Error when connecting to server.")
+                print(error!)
+            }else{
+                let result = try! JSON(data: data!)
+                if(result["status"] == 1){
+                    var lesson_list: [Lesson] = []
+                    for (_, item): (String, JSON) in result["lesson"] {
+                        let name = item["name"].stringValue
+                        let day = item["day"].intValue
+                        let start = item["start"].intValue
+                        let end = item["end"].intValue
+                        lesson_list.append(Lesson(name: name, day: day, startDelta: start, endDelta: end))
+                    }
+                    completionFather(true, lesson_list)
+                }
+                else{
+                    completionFather(false, [])
+                }
             }
-            completionFather(wrapper)
-        })
+        }as URLSessionTask
+        task.resume()
     }
     
     public static func fetchImage(asset: PHAsset, completion: @escaping (UIImage) -> Void){

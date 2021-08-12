@@ -30,6 +30,10 @@ class ScheduleHistory: NSObject, NSSecureCoding {
         }
     }
     
+    override init(){
+        
+    }
+    
     func encode(with coder: NSCoder) {
         coder.encode(self.nameList, forKey: "schedule_history_name")
         coder.encode(self.categoryList, forKey: "schedule_history_cat")
@@ -49,6 +53,13 @@ class ScheduleHistory: NSObject, NSSecureCoding {
         self.categoryList.append(contentsOf: origin.getCategoryList())
         self.startList.append(contentsOf: origin.getStartList())
         self.endList.append(contentsOf: origin.getEndList())
+    }
+    
+    public func removeSchedule(indices: IndexSet){
+        self.nameList.remove(atOffsets: indices)
+        self.categoryList.remove(atOffsets: indices)
+        self.startList.remove(atOffsets: indices)
+        self.endList.remove(atOffsets: indices)
     }
     
     public func getSchedules() -> [(name: String, category: String, start: Date, end: Date)] {

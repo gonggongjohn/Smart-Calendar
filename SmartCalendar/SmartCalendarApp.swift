@@ -7,9 +7,22 @@ import SwiftUI
 
 @main
 struct SmartCalendarApp: App {
+    @State var is_login = false
+    init() {
+        let info_tuple = ProfileUtils.getUserInfo()
+        if(info_tuple != nil){
+            _is_login = State(initialValue: true)
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            if(self.is_login){
+                MainView(lazy: true)
+            }
+            else{
+                LoginView()
+            }
         }
     }
 }

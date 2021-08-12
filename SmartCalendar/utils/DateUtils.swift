@@ -5,7 +5,7 @@
 
 import Foundation
 
-class TimeHelper{
+class DateUtils{
     public static func getDate(time: Date) -> Date {
         let calendar = Calendar.current
         var component = calendar.dateComponents([Calendar.Component.year, Calendar.Component.month, Calendar.Component.day], from: time)
@@ -108,5 +108,18 @@ class TimeHelper{
         else{
             return false
         }
+    }
+    
+    public static func date2str(date: Date) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter.string(from: date)
+    }
+    
+    public static func time2str(dateDelta: Int) -> String{
+        let hour = dateDelta / 3600
+        let minute = (dateDelta - hour * 3600) / 60
+        let second = dateDelta - hour * 3600 - minute * 60
+        return String(format: "%02d:%02d:%02d", hour ,minute, second)
     }
 }

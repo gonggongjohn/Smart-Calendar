@@ -16,14 +16,14 @@ struct GeoStatView: View {
     init() {
         self.geoUtils = GeoUtils()
         self.profileUtils = ProfileUtils()
-        let fromDate = TimeHelper.getDate(year: 2021, month: 3, day: 20)
-        let toDate = TimeHelper.getDate(time: Date())
+        let fromDate = DateUtils.getDate(year: 2021, month: 3, day: 20)
+        let toDate = DateUtils.getDate(time: Date())
         self.locHistory = self.profileUtils.getGeoHistory(from: fromDate, to: toDate)
         if locHistory != nil{
             for item in self.locHistory!.getHistoryList() {
                 let time = item.geo.timestamp
                 let name = item.name
-                self.geoItems.append(GeoItem(place: name, time: TimeHelper.getDateString(date: time)))
+                self.geoItems.append(GeoItem(place: name, time: DateUtils.getDateString(date: time)))
             }
         }
     }

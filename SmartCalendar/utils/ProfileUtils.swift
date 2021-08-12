@@ -6,6 +6,36 @@
 import Foundation
 
 class ProfileUtils {
+    public static func saveUserInfo(username: String, password: String){
+        let info_wrapper = UserInfo(username: username, password: password)
+        do{
+            let data = try NSKeyedArchiver.archivedData(withRootObject: info_wrapper, requiringSecureCoding: true)
+            UserDefaults.standard.setValue(data, forKey: "user_info")
+        }
+        catch{
+            print("Error occurred when saving user info!")
+        }
+    }
+    
+    public static func getUserInfo() -> (username: String, password: String)?{
+        let data = UserDefaults.standard.data(forKey: "user_info")
+        var info_wrapper: UserInfo? = nil
+        if data != nil {
+            do{
+                info_wrapper = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data!) as? UserInfo
+                if(info_wrapper != nil){
+                    var info_tuple: (username: String, password: String)?
+                    info_tuple = (username: info_wrapper!.getUsername(), password: info_wrapper!.getPassword())
+                    return info_tuple
+                }
+            }
+            catch{
+                print("Error occurred when getting user info!")
+            }
+        }
+        return nil
+    }
+    
     /* Save Geo History to UserDefaults (One day per entry) */
     public func saveGeoHistory(date: Date, history: GeoHistory){
         let oldHistory = getGeoHistory(date: date)
@@ -40,7 +70,7 @@ class ProfileUtils {
     
     /* Get Geo Histroy of a day from UserDefaults */
     public func getGeoHistory(from: Date, to: Date) -> GeoHistory?{
-        let dateSeq = TimeHelper.getSequence(fromDate: from, toDate: to)
+        let dateSeq = DateUtils.getSequence(fromDate: from, toDate: to)
         let history = GeoHistory()
         for date in dateSeq {
             let key = "GeoHistory_" + String(date.timeIntervalSince1970)
@@ -90,14 +120,14 @@ class ProfileUtils {
         return history
     }
     
-    public func saveScheduleHistory(user: String, history: ScheduleHistory){
-        let oldHistory = getScheduleHistory(user: user)
+    public static func saveScheduleHistory(history: ScheduleHistory){
+        let oldHistory = getScheduleHistory()
         if oldHistory != nil {
             history.addSchedules(origin: oldHistory!)
         }
         do{
             let data = try NSKeyedArchiver.archivedData(withRootObject: history, requiringSecureCoding: true)
-            let key = "ScheduleHistory_" + user
+            let key = "schedule_history"
             UserDefaults.standard.setValue(data, forKey: key)
         }
         catch{
@@ -105,10 +135,10 @@ class ProfileUtils {
         }
     }
     
-    public func getScheduleHistory(user: String) -> ScheduleHistory?{
-        let key = "ScheduleHistory_" + user
+    public static func getScheduleHistory() -> ScheduleHistory?{
+        let key = "schedule_history"
         let data = UserDefaults.standard.data(forKey: key)
-        var history: ScheduleHistory? = nil
+        var history: ScheduleHistory?
         if data != nil {
             do{
                 history = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data!) as? ScheduleHistory

@@ -6,13 +6,12 @@
 import SwiftUI
 
 struct AccountView: View {
-    private var username: String
-    private var nickname: String
+    @State private var username: String = ""
+    @State private var nickname: String = ""
     
-    init(username: String) {
-        self.username = username
-        self.nickname = ""
+    init() {
     }
+    
     var body: some View {
         HStack{
             Image("schedule_stat_icon").resizable().aspectRatio(contentMode: .fit)
@@ -22,11 +21,20 @@ struct AccountView: View {
             }
         }.frame(maxWidth: 300, maxHeight: 100, alignment: .leading)
         .padding()
+        .onAppear(perform: {
+            UserUtils.getInfo(completion: {
+                (status, info) -> Void in
+                if(status){
+                    self.username = info!["username"]!
+                    self.nickname = info!["nickname"]!
+                }
+            })
+        })
     }
 }
 
 struct AccountView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountView(username: "")
+        AccountView()
     }
 }

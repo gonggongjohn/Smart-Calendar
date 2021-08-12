@@ -39,7 +39,7 @@ class GeoUtils: NSObject, CLLocationManagerDelegate{
     //覆写更新通知代理方法
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last!
-        let date = TimeHelper.getDate(time: location.timestamp)
+        let date = DateUtils.getDate(time: location.timestamp)
         if self.historyDict[date] == nil{
             self.historyDict[date] = GeoHistory()
         }
