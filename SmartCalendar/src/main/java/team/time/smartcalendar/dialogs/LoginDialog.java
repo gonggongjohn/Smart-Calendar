@@ -1,77 +1,94 @@
-package team.time.smartcalendar;
+package team.time.smartcalendar.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import team.time.smartcalendar.databinding.FragmentLoginBinding;
+import team.time.smartcalendar.R;
+import team.time.smartcalendar.databinding.DialogLoginBinding;
 import team.time.smartcalendar.requests.CookieManager;
+import team.time.smartcalendar.viewmodels.LoginViewModel;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginFragment extends Fragment {
-    private FragmentLoginBinding binding;
+public class LoginDialog extends DialogFragment {
     private NavController controller;
+    private DialogLoginBinding binding;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+    private LoginViewModel viewModel;
     private Activity parentActivity;
     private SharedPreferences sp;
     private String USERNAME;
     private String PASSWORD;
+    private SharedPreferences.Editor editor;
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         parentActivity=getActivity();
 
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
-        return binding.getRoot();
-    }
+        binding = DataBindingUtil.inflate(
+                LayoutInflater.from(getContext()),
+                R.layout.dialog_login,
+                null,
+                false);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(
+                this,
+                new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
+        ).get(LoginViewModel.class);
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this);
 
-        controller = Navigation.findNavController(view);
-
-        sp= getActivity().getSharedPreferences(
-                getString(R.string.USER_INFO),
-                Context.MODE_PRIVATE
-        );
-
-        USERNAME = sp.getString("username","");
-        PASSWORD = sp.getString("password","");
-
-        // 自动登录
-        if(!USERNAME.equals("") && !PASSWORD.equals("")){
-            login();
-        }
-
+        controller = Navigation.findNavController(getActivity(),R.id.loginNavHostFragment);
         binding.btnLogin.setOnClickListener(v -> {
-            controller.navigate(R.id.action_loginFragment_to_loginDialog);
+            login();
+        });
+        binding.btnCancel.setOnClickListener(v -> {
+            controller.popBackStack();
         });
 
-        binding.btnRegister.setOnClickListener(v -> {
-            controller.navigate(R.id.action_loginFragment_to_registerDialog);
-        });
+        builder = new AlertDialog.Builder(getContext());
+        builder.setView(binding.getRoot());
+        builder.setCancelable(false);
+
+        dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        return dialog;
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void login() {
+        sp = getActivity().getSharedPreferences(
+                getString(R.string.USER_INFO),
+                Context.MODE_PRIVATE);
+        editor = sp.edit();
+
+        USERNAME=viewModel.getUserName().getValue();
+        PASSWORD=viewModel.getPassWord().getValue();
+
         int PORT=3000;
         String PATH="/user/login";
 
@@ -104,16 +121,20 @@ public class LoginFragment extends Fragment {
                 });
             }
 
-            @SuppressLint("CommitPrefEdits")
+            @SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try {
                     JSONObject result=new JSONObject(response.body().string());
                     int status=result.getInt("status");
                     if(status==1){
+                        editor.putString("username",USERNAME);
+                        editor.putString("password",PASSWORD);
+                        editor.commit();
+
                         parentActivity.runOnUiThread(() -> {
                             Toast.makeText(parentActivity, "登录成功", Toast.LENGTH_SHORT).show();
-                            controller.navigate(R.id.action_loginFragment_to_mainFragment);
+                            controller.navigate(R.id.action_loginDialog_to_mainFragment);
                         });
                     }else if(status==2){
                         parentActivity.runOnUiThread(() -> {
