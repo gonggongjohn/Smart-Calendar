@@ -19,10 +19,42 @@
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+                android:id="@+id/action_loginFragment_to_loginDialog"
+                app:destination="@id/loginDialog"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+                android:id="@+id/action_loginFragment_to_registerDialog"
+                app:destination="@id/registerDialog"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
             android:id="@+id/mainFragment"
             android:name="team.time.smartcalendar.MainFragment"
             android:label="fragment_main"
             tools:layout="@layout/fragment_main"/>
+    <dialog
+            android:id="@+id/loginDialog"
+            android:name="team.time.smartcalendar.dialogs.LoginDialog"
+            android:label="LoginDialog">
+        <action
+                android:id="@+id/action_loginDialog_to_mainFragment"
+                app:destination="@id/mainFragment"
+                app:popUpTo="@id/loginFragment"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </dialog>
+    <dialog
+            android:id="@+id/registerDialog"
+            android:name="team.time.smartcalendar.dialogs.RegisterDialog"
+            android:label="RegisterDialog"/>
 </navigation>

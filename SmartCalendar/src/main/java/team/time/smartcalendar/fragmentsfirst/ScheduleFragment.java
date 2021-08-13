@@ -46,6 +46,7 @@ public class ScheduleFragment extends Fragment {
         });
 
         binding.imageFinish.setOnClickListener(v -> {
+
             NavController controller= Navigation.findNavController(v);
             controller.popBackStack();
         });
