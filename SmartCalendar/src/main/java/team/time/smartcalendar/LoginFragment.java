@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 import team.time.smartcalendar.databinding.FragmentLoginBinding;
-import team.time.smartcalendar.requests.CookieManager;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,11 +32,13 @@ public class LoginFragment extends Fragment {
     private SharedPreferences sp;
     private String USERNAME;
     private String PASSWORD;
+    private OkHttpClient client;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         parentActivity=getActivity();
+        client=((MainApplication)getActivity().getApplication()).getClient();
 
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
         return binding.getRoot();
@@ -59,6 +60,8 @@ public class LoginFragment extends Fragment {
 
         // 自动登录
         if(!USERNAME.equals("") && !PASSWORD.equals("")){
+            binding.btnLogin.setVisibility(View.GONE);
+            binding.btnRegister.setVisibility(View.GONE);
             login();
         }
 
@@ -72,12 +75,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void login() {
-        int PORT=3000;
         String PATH="/user/login";
-
-        OkHttpClient client=new OkHttpClient.Builder()
-                .cookieJar(new CookieManager(parentActivity.getApplication()))
-                .build();
 
         Map<String,String> map=new HashMap<>();
         map.put("username",USERNAME);
@@ -90,7 +88,7 @@ public class LoginFragment extends Fragment {
         );
 
         Request request=new Request.Builder()
-                .url(getString(R.string.URL)+":"+PORT+PATH)
+                .url(getString(R.string.URL)+PATH)
                 .addHeader("contentType","application/json;charset=UTF-8")
                 .post(requestBody)
                 .build();
@@ -100,6 +98,8 @@ public class LoginFragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 parentActivity.runOnUiThread(() -> {
+                    binding.btnLogin.setVisibility(View.VISIBLE);
+                    binding.btnRegister.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "网络未连接", Toast.LENGTH_SHORT).show();
                 });
             }
@@ -112,19 +112,24 @@ public class LoginFragment extends Fragment {
                     int status=result.getInt("status");
                     if(status==1){
                         parentActivity.runOnUiThread(() -> {
-                            Toast.makeText(parentActivity, "登录成功", Toast.LENGTH_SHORT).show();
                             controller.navigate(R.id.action_loginFragment_to_mainFragment);
                         });
                     }else if(status==2){
                         parentActivity.runOnUiThread(() -> {
+                            binding.btnLogin.setVisibility(View.VISIBLE);
+                            binding.btnRegister.setVisibility(View.VISIBLE);
                             Toast.makeText(parentActivity, "密码错误", Toast.LENGTH_SHORT).show();
                         });
                     }else if(status==3){
                         parentActivity.runOnUiThread(() -> {
+                            binding.btnLogin.setVisibility(View.VISIBLE);
+                            binding.btnRegister.setVisibility(View.VISIBLE);
                             Toast.makeText(getActivity(), "用户名不存在", Toast.LENGTH_SHORT).show();
                         });
                     }else{
                         parentActivity.runOnUiThread(() -> {
+                            binding.btnLogin.setVisibility(View.VISIBLE);
+                            binding.btnRegister.setVisibility(View.VISIBLE);
                             Toast.makeText(getActivity(), "登陆失败", Toast.LENGTH_SHORT).show();
                         });
                     }

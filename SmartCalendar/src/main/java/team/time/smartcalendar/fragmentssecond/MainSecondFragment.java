@@ -1,4 +1,4 @@
-package team.time.smartcalendar.Fragmentssecond;
+package team.time.smartcalendar.fragmentssecond;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;

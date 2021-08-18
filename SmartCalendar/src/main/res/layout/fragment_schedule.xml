@@ -4,7 +4,11 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+                name="viewModel"
+                type="team.time.smartcalendar.viewmodels.ScheduleViewModel"/>
 
+        <import type="team.time.smartcalendar.utils.DateUtils"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +68,7 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                    android:text="新建日程"
+                    android:text="日程"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="20sp"
@@ -117,6 +121,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:hint="标题"
+                            android:text="@={viewModel.getInfo}"
                             android:textSize="15sp"
                             android:id="@+id/editTextTittle"
                             app:layout_constraintStart_toStartOf="@+id/guideline8"
@@ -153,6 +158,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:hint="地点"
+                            android:text="@={viewModel.getPosition}"
                             android:textSize="15dp"
                             android:id="@+id/editTextPosition"
                             android:layout_marginTop="20dp"
@@ -170,18 +176,19 @@
                         android:layout_height="wrap_content">
 
                     <ImageView
-                            android:src="@drawable/ic_baseline_av_timer_24"
+                            android:src="@drawable/ic_baseline_category_24"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline11"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline100"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginTop="30dp"/>
+                            android:id="@+id/imageView2"/>
 
                     <androidx.constraintlayout.widget.Guideline
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/guideline11"
+                            android:id="@+id/guideline100"
                             android:orientation="vertical"
                             app:layout_constraintGuide_percent="0.15"/>
 
@@ -189,20 +196,20 @@
                             android:enabled="false"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:hint="全天"
+                            android:hint="类别"
                             android:textSize="15dp"
-                            android:id="@+id/editTextAllDay"
-                            app:layout_constraintStart_toStartOf="@+id/guideline11"
+                            android:id="@+id/editTextCategory"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintStart_toStartOf="@+id/guideline100"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="20dp"
                             android:layout_marginStart="10dp"
-                            android:layout_marginEnd="70dp"/>
+                            android:layout_marginEnd="35dp"/>
 
-                    <Switch
+                    <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinnerCategory"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/switchAllDay"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -214,6 +221,15 @@
                         android:layout_width="match_parent"
                         android:minHeight="80dp"
                         android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_av_timer_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline12"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="30dp"/>
 
                     <androidx.constraintlayout.widget.Guideline
                             android:layout_width="wrap_content"
@@ -237,7 +253,8 @@
                             android:layout_marginEnd="35dp"/>
 
                     <TextView
-                            android:text="2021年 1月1日 00:00"
+                            android:textColor="@color/black"
+                            android:text="@{DateUtils.getFormatTime(viewModel.getStartTime)}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/textStartTime"
@@ -276,7 +293,8 @@
                             android:layout_marginEnd="35dp"/>
 
                     <TextView
-                            android:text="2021年 1月1日 00:00"
+                            android:textColor="@color/black"
+                            android:text="@{DateUtils.getFormatTime(viewModel.getEndTime)}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/textEndTime"
@@ -313,6 +331,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:hint="说明"
+                            android:text="@={viewModel.getDetails}"
                             android:textSize="15dp"
                             android:id="@+id/editTextDetail"
                             app:layout_constraintStart_toStartOf="@+id/guideline10"

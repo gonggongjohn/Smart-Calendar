@@ -14,7 +14,6 @@ import java.util.Map;
 public class CookieManager implements CookieJar {
     private Map<HttpUrl, List<Cookie>> cookieStore;
 
-
     public CookieManager(Application app) {
         cookieStore = ((MainApplication)app).getCookieStore();
     }
@@ -22,7 +21,7 @@ public class CookieManager implements CookieJar {
     @NotNull
     @Override
     public List<Cookie> loadForRequest(@NotNull HttpUrl httpUrl) {
-        List<Cookie> cookies=cookieStore.get(httpUrl);
+        List<Cookie> cookies=cookieStore.get(HttpUrl.parse(httpUrl.host()));
         if(cookies==null){
             cookies=new ArrayList<>();
         }
@@ -32,6 +31,6 @@ public class CookieManager implements CookieJar {
 
     @Override
     public void saveFromResponse(@NotNull HttpUrl httpUrl, @NotNull List<Cookie> list) {
-        cookieStore.put(httpUrl,list);
+        cookieStore.put(HttpUrl.parse(httpUrl.host()),list);
     }
 }

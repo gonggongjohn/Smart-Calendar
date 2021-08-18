@@ -2,17 +2,12 @@ package team.time.smartcalendar.viewmodels;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import team.time.smartcalendar.dataBeans.CalendarItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CalendarViewModel extends ViewModel {
     private MutableLiveData<String>monthDay;
     private MutableLiveData<Integer>year;
     private MutableLiveData<String>lunar;
     private MutableLiveData<Integer>currentDay;
-    private MutableLiveData<List<CalendarItem>>items;
 
     public MutableLiveData<String> getMonthDay() {
         if(monthDay==null){
@@ -44,13 +39,5 @@ public class CalendarViewModel extends ViewModel {
             currentDay.setValue(1);
         }
         return currentDay;
-    }
-
-    public MutableLiveData<List<CalendarItem>> getItems() {
-        if(items==null){
-            items=new MutableLiveData<>();
-            items.setValue(new ArrayList<>());
-        }
-        return items;
     }
 }

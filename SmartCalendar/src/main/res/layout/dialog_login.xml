@@ -46,7 +46,7 @@
                 <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
+                        android:inputType="textVisiblePassword"
                         android:hint="用户名"
                         android:text="@={viewModel.getUserName}"
                         android:textSize="15sp"

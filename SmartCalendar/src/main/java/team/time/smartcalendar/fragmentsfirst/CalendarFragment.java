@@ -1,10 +1,13 @@
 package team.time.smartcalendar.fragmentsfirst;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -15,21 +18,48 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import team.time.smartcalendar.MainApplication;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.adapters.CalendarRecyclerViewAdapter;
 import team.time.smartcalendar.dataBeans.CalendarItem;
+import team.time.smartcalendar.dataBeans.ScheduleItem;
 import team.time.smartcalendar.databinding.FragmentCalendarBinding;
+import team.time.smartcalendar.utils.DateUtils;
 import team.time.smartcalendar.viewmodels.CalendarViewModel;
+
+import java.io.IOException;
 
 public class CalendarFragment extends Fragment {
     private FragmentCalendarBinding binding;
     private CalendarViewModel viewModel;
     private boolean isFirst;
+    private boolean isAdded;
+    private boolean[] isUpdated;
+    private MainApplication app;
+    private Activity parentActivity;
+    private CalendarRecyclerViewAdapter adapter;
+    private Calendar lastCalendar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        parentActivity=getActivity();
+        app = (MainApplication) getActivity().getApplication();
+
+        // 请求日程列表
+        app.getCalendarItems().clear();
+        requestCalendarItems();
+
         isFirst = true;
+        isAdded = false;
+        isUpdated=new boolean[1];
     }
 
     @Override
@@ -43,7 +73,6 @@ public class CalendarFragment extends Fragment {
                 .get(CalendarViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
-
         return binding.getRoot();
     }
 
@@ -52,32 +81,33 @@ public class CalendarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /* first start */
         if(isFirst){
-           isFirst=false;
+            isFirst=false;
 
-            for (int i = 1; i <= 10; i++) {
-                CalendarItem item1=new CalendarItem();
-                item1.infoAll="吃饭";item1.allDay="全天";
-                viewModel.getItems().getValue().add(item1);
-                CalendarItem item2=new CalendarItem();
-                item2.startTime="00:00";item2.endTime="00:30";item2.infoAll="睡觉";
-                viewModel.getItems().getValue().add(item2);
-                CalendarItem item3=new CalendarItem();
-                item3.startTime="01:00";item3.startTime="02:00";item3.info="玩游戏";item3.position="游戏厅";
-                viewModel.getItems().getValue().add(item3);
-            }
+            lastCalendar=binding.calendarView.getSelectedCalendar();
+            setCurrentScheduleList(DateUtils.getTimeStamp(binding.calendarView.getSelectedCalendar()));
 
             viewModel.getMonthDay().setValue(binding.calendarView.getCurMonth() + "月" + binding.calendarView.getCurDay() + "日");
             viewModel.getYear().setValue(binding.calendarView.getCurYear());
             viewModel.getLunar().setValue(binding.calendarView.getSelectedCalendar().getLunar());
             viewModel.getCurrentDay().setValue(binding.calendarView.getCurDay());
         }
+        /* first end */
+
+        setMonthSchedule(
+                binding.calendarView.getSelectedCalendar().getYear(),
+                binding.calendarView.getSelectedCalendar().getMonth()
+        );
 
         LinearLayoutManager manager=new LinearLayoutManager(getContext());
         binding.calendarRecyclerView.setLayoutManager(manager);
-        CalendarRecyclerViewAdapter adapter=new CalendarRecyclerViewAdapter(viewModel.getItems().getValue());
+        adapter = new CalendarRecyclerViewAdapter(parentActivity, binding.calendarView, isUpdated);
         binding.calendarRecyclerView.setAdapter(adapter);
 
+        binding.calendarView.setOnMonthChangeListener((year, month) -> {
+            setMonthSchedule(year,month);
+        });
         binding.calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
             public void onCalendarOutOfRange(Calendar calendar) {}
@@ -85,9 +115,19 @@ public class CalendarFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onCalendarSelect(Calendar calendar, boolean isClick) {
-                viewModel.getMonthDay().setValue(calendar.getMonth() + "月" + calendar.getDay() + "日");
-                viewModel.getYear().setValue(calendar.getYear());
-                viewModel.getLunar().setValue(calendar.getLunar());
+                if(!lastCalendar.equals(calendar) || isAdded || isUpdated[0]){
+                    // 更新页面
+                    viewModel.getMonthDay().setValue(calendar.getMonth() + "月" + calendar.getDay() + "日");
+                    viewModel.getYear().setValue(calendar.getYear());
+                    viewModel.getLunar().setValue(calendar.getLunar());
+                    // 刷新当前列表
+                    setCurrentScheduleList(DateUtils.getTimeStamp(calendar));
+                    adapter.notifyDataSetChanged();
+                    // 修改标记
+                    isAdded=false;
+                    isUpdated[0]=false;
+                }
+                lastCalendar=calendar;
             }
         });
 
@@ -105,8 +145,82 @@ public class CalendarFragment extends Fragment {
         });
 
         binding.btnSchedule.setOnClickListener(v -> {
+            // 传参
+            Bundle bundle=new Bundle();
+            bundle.putLong("time",binding.calendarView.getSelectedCalendar().getTimeInMillis());
+            // 跳转
             NavController controller= Navigation.findNavController(v);
-            controller.navigate(R.id.action_calendarFragment_to_scheduleFragment);
+            controller.navigate(R.id.action_calendarFragment_to_scheduleFragment,bundle);
+            // 标记
+            isAdded=true;
         });
+    }
+
+    // 在日历上显示日程标签
+    private void setMonthSchedule(int year,int month) {
+        new Thread(() -> {
+            synchronized (app.getMap()){
+                DateUtils.setMonthScheme(app.getMap(),app.getCalendarItems(),year,month);
+                binding.calendarView.setSchemeDate(app.getMap());
+            }
+        }).start();
+    }
+
+    private void setCurrentScheduleList(long time) {
+        // 清空当前日程列表
+        app.getCurCalendarItems().clear();
+        // 遍历总日程列表，加入符合条件的日程
+        for(CalendarItem item:app.getCalendarItems()){
+            if(DateUtils.includeItem(item,time)){
+                app.getCurCalendarItems().add(item);
+            }
+        }
+    }
+
+    private void requestCalendarItems() {
+        Thread thread=new Thread(() -> {
+            String PATH="/calendar/fetch";
+
+            Request request=new Request.Builder()
+                    .url(getString(R.string.URL)+PATH)
+                    .addHeader("contentType","application/json;charset=UTF-8")
+                    .get()
+                    .build();
+
+            Call call=app.getClient().newCall(request);
+
+            try {
+                Response response=call.execute();
+                try {
+                    JSONObject result=new JSONObject(response.body().string());
+                    Log.d("lmx", "requestCalendarItems: "+result);
+                    int status=result.getInt("status");
+                    if(status==1){
+                        JSONArray scheduleItems=result.getJSONArray("schedule");
+                        for(int i=0;i<scheduleItems.length();i++){
+                            app.getCalendarItems().add(new CalendarItem(new ScheduleItem(scheduleItems.getJSONObject(i))));
+                        }
+                    }else {
+                        parentActivity.runOnUiThread(() -> {
+                            Toast.makeText(getActivity(), "未登录", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                } catch (JSONException e) {
+                    Log.d("lmx", "requestCalendarItems: "+e);
+                }
+            } catch (IOException e) {
+                parentActivity.runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), "网络未连接", Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

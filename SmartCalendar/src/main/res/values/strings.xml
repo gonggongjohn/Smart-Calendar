@@ -4,5 +4,5 @@
 
     <!-- 网络请求 -->
     <string name="USER_INFO">userInfo</string>
-    <string name="URL">http://139.196.44.94</string>
+    <string name="URL">http://139.196.44.94:3000</string>
 </resources>

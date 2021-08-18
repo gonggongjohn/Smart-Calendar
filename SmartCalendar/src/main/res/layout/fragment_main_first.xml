@@ -18,7 +18,7 @@
                 android:layout_height="match_parent"
                 app:navGraph="@navigation/nav_first_graph"
                 app:defaultNavHost="true"
-                android:id="@+id/fragment"
+                android:id="@+id/firstNavHostFragment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -21,13 +22,16 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
+import team.time.smartcalendar.MainApplication;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.databinding.DialogLoginBinding;
-import team.time.smartcalendar.requests.CookieManager;
+import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.viewmodels.LoginViewModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LoginDialog extends DialogFragment {
@@ -41,11 +45,13 @@ public class LoginDialog extends DialogFragment {
     private String USERNAME;
     private String PASSWORD;
     private SharedPreferences.Editor editor;
+    private OkHttpClient client;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         parentActivity=getActivity();
+        client=((MainApplication)getActivity().getApplication()).getClient();
 
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(getContext()),
@@ -62,6 +68,10 @@ public class LoginDialog extends DialogFragment {
 
         controller = Navigation.findNavController(getActivity(),R.id.loginNavHostFragment);
         binding.btnLogin.setOnClickListener(v -> {
+            List<View>viewList=new ArrayList<>();
+            viewList.add(binding.editTextUserName);
+            viewList.add(binding.editTextPassWord);
+            SystemUtils.hideKeyBoard(parentActivity,viewList);
             login();
         });
         binding.btnCancel.setOnClickListener(v -> {
@@ -70,7 +80,7 @@ public class LoginDialog extends DialogFragment {
 
         builder = new AlertDialog.Builder(getContext());
         builder.setView(binding.getRoot());
-        builder.setCancelable(false);
+//        builder.setCancelable(false);
 
         dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
@@ -89,12 +99,7 @@ public class LoginDialog extends DialogFragment {
         USERNAME=viewModel.getUserName().getValue();
         PASSWORD=viewModel.getPassWord().getValue();
 
-        int PORT=3000;
         String PATH="/user/login";
-
-        OkHttpClient client=new OkHttpClient.Builder()
-                .cookieJar(new CookieManager(parentActivity.getApplication()))
-                .build();
 
         Map<String,String> map=new HashMap<>();
         map.put("username",USERNAME);
@@ -107,7 +112,7 @@ public class LoginDialog extends DialogFragment {
         );
 
         Request request=new Request.Builder()
-                .url(getString(R.string.URL)+":"+PORT+PATH)
+                .url(getString(R.string.URL)+PATH)
                 .addHeader("contentType","application/json;charset=UTF-8")
                 .post(requestBody)
                 .build();

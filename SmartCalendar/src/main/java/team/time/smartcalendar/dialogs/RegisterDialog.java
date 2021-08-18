@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -18,12 +19,16 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
+import team.time.smartcalendar.MainApplication;
 import team.time.smartcalendar.R;
+import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.databinding.DialogRegisterBinding;
 import team.time.smartcalendar.viewmodels.LoginViewModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegisterDialog extends DialogFragment {
@@ -33,11 +38,13 @@ public class RegisterDialog extends DialogFragment {
     private AlertDialog dialog;
     private LoginViewModel viewModel;
     private Activity parentActivity;
+    private OkHttpClient client;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         parentActivity=getActivity();
+        client=((MainApplication)getActivity().getApplication()).getClient();
 
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(getContext()),
@@ -54,6 +61,12 @@ public class RegisterDialog extends DialogFragment {
 
         controller = Navigation.findNavController(getActivity(),R.id.loginNavHostFragment);
         binding.btnLogin.setOnClickListener(v -> {
+            List<View> viewList=new ArrayList<>();
+            viewList.add(binding.editTextUserName);
+            viewList.add(binding.editTextPassWord);
+            viewList.add(binding.editTextPassWordAgain);
+            viewList.add(binding.editTextPhoneNumber);
+            SystemUtils.hideKeyBoard(parentActivity,viewList);
             register();
         });
         binding.btnCancel.setOnClickListener(v -> {
@@ -72,10 +85,7 @@ public class RegisterDialog extends DialogFragment {
     }
 
     private void register() {
-        int PORT=3000;
         String PATH="/user/register";
-
-        OkHttpClient client=new OkHttpClient.Builder().build();
 
         Map<String,String> map=new HashMap<>();
         map.put("username",viewModel.getUserName().getValue());
@@ -89,7 +99,7 @@ public class RegisterDialog extends DialogFragment {
         );
 
         Request request=new Request.Builder()
-                .url(getString(R.string.URL)+":"+PORT+PATH)
+                .url(getString(R.string.URL)+PATH)
                 .addHeader("contentType","application/json;charset=UTF-8")
                 .post(requestBody)
                 .build();

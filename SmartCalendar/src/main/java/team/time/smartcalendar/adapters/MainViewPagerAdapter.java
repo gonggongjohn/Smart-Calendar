@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import team.time.smartcalendar.fragmentsfirst.MainFirstFragment;
-import team.time.smartcalendar.Fragmentssecond.MainSecondFragment;
+import team.time.smartcalendar.fragmentssecond.MainSecondFragment;
 import team.time.smartcalendar.fragmentsthird.MainThirdFragment;
 
 import java.util.ArrayList;
