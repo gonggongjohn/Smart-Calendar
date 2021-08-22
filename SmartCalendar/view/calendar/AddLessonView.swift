@@ -11,6 +11,9 @@ struct AddLessonView: View {
     @State var toggle_photoSelector: Bool = false
     @State var timetable_image: UIImage?
     @State var lessons: [Lesson] = []
+    @State var name: String = ""
+    @State var start: Date = Date()
+    @State var end: Date = Date()
     
     var body: some View {
         VStack{
@@ -35,14 +38,28 @@ struct AddLessonView: View {
                 ImagePicker(image: $timetable_image)
             })
             
+            /*
             List {
                 ForEach(self.lessons){ lesson in
                     LessonRow(lesson: lesson)
                 }
-            }.frame(maxHeight: 400, alignment: .center)
+            }
+            */
+            
+            HStack{
+                Text("课程名称：")
+                    .font(.title3)
+                TextField("Schedule Name", text: $name)
+                    .font(.title3)
+            }
+            
+            DatePicker("开始时间：", selection: $start, displayedComponents: [.hourAndMinute])
+            DatePicker("结束时间：", selection: $end, displayedComponents: [.hourAndMinute])
             
             HStack{
                 Button(action: {
+                    print(self.start)
+                    print(self.end)
                     self.isPresented = false
                 }){
                     Text("确定")

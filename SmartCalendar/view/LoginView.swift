@@ -89,7 +89,7 @@ struct LoginButton: View{
                     self.loadingFlag = false
                     if (status == 1) {
                         self.isLoginSuccess = true
-                        ProfileUtils.saveUserInfo(username: self.username, password: self.password)
+                        StorageUtils.saveUserInfo(username: self.username, password: self.password)
                         DispatchQueue.main.sync{
                             let delegate: UIWindowSceneDelegate? = {
                                 var uiScreen: UIScene?

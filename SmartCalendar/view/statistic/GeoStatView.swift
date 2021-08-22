@@ -9,13 +9,13 @@ import Photos
 
 struct GeoStatView: View {
     private var geoUtils: GeoUtils
-    private var profileUtils: ProfileUtils
+    private var profileUtils: StorageUtils
     private var locHistory: GeoHistory?
     private var geoItems: [GeoItem] = []
     
     init() {
         self.geoUtils = GeoUtils()
-        self.profileUtils = ProfileUtils()
+        self.profileUtils = StorageUtils()
         let fromDate = DateUtils.getDate(year: 2021, month: 3, day: 20)
         let toDate = DateUtils.getDate(time: Date())
         self.locHistory = self.profileUtils.getGeoHistory(from: fromDate, to: toDate)

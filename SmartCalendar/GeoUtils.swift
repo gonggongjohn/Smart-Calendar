@@ -29,7 +29,7 @@ class GeoUtils: NSObject, CLLocationManagerDelegate{
     
     func stopTrace(){
         self.lmInstance.stopUpdatingLocation()
-        let profileUtils = ProfileUtils()
+        let profileUtils = StorageUtils()
         for (date, history) in historyDict {
             profileUtils.saveGeoHistory(date: date, history: history)
         }

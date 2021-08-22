@@ -5,7 +5,7 @@
 
 import Foundation
 
-class ProfileUtils {
+class StorageUtils {
     public static func saveUserInfo(username: String, password: String){
         let info_wrapper = UserInfo(username: username, password: password)
         do{
@@ -120,14 +120,10 @@ class ProfileUtils {
         return history
     }
     
-    public static func saveScheduleHistory(history: ScheduleHistory){
-        let oldHistory = getScheduleHistory()
-        if oldHistory != nil {
-            history.addSchedules(origin: oldHistory!)
-        }
+    public static func saveScheduleToLocal(container: ScheduleContainer){
         do{
-            let data = try NSKeyedArchiver.archivedData(withRootObject: history, requiringSecureCoding: true)
-            let key = "schedule_history"
+            let data = try NSKeyedArchiver.archivedData(withRootObject: container, requiringSecureCoding: true)
+            let key = "schedule_local"
             UserDefaults.standard.setValue(data, forKey: key)
         }
         catch{
@@ -135,18 +131,18 @@ class ProfileUtils {
         }
     }
     
-    public static func getScheduleHistory() -> ScheduleHistory?{
-        let key = "schedule_history"
+    public static func getScheduleFromLocal() -> ScheduleContainer?{
+        let key = "schedule_local"
         let data = UserDefaults.standard.data(forKey: key)
-        var history: ScheduleHistory?
+        var container: ScheduleContainer?
         if data != nil {
             do{
-                history = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data!) as? ScheduleHistory
+                container = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data!) as? ScheduleContainer
             }
             catch{
                 print("Error occurred when getting schedule history!")
             }
         }
-        return history
+        return container
     }
 }

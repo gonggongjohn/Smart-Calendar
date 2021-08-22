@@ -7,6 +7,7 @@ import SwiftUI
 
 struct AddScheduleView: View {
     @Binding var schedules: [Schedule]
+    @Binding var schedule_local: ScheduleContainer
     @Binding var isPresented: Bool
     @State var subview_code: Int = 1
     
@@ -26,7 +27,7 @@ struct AddScheduleView: View {
                 Button(action: {
                     self.subview_code = 2
                 }){
-                    Text("课程")
+                    Text("动态日程")
                         .font(.title3)
                         .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: 40)
                         .background(RoundedRectangle(cornerRadius: 8.0)
@@ -36,10 +37,10 @@ struct AddScheduleView: View {
             Spacer().frame(maxHeight: 50, alignment: .center)
             
             if(self.subview_code == 1){
-                AddNormalView(schedules: $schedules, isPresented: $isPresented)
+                AddNormalView(schedules: $schedules, schedule_local: $schedule_local, isPresented: $isPresented)
             }
             else if(self.subview_code == 2){
-                AddLessonView(schedules: $schedules, isPresented: $isPresented)
+                AddDynamicView(schedules: $schedules, schedule_local: $schedule_local, isPresented: $isPresented)
             }
         }
     }
@@ -47,6 +48,6 @@ struct AddScheduleView: View {
 
 struct AddScheduleView_Previews: PreviewProvider {
     static var previews: some View {
-        AddScheduleView(schedules: .constant([]), isPresented: .constant(true))
+        AddScheduleView(schedules: .constant([]), schedule_local: .constant(ScheduleContainer()), isPresented: .constant(true))
     }
 }

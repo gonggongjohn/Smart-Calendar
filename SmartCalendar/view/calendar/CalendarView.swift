@@ -9,6 +9,7 @@ import Photos
 struct CalendarView: View {
     @State private var username: String = ""
     @State private var schedules: [Schedule] = []
+    @State private var schedule_local = ScheduleContainer()
     @State private var toggle_addSchedule: Bool = false
     @ObservedObject private var history = GeoHistory()
     @State private var phaseFlag = false
@@ -17,17 +18,6 @@ struct CalendarView: View {
     @State private var reviewSheet = false
     @State var assetList: [PHAsset] = []
     @ObservedObject var geoDict = HistoryDateWrapper()
-    @State private var imageChosen: UIImage?
-    @State private var hwLesson: [String] = []
-    @State private var hwStart: [Date] = []
-    @State private var hwDeadline: [Date] = []
-    @State private var hwFlag: Bool = false
-    @State private var txtTotNum = 0
-    @State private var txtPhasedNum = 0
-    @State private var functionEnable = false
-    @State private var startTime = Date()
-    @State private var endTime = Date()
-    @State private var scheduleHistory = ScheduleHistory()
     
     var body: some View {
         ZStack{
@@ -51,8 +41,8 @@ struct CalendarView: View {
                     }.onDelete(perform: { indexSet in
                         indexSet.forEach({
                             (index) -> Void in
-                            let uuid = self.schedules[index].id
-                            ScheduleUtils.removeFromServer(uuid: uuid, completion: {
+                            let schedule = self.schedules[index]
+                            ScheduleUtils.removeStorage(schedule: schedule, local_container: self.schedule_local, completion: {
                                 (status) -> Void in
                                 if(status){
                                     print("Remove from server succeeded!")
@@ -65,16 +55,16 @@ struct CalendarView: View {
             }.disabled(self.toggle_addSchedule)
             .blur(radius: self.toggle_addSchedule ? 3 : 0)
             .onAppear(perform: {
-                ScheduleUtils.getFromServer(completion: {
+                ScheduleUtils.getStorage(local_container: self.schedule_local, completion: {
                     (status, schedule_list) -> Void in
                     if(status){
-                        self.schedules.append(contentsOf: schedule_list!)
+                        self.schedules.append(contentsOf: schedule_list)
                     }
                 })
             })
             
             if(self.toggle_addSchedule){
-                AddScheduleView(schedules: $schedules, isPresented: $toggle_addSchedule)
+                AddScheduleView(schedules: $schedules, schedule_local: $schedule_local, isPresented: $toggle_addSchedule)
             }
         }
     }
@@ -99,7 +89,7 @@ struct ScheduleRow: View {
 
 func phaseGeo(assets: [PHAsset], geoRecord: HistoryDateWrapper, completion: @escaping () -> Void){
     let geoUtils = GeoUtils()
-    let profileHistory = ProfileUtils()
+    let profileHistory = StorageUtils()
     var geoCnt = 0
     var photoHistory = profileHistory.getPhotoHistory()
     for item in assets {
@@ -153,22 +143,11 @@ func phaseGeo(assets: [PHAsset], geoRecord: HistoryDateWrapper, completion: @esc
 }
 
 func saveGeo(record: HistoryDateWrapper){
-    let profileUtils = ProfileUtils()
+    let profileUtils = StorageUtils()
     for (date, history) in record.dateDict {
         profileUtils.saveGeoHistory(date: date, history: history)
     }
     print("Geo saved!")
-}
-
-func formulateReviewPlan(deadline: Date) -> [(Date, Date)] {
-    var plan: [(Date, Date)] = []
-    plan.append((DateUtils.getTime(year: 2021, month: 6, day: 19, hour: 10, minute: 00, second: 00), DateUtils.getTime(year: 2021, month: 6, day: 19, hour: 18, minute: 00, second: 00)))
-    plan.append((DateUtils.getTime(year: 2021, month: 6, day: 20, hour: 10, minute: 00, second: 00), DateUtils.getTime(year: 2021, month: 6, day: 20, hour: 18, minute: 00, second: 00)))
-    plan.append((DateUtils.getTime(year: 2021, month: 6, day: 19, hour: 10, minute: 00, second: 00), DateUtils.getTime(year: 2021, month: 6, day: 19, hour: 18, minute: 00, second: 00)))
-    plan.append((DateUtils.getTime(year: 2021, month: 6, day: 23, hour: 12, minute: 30, second: 00), DateUtils.getTime(year: 2021, month: 6, day: 23, hour: 16, minute: 00, second: 00)))
-    plan.append((DateUtils.getTime(year: 2021, month: 6, day: 25, hour: 15, minute: 30, second: 00), DateUtils.getTime(year: 2021, month: 6, day: 25, hour: 20, minute: 00, second: 00)))
-    plan.append((DateUtils.getTime(year: 2021, month: 6, day: 26, hour: 10, minute: 00, second: 00), DateUtils.getTime(year: 2021, month: 6, day: 26, hour: 18, minute: 00, second: 00)))
-    return plan
 }
 
 func joinString(from: [String]) -> String {

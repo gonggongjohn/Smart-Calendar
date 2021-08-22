@@ -18,19 +18,17 @@ struct MainView: View {
         ZStack{
             VStack{
                 TabView {
-                    if(complete_flag){
-                        CalendarView().tabItem {
-                            Image(systemName: "calendar")
-                            Text("日程")
-                        }
-                        StatisticView().tabItem {
-                            Image(systemName: "newspaper")
-                            Text("统计")
-                        }
-                        UserView().tabItem {
-                            Image(systemName: "person")
-                            Text("我的")
-                        }
+                    CalendarView().tabItem {
+                        Image(systemName: "calendar")
+                        Text("日程")
+                    }
+                    StatisticView().tabItem {
+                        Image(systemName: "newspaper")
+                        Text("统计")
+                    }
+                    UserView().tabItem {
+                        Image(systemName: "person")
+                        Text("我的")
                     }
                 }
             }.disabled(self.loading_flag)
@@ -46,7 +44,7 @@ struct MainView: View {
         }.onAppear(perform: {
             if(self.lazy_flag){
                 self.loading_flag = true
-                let info_wrapper = ProfileUtils.getUserInfo()
+                let info_wrapper = StorageUtils.getUserInfo()
                 if(info_wrapper != nil){
                     UserUtils.login(username: info_wrapper!.username, password: info_wrapper!.password, completion: {
                         (status) -> Void in

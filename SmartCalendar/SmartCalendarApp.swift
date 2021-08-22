@@ -9,7 +9,7 @@ import SwiftUI
 struct SmartCalendarApp: App {
     @State var is_login = false
     init() {
-        let info_tuple = ProfileUtils.getUserInfo()
+        let info_tuple = StorageUtils.getUserInfo()
         if(info_tuple != nil){
             _is_login = State(initialValue: true)
         }

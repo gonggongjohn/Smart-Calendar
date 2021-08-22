@@ -1,4 +1,3 @@
 target 'SmartCalendar' do
-    pod 'TensorFlowLiteSwift'
-    pod 'JTAppleCalendar'
+    pod 'Alamofire'
 end

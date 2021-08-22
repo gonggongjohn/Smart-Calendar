@@ -43,9 +43,9 @@ struct RegisterView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                 }.padding()
-                    .frame(maxHeight: 220, alignment: .center)
-                    .background(Color.green)
-                    .cornerRadius(15.0)
+                .frame(maxHeight: 220, alignment: .center)
+                .background(Color.green)
+                .cornerRadius(15.0)
                 Spacer().frame(maxHeight: 50, alignment: .center)
                 RegisterButton(username: $username, password: $password, phone: $phone, loadingFlag: $loadingFlag)
             }.padding()
