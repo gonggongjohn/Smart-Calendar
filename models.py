@@ -21,7 +21,8 @@ class Schedule(db.Model):
     category = db.Column(db.Integer)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
-    pos = db.Column(db.Text)
+    pos_alt = db.Column(db.DECIMAL(16, 13))
+    pos_long = db.Column(db.DECIMAL(16, 13))
 
 
 class Category(db.Model):

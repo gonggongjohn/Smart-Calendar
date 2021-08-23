@@ -20,7 +20,7 @@ def init_db():
 
         if create_flag:
             db.create_all()
-            category_list = ["其他", "学习", "工作", "运动", "出行", "节律"]
+            category_list = ["其他", "课程", "备考", "自主学习", "工作", "运动", "出行", "节律"]
             for category in category_list:
                 category_item = Category(name=category)
                 db.session.add(category_item)
