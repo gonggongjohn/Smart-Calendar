@@ -42,7 +42,9 @@ struct AddScheduleView: View {
             else if(self.subview_code == 2){
                 AddDynamicView(schedules: $schedules, schedule_local: $schedule_local, isPresented: $isPresented)
             }
-        }
+        }.padding(.top)
+        .background(Color(.systemGray6).opacity(0.8))
+        .cornerRadius(8.0)
     }
 }
 

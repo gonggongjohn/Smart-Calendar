@@ -89,7 +89,36 @@ struct RegisterButton: View{
                     self.loadingFlag = false
                     if status {
                         statusCode = 1
-                        self.showRegInfo = true
+                        //self.showRegInfo = true
+                        StorageUtils.saveUserInfo(username: self.username, password: self.password)
+                        UserUtils.login(username: self.username, password: self.password, completion: { (status) in
+                            if(status == 1){
+                                DispatchQueue.main.async{
+                                    let delegate: UIWindowSceneDelegate? = {
+                                        var uiScreen: UIScene?
+                                        UIApplication.shared.connectedScenes.forEach {
+                                            (screen) in
+                                            uiScreen = screen
+                                        }
+                                        return uiScreen?.delegate as? UIWindowSceneDelegate
+                                    }()
+                                    delegate?.window!?.rootViewController = UIHostingController(rootView: ProfileCollectView())
+                                }
+                            }
+                            else{
+                                DispatchQueue.main.async{
+                                    let delegate: UIWindowSceneDelegate? = {
+                                        var uiScreen: UIScene?
+                                        UIApplication.shared.connectedScenes.forEach {
+                                            (screen) in
+                                            uiScreen = screen
+                                        }
+                                        return uiScreen?.delegate as? UIWindowSceneDelegate
+                                    }()
+                                    delegate?.window!?.rootViewController = UIHostingController(rootView: LoginView())
+                                }
+                            }
+                        })
                     }
                     else{
                         statusCode = 2

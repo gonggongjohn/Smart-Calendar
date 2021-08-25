@@ -11,11 +11,10 @@ struct CalendarView: View {
     @State private var schedules: [Schedule] = []
     @State private var schedule_local = ScheduleContainer()
     @State private var toggle_addSchedule: Bool = false
+    @State private var data_loaded: Bool = false
     @ObservedObject private var history = GeoHistory()
     @State private var phaseFlag = false
     @State private var loadingFlag = false
-    @State private var homeworkNotice = false
-    @State private var reviewSheet = false
     @State var assetList: [PHAsset] = []
     @ObservedObject var geoDict = HistoryDateWrapper()
     
@@ -55,12 +54,15 @@ struct CalendarView: View {
             }.disabled(self.toggle_addSchedule)
             .blur(radius: self.toggle_addSchedule ? 3 : 0)
             .onAppear(perform: {
-                ScheduleUtils.getStorage(local_container: self.schedule_local, completion: {
-                    (status, schedule_list) -> Void in
-                    if(status){
-                        self.schedules.append(contentsOf: schedule_list)
-                    }
-                })
+                if(!self.data_loaded){
+                    ScheduleUtils.getStorage(local_container: self.schedule_local, completion: {
+                        (status, schedule_list) -> Void in
+                        if(status){
+                            self.schedules = schedule_list
+                            self.data_loaded = true
+                        }
+                    })
+                }
             })
             
             if(self.toggle_addSchedule){
@@ -79,6 +81,9 @@ struct ScheduleRow: View {
             Text("日程类别：\(schedule.category.name)")
             Text("开始时间：\(DateUtils.date2str(date: schedule.start))")
             Text("结束时间：\(DateUtils.date2str(date: schedule.end))")
+            if(self.schedule.position != nil){
+                Text("位置: \(schedule.position!.name)")
+            }
         }
         .padding(.all)
         .background(/*@START_MENU_TOKEN@*//*@PLACEHOLDER=View@*/Color.green/*@END_MENU_TOKEN@*/)
@@ -87,6 +92,7 @@ struct ScheduleRow: View {
     }
 }
 
+/*
 func phaseGeo(assets: [PHAsset], geoRecord: HistoryDateWrapper, completion: @escaping () -> Void){
     let geoUtils = GeoUtils()
     let profileHistory = StorageUtils()
@@ -149,6 +155,7 @@ func saveGeo(record: HistoryDateWrapper){
     }
     print("Geo saved!")
 }
+ */
 
 func joinString(from: [String]) -> String {
     var result = ""

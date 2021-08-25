@@ -13,6 +13,7 @@ class Schedule: NSObject, Identifiable, NSSecureCoding {
     var category: (id: Int, name: String)
     var start: Date
     var end: Date
+    var position: GeoPoint?
     
     static var supportsSecureCoding: Bool {
         return true
@@ -27,6 +28,9 @@ class Schedule: NSObject, Identifiable, NSSecureCoding {
         coder.encode(category.name, forKey: "category_name")
         coder.encode(start, forKey: "start")
         coder.encode(end, forKey: "end")
+        if(self.position != nil){
+            coder.encode(position, forKey: "position")
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -38,6 +42,7 @@ class Schedule: NSObject, Identifiable, NSSecureCoding {
         let catName_decoded = coder.decodeObject(forKey: "category_name") as? String
         let start_decoded = coder.decodeObject(forKey: "start") as? Date
         let end_decoded = coder.decodeObject(forKey: "end") as? Date
+        let position_decoded = coder.decodeObject(forKey: "position") as? GeoPoint
         if(id_decoded != nil && name_decoded != nil && catName_decoded != nil && start_decoded != nil && end_decoded != nil){
             let id_tmp = UUID(uuidString: id_decoded!)
             if(id_tmp != nil){
@@ -53,6 +58,9 @@ class Schedule: NSObject, Identifiable, NSSecureCoding {
             self.category = (id: catId_decoded, name: catName_decoded!)
             self.start = start_decoded!
             self.end = end_decoded!
+            if(position_decoded != nil){
+                self.position = position_decoded
+            }
         }
         else{
             /* Need to contemplate on error handling later */
@@ -67,7 +75,7 @@ class Schedule: NSObject, Identifiable, NSSecureCoding {
         }
     }
     
-    init(id: UUID, dirty: Int, name: String, categoryId: Int, categoryName: String, start: Date, end: Date) {
+    init(id: UUID, dirty: Int, name: String, categoryId: Int, categoryName: String, start: Date, end: Date, pos: GeoPoint?) {
         self.id = id
         self.name = name
         self.category = (id: categoryId, name: categoryName)
@@ -75,9 +83,10 @@ class Schedule: NSObject, Identifiable, NSSecureCoding {
         self.end = end
         self.dirty = dirty
         self.deleted = false
+        self.position = pos
     }
     
-    init(name: String, categoryId: Int, categoryName: String, start: Date, end: Date) {
+    init(name: String, categoryId: Int, categoryName: String, start: Date, end: Date, pos: GeoPoint?) {
         self.id = UUID()
         self.name = name
         self.category = (id: categoryId, name: categoryName)
@@ -85,5 +94,6 @@ class Schedule: NSObject, Identifiable, NSSecureCoding {
         self.end = end
         self.dirty = 1
         self.deleted = false
+        self.position = pos
     }
 }

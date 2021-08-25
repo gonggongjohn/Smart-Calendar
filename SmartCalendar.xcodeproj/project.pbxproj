@@ -29,18 +29,25 @@
 		2C5F22E225FB4512004684E6 /* PhotoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F22E125FB4512004684E6 /* PhotoUtils.swift */; };
 		2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */; };
 		2C739E0025FC9AB5005F7E6A /* GeoStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C739DFF25FC9AB5005F7E6A /* GeoStatView.swift */; };
+		2C901D7126D28D0A006B9FEB /* ProfileCollectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C901D7026D28D0A006B9FEB /* ProfileCollectView.swift */; };
 		2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */; };
 		2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9756C225BD2D1A006378D0 /* LoginView.swift */; };
 		2C9756C525BD2D1A006378D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C9756C425BD2D1A006378D0 /* Assets.xcassets */; };
 		2C9756C825BD2D1A006378D0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C9756C725BD2D1A006378D0 /* Preview Assets.xcassets */; };
 		2C97CB87266EFC6C00E763DB /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C97CB86266EFC6C00E763DB /* AboutView.swift */; };
+		2C9F4C0126D66C42002A5298 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F4C0026D66C42002A5298 /* MapView.swift */; };
+		2C9F4C0326D6858A002A5298 /* MajorSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F4C0226D6858A002A5298 /* MajorSelectView.swift */; };
+		2C9F4C0526D68736002A5298 /* IdNameRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F4C0426D68736002A5298 /* IdNameRow.swift */; };
+		2C9F4C0726D68F83002A5298 /* SchoolSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9F4C0626D68F83002A5298 /* SchoolSelectView.swift */; };
 		2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */; };
 		2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */; };
+		2CBD795B26D4D479005027BE /* GeoPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBD795A26D4D479005027BE /* GeoPoint.swift */; };
 		2CC6F7AC25FFACE4004434D1 /* scene_1615560045.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6F7AB25FFACE4004434D1 /* scene_1615560045.mlmodel */; };
 		2CC8553D25ED37ED00D892D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CC8553C25ED37ED00D892D4 /* MapKit.framework */; };
 		2CCFB71326C2BF3100BB7523 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCFB71226C2BF3100BB7523 /* RegisterView.swift */; };
 		2CD3F0772602119D00EB15F8 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD3F0762602119D00EB15F8 /* SwiftUICharts */; };
 		2CE448B126CF7EAB00C91A5D /* ScheduleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE448B026CF7EAB00C91A5D /* ScheduleContainer.swift */; };
+		2CF6C63E26D3919F0040D2F1 /* SetLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6C63D26D3919F0040D2F1 /* SetLocationView.swift */; };
 		2CF7B57726C54235002AF014 /* AddNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF7B57626C54235002AF014 /* AddNormalView.swift */; };
 		2CF7B57926C54DEB002AF014 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF7B57826C54DEB002AF014 /* Lesson.swift */; };
 		2CF7B57B26C55357002AF014 /* CalendarBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF7B57A26C55357002AF014 /* CalendarBoardView.swift */; };
@@ -70,6 +77,7 @@
 		2C5F22E125FB4512004684E6 /* PhotoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUtils.swift; sourceTree = "<group>"; };
 		2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeoUtils.swift; path = SmartCalendar/GeoUtils.swift; sourceTree = SOURCE_ROOT; };
 		2C739DFF25FC9AB5005F7E6A /* GeoStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoStatView.swift; sourceTree = "<group>"; };
+		2C901D7026D28D0A006B9FEB /* ProfileCollectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectView.swift; sourceTree = "<group>"; };
 		2C9756BD25BD2D1A006378D0 /* SmartCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartCalendarApp.swift; sourceTree = "<group>"; };
 		2C9756C225BD2D1A006378D0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -77,12 +85,18 @@
 		2C9756C725BD2D1A006378D0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2C9756C925BD2D1A006378D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C97CB86266EFC6C00E763DB /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		2C9F4C0026D66C42002A5298 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		2C9F4C0226D6858A002A5298 /* MajorSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MajorSelectView.swift; sourceTree = "<group>"; };
+		2C9F4C0426D68736002A5298 /* IdNameRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdNameRow.swift; sourceTree = "<group>"; };
+		2C9F4C0626D68F83002A5298 /* SchoolSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolSelectView.swift; sourceTree = "<group>"; };
 		2CAAA6D925C98A5E00B1AEB9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		2CAAA6DC25C98AFB00B1AEB9 /* UserUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUtils.swift; sourceTree = "<group>"; };
+		2CBD795A26D4D479005027BE /* GeoPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPoint.swift; sourceTree = "<group>"; };
 		2CC6F7AB25FFACE4004434D1 /* scene_1615560045.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = scene_1615560045.mlmodel; sourceTree = "<group>"; };
 		2CC8553C25ED37ED00D892D4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		2CCFB71226C2BF3100BB7523 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		2CE448B026CF7EAB00C91A5D /* ScheduleContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleContainer.swift; sourceTree = "<group>"; };
+		2CF6C63D26D3919F0040D2F1 /* SetLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLocationView.swift; sourceTree = "<group>"; };
 		2CF7B57626C54235002AF014 /* AddNormalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNormalView.swift; sourceTree = "<group>"; };
 		2CF7B57826C54DEB002AF014 /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
 		2CF7B57A26C55357002AF014 /* CalendarBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBoardView.swift; sourceTree = "<group>"; };
@@ -115,6 +129,8 @@
 				2C34245226C3B1FA009771A8 /* AddScheduleView.swift */,
 				2C34245826C4240E009771A8 /* AddLessonView.swift */,
 				2CF7B57626C54235002AF014 /* AddNormalView.swift */,
+				2CF6C63D26D3919F0040D2F1 /* SetLocationView.swift */,
+				2C9F4C0026D66C42002A5298 /* MapView.swift */,
 				2C05FBBF26C6579400D665C0 /* AddDynamicView.swift */,
 			);
 			path = calendar;
@@ -201,6 +217,8 @@
 				2C24CEE725F5106F00068178 /* GeoHistory.swift */,
 				2C01800A260972B400AB698F /* PhotoHistory.swift */,
 				2CF7B57826C54DEB002AF014 /* Lesson.swift */,
+				2CBD795A26D4D479005027BE /* GeoPoint.swift */,
+				2C9F4C0426D68736002A5298 /* IdNameRow.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -221,6 +239,9 @@
 				2C1C413B25E179D8000B7712 /* UserView.swift */,
 				2C97CB86266EFC6C00E763DB /* AboutView.swift */,
 				2C08406C260F3892004C5274 /* AccountView.swift */,
+				2C901D7026D28D0A006B9FEB /* ProfileCollectView.swift */,
+				2C9F4C0226D6858A002A5298 /* MajorSelectView.swift */,
+				2C9F4C0626D68F83002A5298 /* SchoolSelectView.swift */,
 			);
 			path = user;
 			sourceTree = "<group>";
@@ -352,11 +373,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C9F4C0526D68736002A5298 /* IdNameRow.swift in Sources */,
+				2CF6C63E26D3919F0040D2F1 /* SetLocationView.swift in Sources */,
 				2C34245926C4240E009771A8 /* AddLessonView.swift in Sources */,
 				2CF7B57B26C55357002AF014 /* CalendarBoardView.swift in Sources */,
 				2C1C413325E17981000B7712 /* StatisticView.swift in Sources */,
 				2C0FC42E2609B8FA009A0431 /* DateUtils.swift in Sources */,
 				2C0BC49426010A1B004387A1 /* ScheduleStatView.swift in Sources */,
+				2CBD795B26D4D479005027BE /* GeoPoint.swift in Sources */,
 				2C34244C26C388D2009771A8 /* UserInfo.swift in Sources */,
 				2CAAA6DD25C98AFB00B1AEB9 /* UserUtils.swift in Sources */,
 				2C05FBC026C6579400D665C0 /* AddDynamicView.swift in Sources */,
@@ -365,6 +389,8 @@
 				2C0FC42B2609964C009A0431 /* HistoryDateWrapper.swift in Sources */,
 				2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */,
 				4004B01A25E290CE0063FA89 /* SwiftyJSON.swift in Sources */,
+				2C9F4C0126D66C42002A5298 /* MapView.swift in Sources */,
+				2C9F4C0326D6858A002A5298 /* MajorSelectView.swift in Sources */,
 				2C1C413C25E179D8000B7712 /* UserView.swift in Sources */,
 				2C1C412F25E16C2F000B7712 /* CalendarView.swift in Sources */,
 				2C739E0025FC9AB5005F7E6A /* GeoStatView.swift in Sources */,
@@ -379,8 +405,10 @@
 				2C5F22E225FB4512004684E6 /* PhotoUtils.swift in Sources */,
 				2CE448B126CF7EAB00C91A5D /* ScheduleContainer.swift in Sources */,
 				4004B01725E28CA50063FA89 /* BaiduOcr.swift in Sources */,
+				2C901D7126D28D0A006B9FEB /* ProfileCollectView.swift in Sources */,
 				2CCFB71326C2BF3100BB7523 /* RegisterView.swift in Sources */,
 				2C05BE7226199C5100287B1A /* LessonWrapper.swift in Sources */,
+				2C9F4C0726D68F83002A5298 /* SchoolSelectView.swift in Sources */,
 				2CF7B57726C54235002AF014 /* AddNormalView.swift in Sources */,
 				2C01800826096E2C00AB698F /* StorageUtils.swift in Sources */,
 				2C34245726C3B497009771A8 /* ScheduleUtils.swift in Sources */,

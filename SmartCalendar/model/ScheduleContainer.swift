@@ -38,6 +38,7 @@ class ScheduleContainer: NSObject, NSSecureCoding {
         self.schedules = [:]
     }
     
+    /* Should mark dirty manually */
     public func append(_ schedule: Schedule){
         self.schedules[schedule.id] = schedule
     }

@@ -9,6 +9,7 @@ import Alamofire
 class ScheduleUtils{
     public static func addStorage(schedule: Schedule, local_container: ScheduleContainer, completion: @escaping (Bool) -> Void){
         local_container.append(schedule)
+        local_container.markDirty(schedule: schedule, type: 1)
         StorageUtils.saveScheduleToLocal(container: local_container)
         ScheduleUtils.addToServer(schedule: schedule, completion: { (status) in
             if(status){
@@ -24,7 +25,13 @@ class ScheduleUtils{
     
     public static func addToServer(schedule: Schedule, completion: @escaping (Bool) -> Void){
         let server = Config.host + "/calendar/add"
-        let body: [String: Any] = ["uuid": schedule.id.uuidString, "name": schedule.name, "category": schedule.category.id, "start": schedule.start.timeIntervalSince1970, "end": schedule.end.timeIntervalSince1970]
+        let body: [String: Any]
+        if(schedule.position == nil){
+            body = ["uuid": schedule.id.uuidString, "name": schedule.name, "category": schedule.category.id, "start": schedule.start.timeIntervalSince1970, "end": schedule.end.timeIntervalSince1970]
+        }
+        else{
+            body = ["uuid": schedule.id.uuidString, "name": schedule.name, "category": schedule.category.id, "start": schedule.start.timeIntervalSince1970, "end": schedule.end.timeIntervalSince1970, "position": ["name": schedule.position!.name, "latitude": schedule.position!.coordinate.latitude, "longitude": schedule.position!.coordinate.longitude]]
+        }
         AF.request(server, method: .post, parameters: body, encoding: JSONEncoding.default, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
             if(response.error == nil){
                 let result_dict = response.value as? Dictionary<String, Int>
@@ -37,7 +44,7 @@ class ScheduleUtils{
                 }
             }
             else{
-                print(response.error)
+                print(response.error!)
                 print("Error occurred when requesting server!")
                 completion(false)
             }
@@ -48,8 +55,14 @@ class ScheduleUtils{
         local_container.remove(schedule: schedule)
         StorageUtils.saveScheduleToLocal(container: local_container)
         ScheduleUtils.removeFromServer(schedule: schedule, completion: { (status) in
-            local_container.eraseDirty(schedule: schedule)
-            StorageUtils.saveScheduleToLocal(container: local_container)
+            if(status){
+                local_container.eraseDirty(schedule: schedule)
+                StorageUtils.saveScheduleToLocal(container: local_container)
+                completion(true)
+            }
+            else{
+                completion(false)
+            }
         })
     }
     
@@ -68,7 +81,7 @@ class ScheduleUtils{
                 }
             }
             else{
-                print(response.error)
+                print(response.error!)
                 print("Error occurred when requesting server!")
                 completion(false)
             }
@@ -88,6 +101,7 @@ class ScheduleUtils{
         }
         else{
             ScheduleUtils.synchronizeStorage()
+            local_container.append(contentsOf: Array(local_rec!.schedules.values))
             completion(true, Array(local_rec!.schedules.values))
         }
     }
@@ -106,9 +120,13 @@ class ScheduleUtils{
                         let category_name = item["category"]["name"].stringValue
                         let start = item["start"].floatValue
                         let end = item["end"].floatValue
+                        var pos: GeoPoint? = nil
+                        if(item["position"].exists()){
+                            pos = GeoPoint(name: item["position"]["name"].stringValue, latitude: item["position"]["latitude"].doubleValue, longitude: item["position"]["latitude"].doubleValue)
+                        }
                         let uuid = UUID(uuidString: uuid_str)
                         if(uuid != nil){
-                            let schedule_obj = Schedule(id: uuid!, dirty: 0, name: name, categoryId: category_id, categoryName: category_name, start: Date(timeIntervalSince1970: TimeInterval(start)), end: Date(timeIntervalSince1970: TimeInterval(end)))
+                            let schedule_obj = Schedule(id: uuid!, dirty: 0, name: name, categoryId: category_id, categoryName: category_name, start: Date(timeIntervalSince1970: TimeInterval(start)), end: Date(timeIntervalSince1970: TimeInterval(end)), pos: pos)
                             schedule_list.append(schedule_obj)
                         }
                         else{
@@ -151,24 +169,14 @@ class ScheduleUtils{
                 }
             }
         }
-        else{
-            
-        }
     }
     
     public static func getCategory(completion: @escaping (Bool, [(id: Int, name: String)]) -> Void){
         let server = Config.host + "/calendar/category"
-        var request = URLRequest(url: URL(string: server)!)
-        request.httpMethod = "GET"
-        request.timeoutInterval = 120
-        let session = URLSession.shared
-        let task = session.dataTask(with: request) {(data, response, error) in
-            if error != nil{
-                print("Error when connecting to server.")
-                print(error!)
-            }else{
-                let result = try! JSON(data: data!)
-                if(result["status"] == 1){
+        AF.request(server, method: .get, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
+            if(response.error == nil && response.value != nil){
+                let result = JSON(response.value!)
+                if(result["status"].intValue == 1){
                     var category_list: [(id: Int, name: String)] = []
                     for (_, item): (String, JSON) in result["category"] {
                         let id = item["id"].intValue
@@ -181,7 +189,10 @@ class ScheduleUtils{
                     completion(false, [])
                 }
             }
-        }as URLSessionTask
-        task.resume()
+            else{
+                print(response.error!)
+                completion(false, [])
+            }
+        }
     }
 }

@@ -17,11 +17,14 @@ struct AddNormalView: View {
     @State private var end: Date = Date()
     @State private var from: Date = Date()
     @State private var to: Date = Date()
+    @State private var pos: GeoPoint?
+    @State private var toggle_posSheet: Bool = false
     @Binding var schedules: [Schedule]
     @Binding var schedule_local: ScheduleContainer
     @Binding var isPresented: Bool
     
     var body: some View {
+        //NavigationView{
         VStack{
             HStack{
                 Text("日程名称：")
@@ -79,7 +82,31 @@ struct AddNormalView: View {
                 DatePicker("截止时间：", selection: $to, displayedComponents: [.date])
                     .font(.title3)
             }
-        
+            
+            HStack{
+                Text("位置：")
+                Spacer()
+                Button(action: {
+                    self.toggle_posSheet = true
+                }){
+                    Text(self.pos == nil ? "Position" : self.pos!.name).padding()
+                }.sheet(isPresented: $toggle_posSheet){
+                    SetLocationView(chosen: $pos)
+                    
+                    Button(action: {
+                        self.toggle_posSheet.toggle()
+                    }){
+                        Text("确定")
+                            .font(.title2)
+                            .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                            .background(RoundedRectangle(cornerRadius: 10.0)
+                                            .stroke(Color.black, lineWidth: 2.0))
+                    }
+                }
+            }
+            
+            Spacer().frame(maxHeight: 30)
+            
             HStack{
                 Button(action: {
                     if(self.name != "" && self.category_chosen != -1) {
@@ -93,9 +120,7 @@ struct AddNormalView: View {
                             let end_seq = DateUtils.getTimeSeq(from: from_date, to: to_date, day: day, delta: end_delta)
                             if(start_seq.count == end_seq.count){
                                 for i in 0 ..< start_seq.count {
-                                    let schedule = Schedule(name: self.name, categoryId: self.category_options[self.category_chosen].id, categoryName: self.category_options[self.category_chosen].name, start: start_seq[i], end: end_seq[i])
-                                    self.schedule_local.append(schedule)
-                                    StorageUtils.saveScheduleToLocal(container: self.schedule_local)
+                                    let schedule = Schedule(name: self.name, categoryId: self.category_options[self.category_chosen].id, categoryName: self.category_options[self.category_chosen].name, start: start_seq[i], end: end_seq[i], pos: self.pos)
                                     self.schedules.append(schedule)
                                     ScheduleUtils.addStorage(schedule: schedule, local_container: self.schedule_local, completion: {
                                         (status) -> Void in
@@ -107,9 +132,7 @@ struct AddNormalView: View {
                             }
                         }
                         else{
-                            let schedule = Schedule(name: self.name, categoryId: self.category_options[self.category_chosen].id, categoryName: self.category_options[self.category_chosen].name, start: self.start, end: self.end)
-                            self.schedule_local.append(schedule)
-                            StorageUtils.saveScheduleToLocal(container: self.schedule_local)
+                            let schedule = Schedule(name: self.name, categoryId: self.category_options[self.category_chosen].id, categoryName: self.category_options[self.category_chosen].name, start: self.start, end: self.end, pos: self.pos)
                             self.schedules.append(schedule)
                             ScheduleUtils.addStorage(schedule: schedule, local_container: self.schedule_local, completion: {
                                 (status) -> Void in
@@ -150,6 +173,7 @@ struct AddNormalView: View {
                 self.period_options.append((id: i, name: period_list[i]))
             }
         })
+        //}
     }
 }
 

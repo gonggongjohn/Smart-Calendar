@@ -29,7 +29,7 @@ struct GeoStatView: View {
     }
     var body: some View {
         VStack{
-            MapView(locations: self.locHistory)
+            //MapView(locations: self.locHistory)
             List{
                 ForEach(self.geoItems){ geoItem in GeoItemRow(geoItem: geoItem)
                 }
@@ -60,6 +60,7 @@ struct GeoItemRow: View {
     }
 }
 
+/*
 struct MapView: UIViewRepresentable {
     var locations: GeoHistory?
     let geoUtils = GeoUtils()
@@ -96,6 +97,7 @@ struct MapView: UIViewRepresentable {
         }
     }
 }
+*/
 
 struct GeoStatView_Previews: PreviewProvider {
     static var previews: some View {

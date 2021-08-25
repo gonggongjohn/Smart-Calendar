@@ -16,23 +16,25 @@ struct MainView: View {
     
     var body: some View {
         ZStack{
-            VStack{
-                TabView {
-                    CalendarView().tabItem {
-                        Image(systemName: "calendar")
-                        Text("日程")
+            if(self.complete_flag){
+                VStack{
+                    TabView {
+                        CalendarView().tabItem {
+                            Image(systemName: "calendar")
+                            Text("日程")
+                        }
+                        StatisticView().tabItem {
+                            Image(systemName: "newspaper")
+                            Text("统计")
+                        }
+                        UserView().tabItem {
+                            Image(systemName: "person")
+                            Text("我的")
+                        }
                     }
-                    StatisticView().tabItem {
-                        Image(systemName: "newspaper")
-                        Text("统计")
-                    }
-                    UserView().tabItem {
-                        Image(systemName: "person")
-                        Text("我的")
-                    }
-                }
-            }.disabled(self.loading_flag)
-            .blur(radius: self.loading_flag ? 3 : 0)
+                }.disabled(self.loading_flag)
+                .blur(radius: self.loading_flag ? 3 : 0)
+            }
             
             if(self.loading_flag){
                 VStack{
@@ -53,7 +55,7 @@ struct MainView: View {
                             self.complete_flag = true
                         }
                         else{
-                            DispatchQueue.main.sync{
+                            DispatchQueue.main.async{
                                 let delegate: UIWindowSceneDelegate? = {
                                     var uiScreen: UIScene?
                                     UIApplication.shared.connectedScenes.forEach {
@@ -68,6 +70,9 @@ struct MainView: View {
                         self.loading_flag = false
                     })
                 }
+            }
+            else{
+                self.complete_flag = true
             }
         })
     }

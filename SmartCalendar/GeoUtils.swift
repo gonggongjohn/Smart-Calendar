@@ -50,7 +50,7 @@ class GeoUtils: NSObject, CLLocationManagerDelegate{
     /* 坐标转换 标准坐标系-> 中国坐标系
               WGS-84 --> GCJ-02
         wgsLocation: 标准坐标 */
-    public func transformWGSToGCJ(wgsLocation:CLLocationCoordinate2D)->CLLocationCoordinate2D
+    public static func transformWGSToGCJ(wgsLocation:CLLocationCoordinate2D)->CLLocationCoordinate2D
     {
         let pi = Double.pi
         let a: Double = 6378245.0
@@ -72,7 +72,7 @@ class GeoUtils: NSObject, CLLocationManagerDelegate{
     }
     
     // 纬度转换
-    public func transformLatitudeWith(x: Double, y: Double ) -> Double {
+    public static func transformLatitudeWith(x: Double, y: Double ) -> Double {
         let pi = Double.pi
         
         var lat = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y ;
@@ -88,7 +88,7 @@ class GeoUtils: NSObject, CLLocationManagerDelegate{
     }
     
     // 经度转换
-    public func transformLongitudeWith(x: Double, y: Double )-> Double {
+    public static func transformLongitudeWith(x: Double, y: Double )-> Double {
         let pi = Double.pi
         
         var lon = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y ;
