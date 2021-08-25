@@ -1,10 +1,10 @@
 package team.time.smartcalendar;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +15,23 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
+import dagger.hilt.android.AndroidEntryPoint;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import org.json.JSONException;
 import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import team.time.smartcalendar.databinding.FragmentLoginBinding;
+import team.time.smartcalendar.requests.ApiService;
+import team.time.smartcalendar.utils.UserUtils;
 
+import javax.inject.Inject;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
+@AndroidEntryPoint
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private NavController controller;
@@ -32,15 +39,16 @@ public class LoginFragment extends Fragment {
     private SharedPreferences sp;
     private String USERNAME;
     private String PASSWORD;
-    private OkHttpClient client;
+    @Inject
+    ApiService apiService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         parentActivity=getActivity();
-        client=((MainApplication)getActivity().getApplication()).getClient();
 
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
+
         return binding.getRoot();
     }
 
@@ -58,6 +66,9 @@ public class LoginFragment extends Fragment {
         USERNAME = sp.getString("username","");
         PASSWORD = sp.getString("password","");
 
+        // 储存USERNAME
+        UserUtils.USERNAME=USERNAME;
+
         // 自动登录
         if(!USERNAME.equals("") && !PASSWORD.equals("")){
             binding.btnLogin.setVisibility(View.GONE);
@@ -74,41 +85,31 @@ public class LoginFragment extends Fragment {
         });
     }
 
+    private void showLoginAndRegister(){
+        binding.btnLogin.setVisibility(View.VISIBLE);
+        binding.btnRegister.setVisibility(View.VISIBLE);
+    }
+
     private void login() {
-        String PATH="/user/login";
+        JSONObject body=new JSONObject();
+        try {
+            body.put("username",USERNAME);
+            body.put("password",PASSWORD);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        Map<String,String> map=new HashMap<>();
-        map.put("username",USERNAME);
-        map.put("password",PASSWORD);
-
-        String body=new JSONObject(map).toString();
         RequestBody requestBody=RequestBody.create(
-                body,
+                body.toString(),
                 MediaType.parse("application/json;charset=utf-8")
         );
 
-        Request request=new Request.Builder()
-                .url(getString(R.string.URL)+PATH)
-                .addHeader("contentType","application/json;charset=UTF-8")
-                .post(requestBody)
-                .build();
-
-        Call call=client.newCall(request);
-        call.enqueue(new Callback() {
+        apiService.login(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                parentActivity.runOnUiThread(() -> {
-                    binding.btnLogin.setVisibility(View.VISIBLE);
-                    binding.btnRegister.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), "网络未连接", Toast.LENGTH_SHORT).show();
-                });
-            }
-
-            @SuppressLint("CommitPrefEdits")
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     JSONObject result=new JSONObject(response.body().string());
+                    Log.d("lmx", "onResponse: "+result);
                     int status=result.getInt("status");
                     if(status==1){
                         parentActivity.runOnUiThread(() -> {
@@ -116,26 +117,37 @@ public class LoginFragment extends Fragment {
                         });
                     }else if(status==2){
                         parentActivity.runOnUiThread(() -> {
-                            binding.btnLogin.setVisibility(View.VISIBLE);
-                            binding.btnRegister.setVisibility(View.VISIBLE);
                             Toast.makeText(parentActivity, "密码错误", Toast.LENGTH_SHORT).show();
                         });
                     }else if(status==3){
                         parentActivity.runOnUiThread(() -> {
-                            binding.btnLogin.setVisibility(View.VISIBLE);
-                            binding.btnRegister.setVisibility(View.VISIBLE);
                             Toast.makeText(getActivity(), "用户名不存在", Toast.LENGTH_SHORT).show();
                         });
                     }else{
                         parentActivity.runOnUiThread(() -> {
-                            binding.btnLogin.setVisibility(View.VISIBLE);
-                            binding.btnRegister.setVisibility(View.VISIBLE);
                             Toast.makeText(getActivity(), "登陆失败", Toast.LENGTH_SHORT).show();
                         });
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    // 显示登录与注册按钮
+                    if(status!=1){
+                        showLoginAndRegister();
+                    }
+                } catch (JSONException | IOException e) {
+                    parentActivity.runOnUiThread(() -> {
+                        Log.d("lmx", "onResponse: "+e);
+                        showLoginAndRegister();
+                        Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
+                    });
                 }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("lmx", "onFailure: "+t);
+                parentActivity.runOnUiThread(() -> {
+                    showLoginAndRegister();
+                    Toast.makeText(getActivity(), "网络未连接", Toast.LENGTH_SHORT).show();
+                });
             }
         });
     }

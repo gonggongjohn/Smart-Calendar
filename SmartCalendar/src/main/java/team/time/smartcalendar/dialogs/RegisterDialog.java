@@ -15,22 +15,24 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
+import dagger.hilt.android.AndroidEntryPoint;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import org.json.JSONException;
 import org.json.JSONObject;
-import team.time.smartcalendar.MainApplication;
 import team.time.smartcalendar.R;
-import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.databinding.DialogRegisterBinding;
+import team.time.smartcalendar.requests.ApiService;
+import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.viewmodels.LoginViewModel;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@AndroidEntryPoint
 public class RegisterDialog extends DialogFragment {
     private NavController controller;
     private DialogRegisterBinding binding;
@@ -38,13 +40,14 @@ public class RegisterDialog extends DialogFragment {
     private AlertDialog dialog;
     private LoginViewModel viewModel;
     private Activity parentActivity;
-    private OkHttpClient client;
+
+    @Inject
+    ApiService apiService;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         parentActivity=getActivity();
-        client=((MainApplication)getActivity().getApplication()).getClient();
 
         binding = DataBindingUtil.inflate(
                 LayoutInflater.from(getContext()),
@@ -52,10 +55,7 @@ public class RegisterDialog extends DialogFragment {
                 null,
                 false);
 
-        viewModel = new ViewModelProvider(
-                this,
-                new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
-        ).get(LoginViewModel.class);
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
@@ -85,36 +85,23 @@ public class RegisterDialog extends DialogFragment {
     }
 
     private void register() {
-        String PATH="/user/register";
+        JSONObject body=new JSONObject();
+        try {
+            body.put("username",viewModel.getUserName().getValue());
+            body.put("password",viewModel.getPassWord().getValue());
+            body.put("phone",viewModel.getPhone().getValue());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        Map<String,String> map=new HashMap<>();
-        map.put("username",viewModel.getUserName().getValue());
-        map.put("password",viewModel.getPassWord().getValue());
-        map.put("phone",viewModel.getPhone().getValue());
-
-        String body=new JSONObject(map).toString();
         RequestBody requestBody=RequestBody.create(
-                body,
+                body.toString(),
                 MediaType.parse("application/json;charset=utf-8")
         );
 
-        Request request=new Request.Builder()
-                .url(getString(R.string.URL)+PATH)
-                .addHeader("contentType","application/json;charset=UTF-8")
-                .post(requestBody)
-                .build();
-
-        Call call=client.newCall(request);
-        call.enqueue(new Callback() {
+        apiService.register(requestBody).enqueue(new retrofit2.Callback<ResponseBody>() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                parentActivity.runOnUiThread(() -> {
-                    Toast.makeText(getActivity(), "网络未连接", Toast.LENGTH_SHORT).show();
-                });
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 try {
                     JSONObject result=new JSONObject(response.body().string());
                     int status=result.getInt("status");
@@ -132,9 +119,18 @@ public class RegisterDialog extends DialogFragment {
                             Toast.makeText(getActivity(), "注册失败", Toast.LENGTH_SHORT).show();
                         });
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } catch (JSONException | IOException e) {
+                    parentActivity.runOnUiThread(() -> {
+                        Toast.makeText(getActivity(), "网络错误", Toast.LENGTH_SHORT).show();
+                    });
                 }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                parentActivity.runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), "网络未连接", Toast.LENGTH_SHORT).show();
+                });
             }
         });
     }

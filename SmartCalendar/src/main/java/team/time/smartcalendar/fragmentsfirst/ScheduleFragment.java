@@ -19,23 +19,30 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
+import dagger.hilt.android.AndroidEntryPoint;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import team.time.smartcalendar.MainApplication;
+import retrofit2.Response;
 import team.time.smartcalendar.R;
+import team.time.smartcalendar.dao.CalendarItemDao;
 import team.time.smartcalendar.dataBeans.CalendarItem;
 import team.time.smartcalendar.dataBeans.ScheduleItem;
 import team.time.smartcalendar.databinding.FragmentScheduleBinding;
+import team.time.smartcalendar.requests.ApiService;
 import team.time.smartcalendar.utils.ColorUtils;
 import team.time.smartcalendar.utils.DateUtils;
 import team.time.smartcalendar.utils.SystemUtils;
+import team.time.smartcalendar.utils.UserUtils;
 import team.time.smartcalendar.viewmodels.ScheduleViewModel;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.util.*;
 
+@AndroidEntryPoint
 public class ScheduleFragment extends Fragment {
 
     private FragmentScheduleBinding binding;
@@ -44,16 +51,22 @@ public class ScheduleFragment extends Fragment {
     private Bundle bundle;
     private CalendarItem item;
     private long time;
-    private MainApplication app;
     private Activity parentActivity;
     private List<String> categories;
+
+    @Inject
+    ApiService apiService;
+    @Named("all")
+    @Inject
+    List<CalendarItem> calendarItems;
+    @Inject
+    CalendarItemDao dao;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         parentActivity = getActivity();
-        app = (MainApplication) getActivity().getApplication();
         categories=new ArrayList<>();
     }
 
@@ -66,10 +79,7 @@ public class ScheduleFragment extends Fragment {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_schedule,container,false);
 
-        viewModel = new ViewModelProvider(
-                this,
-                new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication())
-        ).get(ScheduleViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
 
         // 工作线程发起网络请求，同步方法
         requestCategories();
@@ -152,13 +162,7 @@ public class ScheduleFragment extends Fragment {
         calendar.setTime(time);
 
         TimePickerView view=new TimePickerBuilder(getContext(), (date, v) -> {
-            date=new Date(
-                    date.getYear(),
-                    date.getMonth(),
-                    date.getDate(),
-                    date.getHours(),
-                    date.getMinutes()
-            );
+            date=DateUtils.getMinDate(date);
             if(isStart){
                 viewModel.getStartTime().setValue(date);
             }else {
@@ -196,7 +200,7 @@ public class ScheduleFragment extends Fragment {
         viewModel.getDetails().setValue(item.details);
     }
 
-    private void updateItem(){
+    private void doItem(){
         item.info=viewModel.getInfo().getValue();
         item.position=viewModel.getPosition().getValue();
         item.startTime=viewModel.getStartTime().getValue().getTime();
@@ -205,21 +209,38 @@ public class ScheduleFragment extends Fragment {
 
         item.categoryId=getCategoryId(binding.spinnerCategory.getSelectedItemPosition());
         item.categoryName=binding.spinnerCategory.getSelectedItem().toString();
+
+        item.username= UserUtils.USERNAME;
+    }
+
+    private void updateItem(){
+        doItem();
+        // 通知服务器修改日程
+        // 判断dirty值
+        item.dirty=2;
+        // 更新数据库
+        updateLocalItems();
     }
 
     private void createItem(){
         item=new CalendarItem();
         item.uuid=UUID.randomUUID().toString().toUpperCase();
-        updateItem();
+        doItem();
 
         // 通知服务器添加日程
         boolean[] isSuccess=new boolean[1];
         requestAddItems(isSuccess);
-        // 本地创建日程
+        // 判断dirty值
         if(isSuccess[0]){
-            app.getCalendarItems().add(item);
-            isSuccess[0]=false;
+            item.dirty=0;
+        }else {
+            item.dirty=1;
         }
+        // 本地创建日程
+        calendarItems.add(item);
+        Log.d("lmx", "createItem: "+calendarItems);
+        // 添加到数据库
+        addLocalItems();
     }
 
     private void setSpinnerAdapter(){
@@ -253,18 +274,8 @@ public class ScheduleFragment extends Fragment {
 
     private void requestCategories() {
         Thread thread=new Thread(() -> {
-            String PATH="/calendar/category";
-
-            Request request=new Request.Builder()
-                    .url(getString(R.string.URL)+PATH)
-                    .addHeader("contentType","application/json;charset=UTF-8")
-                    .get()
-                    .build();
-
-            Call call=app.getClient().newCall(request);
-
             try {
-                Response response=call.execute();
+                retrofit2.Response<ResponseBody> response=apiService.getCategory().execute();
                 try {
                     JSONObject result=new JSONObject(response.body().string());
                     int status=result.getInt("status");
@@ -303,51 +314,69 @@ public class ScheduleFragment extends Fragment {
 
     private void requestAddItems(boolean[] isSuccess) {
         Thread thread=new Thread(() -> {
-            String PATH="/calendar/add";
-
             ScheduleItem scheduleItem=new ScheduleItem(item);
-            JSONObject object=new JSONObject();
+            JSONObject body=new JSONObject();
             try {
-                object.put("uuid",scheduleItem.uuid);
-                object.put("name",scheduleItem.name);
-                object.put("category",scheduleItem.categoryId);
-                object.put("start",scheduleItem.start);
-                object.put("end",scheduleItem.end);
+                body.put("uuid",scheduleItem.uuid);
+                body.put("name",scheduleItem.name);
+                body.put("category",scheduleItem.categoryId);
+                body.put("start",scheduleItem.start);
+                body.put("end",scheduleItem.end);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                String body=object.toString();
-                RequestBody requestBody=RequestBody.create(
-                        body,
-                        MediaType.parse("application/json;charset=utf-8")
-                );
+            RequestBody requestBody=RequestBody.create(
+                    body.toString(),
+                    MediaType.parse("application/json;charset=utf-8")
+            );
 
-                Request request=new Request.Builder()
-                        .url(getString(R.string.URL)+PATH)
-                        .addHeader("contentType","application/json;charset=UTF-8")
-                        .post(requestBody)
-                        .build();
-
-                Call call=app.getClient().newCall(request);
-
+            try {
+                Response<ResponseBody> response=apiService.add(requestBody).execute();
                 try {
-                    Response response=call.execute();
                     JSONObject result=new JSONObject(response.body().string());
                     Log.d("lmx", "requestAddItems: "+result);
                     int status=result.getInt("status");
                     if(status==1){
                         isSuccess[0]=true;
-                    }else {
-                        parentActivity.runOnUiThread(() -> {
-                            Toast.makeText(parentActivity, "未登录，添加失败", Toast.LENGTH_SHORT).show();
-                        });
                     }
-                } catch (IOException e) {
-                    parentActivity.runOnUiThread(() -> {
-                        Toast.makeText(parentActivity, "网络未连接，添加失败", Toast.LENGTH_SHORT).show();
-                    });
+                }catch (JSONException e){
+                    Log.d("lmx", "requestAddItems: "+e);
                 }
-            } catch (JSONException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateLocalItems() {
+        Thread thread=new Thread(() -> {
+            if(item.id==0){
+                item.id= dao.getIdByUUID(item.uuid);
+            }
+            dao.updateCalendarItem(item);
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addLocalItems() {
+        Thread thread=new Thread(() -> {
+            dao.insertCalendarItem(item);
         });
 
         thread.start();

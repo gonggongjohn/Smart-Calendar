@@ -51,6 +51,16 @@ public class DateUtils {
         ).getTime();
     }
 
+    public static Date getMinDate(Date date){
+        return new Date(
+                date.getYear(),
+                date.getMonth(),
+                date.getDate(),
+                date.getHours(),
+                date.getMinutes()
+        );
+    }
+
     public static boolean includeItem(CalendarItem item,long dayStart){
         long dayEnd=dayStart + A_DAY_MILLISECOND;
         if(item.endTime==dayStart){

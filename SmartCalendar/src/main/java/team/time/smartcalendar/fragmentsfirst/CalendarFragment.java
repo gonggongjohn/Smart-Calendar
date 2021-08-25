@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -18,48 +17,78 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
-import okhttp3.Call;
-import okhttp3.Request;
-import okhttp3.Response;
+import dagger.hilt.android.AndroidEntryPoint;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import team.time.smartcalendar.MainApplication;
+import retrofit2.Response;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.adapters.CalendarRecyclerViewAdapter;
+import team.time.smartcalendar.dao.CalendarItemDao;
 import team.time.smartcalendar.dataBeans.CalendarItem;
 import team.time.smartcalendar.dataBeans.ScheduleItem;
 import team.time.smartcalendar.databinding.FragmentCalendarBinding;
+import team.time.smartcalendar.requests.ApiService;
 import team.time.smartcalendar.utils.DateUtils;
+import team.time.smartcalendar.utils.UserUtils;
 import team.time.smartcalendar.viewmodels.CalendarViewModel;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
+@AndroidEntryPoint
 public class CalendarFragment extends Fragment {
     private FragmentCalendarBinding binding;
     private CalendarViewModel viewModel;
     private boolean isFirst;
     private boolean isAdded;
     private boolean[] isUpdated;
-    private MainApplication app;
     private Activity parentActivity;
     private CalendarRecyclerViewAdapter adapter;
     private Calendar lastCalendar;
+    public List<CalendarItem> requestCalendarItems;
+
+    @Inject
+    public ApiService apiService;
+    @Named("all")
+    @Inject
+    public List<CalendarItem> calendarItems;
+    @Named("current")
+    @Inject
+    public List<CalendarItem>curCalendarItems;
+    @Inject
+    public Map<String, Calendar> map;
+    @Inject
+    public CalendarItemDao dao;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         parentActivity=getActivity();
-        app = (MainApplication) getActivity().getApplication();
 
-        // 请求日程列表
-        app.getCalendarItems().clear();
-        requestCalendarItems();
+        requestCalendarItems=new ArrayList<>();
+
+        if(calendarItems.isEmpty()){
+            // 读取数据库日程
+            readLocalCalendarItems();
+            // 发送未同步日程，同步数据库
+            postAndSynchronize();
+        }
 
         isFirst = true;
         isAdded = false;
         isUpdated=new boolean[1];
+
+        Log.d("lmx", "onCreate: ");
     }
 
     @Override
@@ -67,10 +96,7 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater,R.layout.fragment_calendar,container,false);
-        viewModel = new ViewModelProvider(
-                this,
-                new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()))
-                .get(CalendarViewModel.class);
+        viewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
         return binding.getRoot();
@@ -102,7 +128,7 @@ public class CalendarFragment extends Fragment {
 
         LinearLayoutManager manager=new LinearLayoutManager(getContext());
         binding.calendarRecyclerView.setLayoutManager(manager);
-        adapter = new CalendarRecyclerViewAdapter(parentActivity, binding.calendarView, isUpdated);
+        adapter = new CalendarRecyclerViewAdapter(this, binding.calendarView, isUpdated);
         binding.calendarRecyclerView.setAdapter(adapter);
 
         binding.calendarView.setOnMonthChangeListener((year, month) -> {
@@ -147,7 +173,7 @@ public class CalendarFragment extends Fragment {
         binding.btnSchedule.setOnClickListener(v -> {
             // 传参
             Bundle bundle=new Bundle();
-            bundle.putLong("time",binding.calendarView.getSelectedCalendar().getTimeInMillis());
+            bundle.putLong("time",DateUtils.getMinDate(new Date(binding.calendarView.getSelectedCalendar().getTimeInMillis())).getTime());
             // 跳转
             NavController controller= Navigation.findNavController(v);
             controller.navigate(R.id.action_calendarFragment_to_scheduleFragment,bundle);
@@ -159,60 +185,30 @@ public class CalendarFragment extends Fragment {
     // 在日历上显示日程标签
     private void setMonthSchedule(int year,int month) {
         new Thread(() -> {
-            synchronized (app.getMap()){
-                DateUtils.setMonthScheme(app.getMap(),app.getCalendarItems(),year,month);
-                binding.calendarView.setSchemeDate(app.getMap());
+            synchronized (map){
+                DateUtils.setMonthScheme(map,calendarItems,year,month);
+                binding.calendarView.setSchemeDate(map);
             }
         }).start();
     }
 
     private void setCurrentScheduleList(long time) {
+        Log.d("lmx", "setCurrentScheduleList: "+calendarItems);
         // 清空当前日程列表
-        app.getCurCalendarItems().clear();
+        curCalendarItems.clear();
         // 遍历总日程列表，加入符合条件的日程
-        for(CalendarItem item:app.getCalendarItems()){
+        for(CalendarItem item:calendarItems){
             if(DateUtils.includeItem(item,time)){
-                app.getCurCalendarItems().add(item);
+                curCalendarItems.add(item);
             }
         }
     }
 
-    private void requestCalendarItems() {
+    private void readLocalCalendarItems() {
         Thread thread=new Thread(() -> {
-            String PATH="/calendar/fetch";
-
-            Request request=new Request.Builder()
-                    .url(getString(R.string.URL)+PATH)
-                    .addHeader("contentType","application/json;charset=UTF-8")
-                    .get()
-                    .build();
-
-            Call call=app.getClient().newCall(request);
-
-            try {
-                Response response=call.execute();
-                try {
-                    JSONObject result=new JSONObject(response.body().string());
-                    Log.d("lmx", "requestCalendarItems: "+result);
-                    int status=result.getInt("status");
-                    if(status==1){
-                        JSONArray scheduleItems=result.getJSONArray("schedule");
-                        for(int i=0;i<scheduleItems.length();i++){
-                            app.getCalendarItems().add(new CalendarItem(new ScheduleItem(scheduleItems.getJSONObject(i))));
-                        }
-                    }else {
-                        parentActivity.runOnUiThread(() -> {
-                            Toast.makeText(getActivity(), "未登录", Toast.LENGTH_SHORT).show();
-                        });
-                    }
-                } catch (JSONException e) {
-                    Log.d("lmx", "requestCalendarItems: "+e);
-                }
-            } catch (IOException e) {
-                parentActivity.runOnUiThread(() -> {
-                    Toast.makeText(getActivity(), "网络未连接", Toast.LENGTH_SHORT).show();
-                });
-            }
+            List<CalendarItem>items=dao.getAllCalendarItems(UserUtils.USERNAME);
+            // 不可改变引用！！！
+            calendarItems.addAll(items);
         });
 
         thread.start();
@@ -222,5 +218,107 @@ public class CalendarFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        Log.d("lmx", "readLocalCalendarItems: "+calendarItems);
+    }
+
+    private void postAndSynchronize() {
+        // 发送未同步日程并更新数据库
+        Thread thread1=new Thread(() -> {
+            List<CalendarItem>calendarItems=dao.getSycCalendarItems(UserUtils.USERNAME);
+            for(CalendarItem item:calendarItems){
+                boolean isSuccess=false;
+                if (item.dirty==1){
+                    ScheduleItem scheduleItem=new ScheduleItem(item);
+                    JSONObject body=new JSONObject();
+                    try {
+                        body.put("uuid",scheduleItem.uuid);
+                        body.put("name",scheduleItem.name);
+                        body.put("category",scheduleItem.categoryId);
+                        body.put("start",scheduleItem.start);
+                        body.put("end",scheduleItem.end);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    RequestBody requestBody=RequestBody.create(
+                            body.toString(),
+                            MediaType.parse("application/json;charset=utf-8")
+                    );
+                    try {
+                        Response<ResponseBody> response=apiService.add(requestBody).execute();
+                        try {
+                            JSONObject result=new JSONObject(response.body().string());
+                            Log.d("lmx", "requestAddItems: "+result);
+                            int status=result.getInt("status");
+                            if(status==1){
+                                isSuccess=true;
+                            }
+                        }catch (JSONException e){
+                            Log.d("lmx", "requestAddItems: "+e);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(isSuccess){
+                    item.dirty=0;
+                    dao.updateCalendarItem(item);
+                }
+            }
+        });
+        thread1.start();
+        // 请求所有日程
+        Thread thread2=new Thread(() -> {
+            try {
+                thread1.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                Response<ResponseBody> response=apiService.fetch().execute();
+                try {
+                    JSONObject result=new JSONObject(response.body().string());
+                    Log.d("lmx", "requestCalendarItems: "+result);
+                    int status=result.getInt("status");
+                    if(status==1){
+                        JSONArray scheduleItems=result.getJSONArray("schedule");
+                        for(int i=0;i<scheduleItems.length();i++){
+                            requestCalendarItems.add(new CalendarItem(new ScheduleItem(scheduleItems.getJSONObject(i))));
+                        }
+                    }
+                } catch (JSONException e) {
+                    Log.d("lmx", "requestCalendarItems: "+e);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+        thread2.start();
+        // 根据uuid更新数据库
+        Thread thread3=new Thread(() -> {
+            try {
+                thread2.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 确保请求是成功的
+            if(!requestCalendarItems.isEmpty()){
+                for(CalendarItem requestItem:requestCalendarItems){
+                    List<String>uuids=dao.getAllUUID(UserUtils.USERNAME);
+                    if(!uuids.contains(requestItem.uuid)){
+                        Log.d("lmx", "insert: "+requestItem);
+                        dao.insertCalendarItem(requestItem);
+                    }
+                }
+            }
+
+            List<CalendarItem>items=dao.getAllCalendarItems(UserUtils.USERNAME);
+            calendarItems.clear();
+            calendarItems.addAll(items);
+
+            Log.d("lmx", "postAndSynchronize: "+calendarItems);
+        });
+        thread3.start();
     }
 }
