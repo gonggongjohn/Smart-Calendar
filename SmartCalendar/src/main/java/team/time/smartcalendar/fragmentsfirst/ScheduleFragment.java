@@ -1,6 +1,10 @@
 package team.time.smartcalendar.fragmentsfirst;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,19 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import dagger.hilt.android.AndroidEntryPoint;
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +36,7 @@ import team.time.smartcalendar.dataBeans.CalendarItem;
 import team.time.smartcalendar.dataBeans.ScheduleItem;
 import team.time.smartcalendar.databinding.FragmentScheduleBinding;
 import team.time.smartcalendar.requests.ApiService;
+import team.time.smartcalendar.service.MyLocationService;
 import team.time.smartcalendar.utils.ColorUtils;
 import team.time.smartcalendar.utils.DateUtils;
 import team.time.smartcalendar.utils.SystemUtils;
@@ -53,6 +59,7 @@ public class ScheduleFragment extends Fragment {
     private long time;
     private Activity parentActivity;
     private List<String> categories;
+    private boolean isFirst;
 
     @Inject
     ApiService apiService;
@@ -68,6 +75,14 @@ public class ScheduleFragment extends Fragment {
 
         parentActivity = getActivity();
         categories=new ArrayList<>();
+
+        isFirst = true;
+
+        checkPermission();
+
+        // 启动定位服务
+        Intent intent=new Intent(parentActivity, MyLocationService.class);
+        parentActivity.startService(intent);
     }
 
     @Override
@@ -75,33 +90,39 @@ public class ScheduleFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // 重写回退键
-        setBack();
+        SystemUtils.setBack(this);
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_schedule,container,false);
 
         viewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
 
-        // 工作线程发起网络请求，同步方法
-        requestCategories();
-        setSpinnerAdapter();
+        if(isFirst){
+            isFirst=false;
 
-        // 接收参数
-        bundle = getArguments();
-        if(bundle!=null){
-            item = (CalendarItem) bundle.getSerializable("item");
-            time = bundle.getLong("time");
+            // 工作线程发起网络请求，同步方法
+            requestCategories();
+            setSpinnerAdapter();
 
-            // 修改日程
-            if(item!=null){
-                setViewModel();
-                setSpinnerSelection();
+            // 接收参数
+            bundle = getArguments();
+            if(bundle!=null){
+                item = (CalendarItem) bundle.getSerializable("item");
+                time = bundle.getLong("time");
+
+                // 修改日程
+                if(item!=null){
+                    setViewModel();
+                    setSpinnerSelection();
+                }
+
+                // 添加日程
+                if(time!=0){
+                    viewModel.getStartTime().setValue(new Date(time));
+                    viewModel.getEndTime().setValue(new Date(time+30 * DateUtils.A_MIN_MILLISECOND));
+                }
             }
-
-            // 添加日程
-            if(time!=0){
-                viewModel.getStartTime().setValue(new Date(time));
-                viewModel.getEndTime().setValue(new Date(time+30 * DateUtils.A_MIN_MILLISECOND));
-            }
+        }else {
+            setSpinnerAdapter();
         }
 
         binding.setViewModel(viewModel);
@@ -138,6 +159,14 @@ public class ScheduleFragment extends Fragment {
             controller.popBackStack();
         });
 
+        binding.imagePosition.setOnClickListener(v -> {
+            SystemUtils.hideKeyBoard(getContext(),getEditTextList());
+
+            Bundle bundle=new Bundle();
+            bundle.putSerializable("viewModel",viewModel);
+            controller.navigate(R.id.action_scheduleFragment_to_positionFragment,bundle);
+        });
+
         binding.textStartTime.setOnClickListener(v -> {
             showPicker(viewModel.getStartTime().getValue(),true);
         });
@@ -145,16 +174,6 @@ public class ScheduleFragment extends Fragment {
         binding.textEndTime.setOnClickListener(v -> {
             showPicker(viewModel.getEndTime().getValue(),false);
         });
-    }
-
-    private void setBack() {
-        OnBackPressedCallback callback=new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                NavHostFragment.findNavController(ScheduleFragment.this).popBackStack();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
     }
 
     private void showPicker(Date time,boolean isStart) {
@@ -187,14 +206,17 @@ public class ScheduleFragment extends Fragment {
     private List<View> getEditTextList(){
         List<View> viewList=new ArrayList<>();
         viewList.add(binding.editTextTittle);
-        viewList.add(binding.editTextPosition);
         viewList.add(binding.editTextDetail);
         return viewList;
     }
 
     private void setViewModel() {
         viewModel.getInfo().setValue(item.info);
+
         viewModel.getPosition().setValue(item.position);
+        viewModel.latitude=item.latitude;
+        viewModel.longitude=item.longitude;
+
         viewModel.getStartTime().setValue(new Date(item.startTime));
         viewModel.getEndTime().setValue(new Date(item.endTime));
         viewModel.getDetails().setValue(item.details);
@@ -202,10 +224,13 @@ public class ScheduleFragment extends Fragment {
 
     private void doItem(){
         item.info=viewModel.getInfo().getValue();
-        item.position=viewModel.getPosition().getValue();
         item.startTime=viewModel.getStartTime().getValue().getTime();
         item.endTime=viewModel.getEndTime().getValue().getTime();
         item.details=viewModel.getDetails().getValue();
+
+        item.position=viewModel.getPosition().getValue();
+        item.latitude= viewModel.latitude;
+        item.longitude= viewModel.longitude;
 
         item.categoryId=getCategoryId(binding.spinnerCategory.getSelectedItemPosition());
         item.categoryName=binding.spinnerCategory.getSelectedItem().toString();
@@ -322,6 +347,14 @@ public class ScheduleFragment extends Fragment {
                 body.put("category",scheduleItem.categoryId);
                 body.put("start",scheduleItem.start);
                 body.put("end",scheduleItem.end);
+                // 位置信息
+                if(!scheduleItem.position.equals("")){
+                    JSONObject position=new JSONObject();
+                    position.put("name",scheduleItem.position);
+                    position.put("latitude",scheduleItem.latitude);
+                    position.put("longitude",scheduleItem.longitude);
+                    body.put("position",position);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -385,6 +418,25 @@ public class ScheduleFragment extends Fragment {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkPermission() {
+        if(Build.VERSION.SDK_INT>=23 && parentActivity.getApplicationInfo().targetSdkVersion>=23){
+            List<String> permissionList=new ArrayList<>();
+            if(ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED){
+                permissionList.add(Manifest.permission.READ_PHONE_STATE);
+            }
+            if(ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+                permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if(ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+                permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            }
+
+            if (!permissionList.isEmpty()){
+                SystemUtils.checkPermission(parentActivity,permissionList);
+            }
         }
     }
 }

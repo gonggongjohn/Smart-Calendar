@@ -155,13 +155,27 @@
                             app:layout_constraintGuide_percent="0.15"/>
 
                     <EditText
+                            android:enabled="false"
+                            android:clickable="true"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:hint="地点"
                             android:text="@={viewModel.getPosition}"
+                            android:textColor="@color/black"
                             android:textSize="15dp"
                             android:id="@+id/editTextPosition"
                             android:layout_marginTop="20dp"
+                            app:layout_constraintStart_toStartOf="@+id/guideline9"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                    <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="20dp"
+                            android:id="@+id/imagePosition"
                             app:layout_constraintStart_toStartOf="@+id/guideline9"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

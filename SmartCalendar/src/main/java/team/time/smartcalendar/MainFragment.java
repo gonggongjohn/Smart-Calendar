@@ -1,5 +1,6 @@
 package team.time.smartcalendar;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import dagger.hilt.android.AndroidEntryPoint;
 import team.time.smartcalendar.adapters.MainViewPagerAdapter;
 import team.time.smartcalendar.databinding.FragmentMainBinding;
+import team.time.smartcalendar.utils.UserUtils;
 
+import javax.inject.Inject;
+
+@AndroidEntryPoint
 public class MainFragment extends Fragment {
-
     private FragmentMainBinding binding;
+
+    @Inject
+    SharedPreferences sp;
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        UserUtils.USER_LATITUDE=Double.parseDouble(sp.getString("latitude","39.908671"));
+        UserUtils.USER_LONGITUDE=Double.parseDouble(sp.getString("longitude","116.397454"));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

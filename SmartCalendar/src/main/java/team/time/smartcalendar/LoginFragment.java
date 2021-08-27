@@ -1,7 +1,6 @@
 package team.time.smartcalendar;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,11 +35,15 @@ public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private NavController controller;
     private Activity parentActivity;
-    private SharedPreferences sp;
     private String USERNAME;
     private String PASSWORD;
+
     @Inject
     ApiService apiService;
+
+    @Inject
+    SharedPreferences sp;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,11 +60,6 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         controller = Navigation.findNavController(view);
-
-        sp= getActivity().getSharedPreferences(
-                getString(R.string.USER_INFO),
-                Context.MODE_PRIVATE
-        );
 
         USERNAME = sp.getString("username","");
         PASSWORD = sp.getString("password","");

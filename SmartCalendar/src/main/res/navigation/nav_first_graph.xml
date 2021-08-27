@@ -9,7 +9,15 @@
             android:id="@+id/scheduleFragment"
             android:name="team.time.smartcalendar.fragmentsfirst.ScheduleFragment"
             android:label="fragment_schedule"
-            tools:layout="@layout/fragment_schedule"/>
+            tools:layout="@layout/fragment_schedule">
+        <action
+                android:id="@+id/action_scheduleFragment_to_positionFragment"
+                app:destination="@id/positionFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
     <fragment
             android:id="@+id/calendarFragment"
             android:name="team.time.smartcalendar.fragmentsfirst.CalendarFragment"
@@ -22,4 +30,9 @@
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
+    <fragment
+            android:id="@+id/positionFragment"
+            android:name="team.time.smartcalendar.fragmentsfirst.PositionFragment"
+            android:label="fragment_position"
+            tools:layout="@layout/fragment_position"/>
 </navigation>

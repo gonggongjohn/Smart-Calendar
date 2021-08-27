@@ -237,6 +237,14 @@ public class CalendarFragment extends Fragment {
                         body.put("category",scheduleItem.categoryId);
                         body.put("start",scheduleItem.start);
                         body.put("end",scheduleItem.end);
+                        // 位置信息
+                        if(!scheduleItem.position.equals("")){
+                            JSONObject position=new JSONObject();
+                            position.put("name",scheduleItem.position);
+                            position.put("latitude",scheduleItem.latitude);
+                            position.put("longitude",scheduleItem.longitude);
+                            body.put("position",position);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

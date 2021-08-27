@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -44,13 +43,15 @@ public class LoginDialog extends DialogFragment {
     private AlertDialog dialog;
     private LoginViewModel viewModel;
     private Activity parentActivity;
-    private SharedPreferences sp;
     private String USERNAME;
     private String PASSWORD;
     private SharedPreferences.Editor editor;
 
     @Inject
     ApiService apiService;
+
+    @Inject
+    SharedPreferences sp;
 
     @NonNull
     @Override
@@ -96,9 +97,6 @@ public class LoginDialog extends DialogFragment {
 
     @SuppressLint("CommitPrefEdits")
     private void login() {
-        sp = getActivity().getSharedPreferences(
-                getString(R.string.USER_INFO),
-                Context.MODE_PRIVATE);
         editor = sp.edit();
 
         USERNAME=viewModel.getUserName().getValue();

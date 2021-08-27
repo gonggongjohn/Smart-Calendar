@@ -26,8 +26,14 @@ public class CalendarItem implements Serializable {
     public String uuid="";
     @ColumnInfo(name = "info",typeAffinity = ColumnInfo.TEXT)
     public String info="";
+
     @ColumnInfo(name = "position",typeAffinity = ColumnInfo.TEXT)
     public String position="";
+    @ColumnInfo(name = "latitude",typeAffinity = ColumnInfo.REAL)
+    public double latitude=0.0;
+    @ColumnInfo(name = "longitude",typeAffinity = ColumnInfo.REAL)
+    public double longitude=0.0;
+
     @ColumnInfo(name = "details",typeAffinity = ColumnInfo.TEXT)
     public String details="";
     @ColumnInfo(name = "category_id",typeAffinity = ColumnInfo.INTEGER)
@@ -39,13 +45,17 @@ public class CalendarItem implements Serializable {
     @ColumnInfo(name = "end_time",typeAffinity = ColumnInfo.INTEGER)
     public long endTime=0;
 
-    public CalendarItem(int id,int dirty,String uuid,String info,String position,String details,int categoryId,String categoryName,long startTime,long endTime) {
+    public CalendarItem(int id,int dirty,String uuid,String info,String position,double latitude,double longitude,String details,int categoryId,String categoryName,long startTime,long endTime) {
         this.id = id;
         this.dirty = dirty;
         this.username = UserUtils.USERNAME;
         this.uuid = uuid;
         this.info = info;
+
         this.position = position;
+        this.latitude = latitude;
+        this.longitude = longitude;
+
         this.details = details;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -62,7 +72,11 @@ public class CalendarItem implements Serializable {
         this.username=UserUtils.USERNAME;
         this.uuid=scheduleItem.uuid;
         this.info=scheduleItem.name;
-        this.position="";
+
+        this.position=scheduleItem.position;
+        this.latitude=scheduleItem.latitude;
+        this.longitude=scheduleItem.longitude;
+
         this.details="";
         this.categoryId=scheduleItem.categoryId;
         this.categoryName=scheduleItem.categoryName;
@@ -70,6 +84,7 @@ public class CalendarItem implements Serializable {
         this.endTime=(long) scheduleItem.end * 1000;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "CalendarItem{" +
@@ -79,6 +94,8 @@ public class CalendarItem implements Serializable {
                 ", uuid='" + uuid + '\'' +
                 ", info='" + info + '\'' +
                 ", position='" + position + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 ", details='" + details + '\'' +
                 ", categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +

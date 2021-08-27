@@ -18,6 +18,12 @@ android {
             enabled=true
         }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -40,6 +46,11 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
+
+    // 高德地图定位
+    implementation 'com.amap.api:3dmap:8.0.0'
+    implementation 'com.amap.api:search:7.9.0'
+    implementation 'com.amap.api:location:5.4.0'
 
     // https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION_ZH.md
     implementation 'com.haibin:calendarview:3.7.1'

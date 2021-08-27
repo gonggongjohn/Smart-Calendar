@@ -3,11 +3,14 @@ package team.time.smartcalendar.viewmodels;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ScheduleViewModel extends ViewModel {
+public class ScheduleViewModel extends ViewModel implements Serializable {
     private MutableLiveData<String>info;
     private MutableLiveData<String>position;
+    public double latitude;
+    public double longitude;
     private MutableLiveData<String>details;
     private MutableLiveData<Date>startTime;
     private MutableLiveData<Date>endTime;
