@@ -79,17 +79,17 @@ class UserUtils{
         task.resume()
     }
     
-    public static func getOccupation(completion: @escaping (Bool, [(id: Int, name: String)]) -> Void){
+    public static func getOccupation(completion: @escaping (Bool, [IdNameRow]) -> Void){
         let server = Config.host + "/user/occupation"
         AF.request(server, method: .get, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
             if(response.error == nil && response.value != nil){
                 let result = JSON(response.value!)
                 if(result["status"].intValue == 1){
-                    var occupation_list: [(id: Int, name: String)] = []
+                    var occupation_list: [IdNameRow] = []
                     for(_, item): (String, JSON) in result["occupation"] {
                         let id = item["id"].intValue
                         let name = item["name"].stringValue
-                        occupation_list.append((id: id, name: name))
+                        occupation_list.append(IdNameRow(id: id, name: name))
                     }
                     completion(true, occupation_list)
                 }
@@ -105,17 +105,17 @@ class UserUtils{
         }
     }
     
-    public static func getMajor(completion: @escaping (Bool, [(id: Int, name: String)]) -> Void){
+    public static func getMajor(completion: @escaping (Bool, [IdNameRow]) -> Void){
         let server = Config.host + "/user/major"
         AF.request(server, method: .get, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
             if(response.error == nil && response.value != nil){
                 let result = JSON(response.value!)
                 if(result["status"].intValue == 1){
-                    var major_list: [(id: Int, name: String)] = []
+                    var major_list: [IdNameRow] = []
                     for(_, item): (String, JSON) in result["major"] {
                         let id = item["id"].intValue
                         let name = item["name"].stringValue
-                        major_list.append((id: id, name: name))
+                        major_list.append(IdNameRow(id: id, name: name))
                     }
                     completion(true, major_list)
                 }
@@ -131,17 +131,17 @@ class UserUtils{
         }
     }
     
-    public static func getSchool(completion: @escaping (Bool, [(id: Int, name: String)]) -> Void){
+    public static func getSchool(completion: @escaping (Bool, [IdNameRow]) -> Void){
         let server = Config.host + "/user/school"
         AF.request(server, method: .get, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
             if(response.error == nil && response.value != nil){
                 let result = JSON(response.value!)
                 if(result["status"].intValue == 1){
-                    var school_list: [(id: Int, name: String)] = []
+                    var school_list: [IdNameRow] = []
                     for(_, item): (String, JSON) in result["school"] {
                         let id = item["id"].intValue
                         let name = item["name"].stringValue
-                        school_list.append((id: id, name: name))
+                        school_list.append(IdNameRow(id: id, name: name))
                     }
                     completion(true, school_list)
                 }
@@ -153,6 +153,41 @@ class UserUtils{
                 print(response.error!)
                 print("Error occurred when requesting server!")
                 completion(false, [])
+            }
+        }
+    }
+    
+    public static func updateInfo(info: UserInfo, completion: @escaping (Bool) -> Void){
+        StorageUtils.saveUserInfo(info: info)
+        let server = Config.host + "/user/update"
+        var body: [String: Any] = [:]
+        if(info.nickname != nil){
+            body["nickname"] = info.nickname!
+        }
+        if(info.occupation != nil){
+            body["occupation"] = info.occupation!.contentId
+        }
+        if(info.major != nil){
+            body["major"] = info.major!.contentId
+        }
+        if(info.school != nil){
+            body["school"] = info.school!.contentId
+        }
+        AF.request(server, method: .post, parameters: body, encoding: JSONEncoding.default, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
+            if(response.error == nil){
+                let result_dict = response.value as? Dictionary<String, Int>
+                if(result_dict != nil && result_dict!["status"] == 1){
+                    completion(true)
+                }
+                else{
+                    print("Error occurred when phasing response json!")
+                    completion(false)
+                }
+            }
+            else{
+                print(response.error!)
+                print("Error occurred when requesting server!")
+                completion(false)
             }
         }
     }

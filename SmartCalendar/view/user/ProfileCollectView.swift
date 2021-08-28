@@ -6,12 +6,22 @@
 import SwiftUI
 
 struct ProfileCollectView: View {
-    @State private var occupation_chosen: Int = -1
-    @State private var occupation_options: [(id: Int, name: String)] = []
+    @ObservedObject private var user_info: UserInfo
+    @State private var nickname: String = ""
+    @State private var occupation_chosen_index: Int = -1
+    @State private var occupation_options: [IdNameRow] = []
     @State private var toggle_majorSheet = false
-    @State private var major_chosen: (id: Int, name: String)?
     @State private var toggle_schoolSheet = false
-    @State private var school_chosen: (id: Int, name: String)?
+    
+    init() {
+        let info_local = StorageUtils.getUserInfo()
+        if(info_local != nil){
+            self.user_info = info_local!
+        }
+        else{
+            self.user_info = UserInfo(username: "", password: "")
+        }
+    }
     
     var body: some View {
         VStack{
@@ -19,23 +29,35 @@ struct ProfileCollectView: View {
                 .font(.title)
             ScrollView {
                 HStack{
+                    Text("昵称：")
+                        .font(.title3)
+                    TextField("Nickname...", text: $nickname)
+                        .padding()
+                        .onChange(of: self.nickname, perform: { content in
+                            self.user_info.nickname = content
+                        })
+                }
+                HStack{
                     Text("职业：")
                         .font(.title3)
                     Spacer()
-                    Picker(selection: $occupation_chosen, label: Text("\(occupation_chosen == -1 ? "Occupation" : occupation_options[occupation_chosen].name)")){
+                    Picker(selection: $occupation_chosen_index, label: Text("\(occupation_chosen_index == -1 ? "Occupation" : occupation_options[occupation_chosen_index].contentName)")){
                         if(self.occupation_options.count > 0){
                             ForEach(0 ..< self.occupation_options.count) { i in
-                                Text("\(self.occupation_options[i].name)")
+                                Text("\(self.occupation_options[i].contentName)")
                                     .font(.title3)
                                     .tag(i+1)
                             }
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .onChange(of: self.occupation_chosen_index, perform: { index in
+                        self.user_info.occupation = occupation_options[occupation_chosen_index]
+                    })
                 }
                 Spacer()
                 
-                if(occupation_chosen >= 0 && occupation_options[occupation_chosen].name == "学生"){
+                if(occupation_chosen_index >= 0 && occupation_options[occupation_chosen_index].contentName == "学生"){
                     HStack{
                         Text("所在专业：")
                             .font(.title3)
@@ -43,9 +65,9 @@ struct ProfileCollectView: View {
                         Button(action:{
                             self.toggle_majorSheet = true
                         }){
-                            Text(self.major_chosen == nil ? "Major" : "\(self.major_chosen!.name)")
+                            Text(self.user_info.major == nil ? "Major" : "\(self.user_info.major!.contentName)")
                         }.sheet(isPresented: $toggle_majorSheet){
-                            MajorSelectView(major_chosen: $major_chosen)
+                            MajorSelectView(major_chosen: $user_info.major)
                             
                             Button(action: {
                                 self.toggle_majorSheet = false
@@ -66,9 +88,9 @@ struct ProfileCollectView: View {
                         Button(action:{
                             self.toggle_schoolSheet = true
                         }){
-                            Text(self.school_chosen == nil ? "School" : "\(self.school_chosen!.name)")
+                            Text(self.user_info.school == nil ? "School" : "\(self.user_info.school!.contentName)")
                         }.sheet(isPresented: $toggle_schoolSheet){
-                            SchoolSelectView(school_chosen: $school_chosen)
+                            SchoolSelectView(school_chosen: $user_info.school)
                             
                             Button(action: {
                                 self.toggle_schoolSheet = false
@@ -85,17 +107,21 @@ struct ProfileCollectView: View {
                 
             }.padding()
             Button(action: {
-                DispatchQueue.main.async{
-                    let delegate: UIWindowSceneDelegate? = {
-                        var uiScreen: UIScene?
-                        UIApplication.shared.connectedScenes.forEach {
-                            (screen) in
-                            uiScreen = screen
+                UserUtils.updateInfo(info: self.user_info, completion: { status in
+                    if(status){
+                        DispatchQueue.main.async{
+                            let delegate: UIWindowSceneDelegate? = {
+                                var uiScreen: UIScene?
+                                UIApplication.shared.connectedScenes.forEach {
+                                    (screen) in
+                                    uiScreen = screen
+                                }
+                                return uiScreen?.delegate as? UIWindowSceneDelegate
+                            }()
+                            delegate?.window!?.rootViewController = UIHostingController(rootView: MainView(lazy: false))
                         }
-                        return uiScreen?.delegate as? UIWindowSceneDelegate
-                    }()
-                    delegate?.window!?.rootViewController = UIHostingController(rootView: MainView(lazy: false))
-                }
+                    }
+                })
             }){
                 Text("完成")
                     .font(.title2)
@@ -110,14 +136,6 @@ struct ProfileCollectView: View {
                     self.occupation_options = occupation_list
                 }
             })
-            /*
-            
-            UserUtils.getSchool(completion: { (status, school_list) in
-                if(status){
-                    self.school_options = school_list
-                }
-            })
-             */
         })
     }
 }

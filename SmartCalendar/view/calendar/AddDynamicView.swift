@@ -1,5 +1,5 @@
 //
-//  AddAmbiguousView.swift
+//  AddDynamicView.swift
 //  SmartCalendar
 //
 
@@ -78,7 +78,7 @@ struct AddDynamicView: View {
     }
 }
 
-struct AddAmbiguousView_Previews: PreviewProvider {
+struct AddDynamicView_Previews: PreviewProvider {
     static var previews: some View {
         AddDynamicView(schedules: .constant([]), schedule_local: .constant(ScheduleContainer()), isPresented: .constant(true))
     }

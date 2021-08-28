@@ -17,17 +17,23 @@ class StorageUtils {
         }
     }
     
-    public static func getUserInfo() -> (username: String, password: String)?{
+    public static func saveUserInfo(info: UserInfo){
+        do{
+            let data = try NSKeyedArchiver.archivedData(withRootObject: info, requiringSecureCoding: true)
+            UserDefaults.standard.setValue(data, forKey: "user_info")
+        }
+        catch{
+            print("Error occurred when saving user info!")
+        }
+    }
+    
+    public static func getUserInfo() -> UserInfo?{
         let data = UserDefaults.standard.data(forKey: "user_info")
         var info_wrapper: UserInfo? = nil
         if data != nil {
             do{
                 info_wrapper = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data!) as? UserInfo
-                if(info_wrapper != nil){
-                    var info_tuple: (username: String, password: String)?
-                    info_tuple = (username: info_wrapper!.getUsername(), password: info_wrapper!.getPassword())
-                    return info_tuple
-                }
+                return info_wrapper
             }
             catch{
                 print("Error occurred when getting user info!")

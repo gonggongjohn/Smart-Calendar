@@ -8,10 +8,10 @@ import SwiftUI
 struct AboutView: View {
     var body: some View {
         VStack{
-            Text("开发团队")
+            Text("开发团队：时间管理大师")
                 .font(.title)
                 .fontWeight(.semibold)
-            Spacer().frame(maxHeight: 50, alignment: .center)
+            Spacer().frame(maxHeight: 30, alignment: .center)
             Text("iOS端: GONGGONGJOHN, Niya0515")
                 .font(.title3)
             Text("Android端: Joker, Jankeeeeee")
@@ -20,6 +20,7 @@ struct AboutView: View {
                 .font(.title3)
             Text("联系我们: gonggongjohn@163.com")
                 .font(.title3)
+            
         }
     }
 }

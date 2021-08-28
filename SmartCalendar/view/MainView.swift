@@ -48,7 +48,7 @@ struct MainView: View {
                 self.loading_flag = true
                 let info_wrapper = StorageUtils.getUserInfo()
                 if(info_wrapper != nil){
-                    UserUtils.login(username: info_wrapper!.username, password: info_wrapper!.password, completion: {
+                    UserUtils.login(username: info_wrapper!.getUsername(), password: info_wrapper!.getPassword(), completion: {
                         (status) -> Void in
                         if(status == 1){
                             print("Lazy login succeeded!")
