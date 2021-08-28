@@ -23,7 +23,15 @@ def add_schedule():
             start_datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start))
             end = req_dict['end']
             end_datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(end))
-            schedule = Schedule(uuid=uid, user=user, name=name, category=category, start=start_datetime, end=end_datetime)
+            if 'position' in req_dict:
+                pos_name = req_dict['position']['name']
+                pos_lat = req_dict['position']['latitude']
+                pos_long = req_dict['position']['longitude']
+                schedule = Schedule(uuid=uid, user=user, name=name, category=category, start=start_datetime,
+                                    end=end_datetime, pos_name=pos_name, pos_latitude=pos_lat, pos_longitude=pos_long)
+            else:
+                schedule = Schedule(uuid=uid, user=user, name=name, category=category, start=start_datetime,
+                                    end=end_datetime)
             db.session.add(schedule)
             db.session.commit()
             status = 1
@@ -67,8 +75,13 @@ def fetch_schedule():
         schedule_list = []
         for schedule in schedule_item:
             category = db.session.query(Category).filter_by(id=schedule.category).first()
-            schedule_list.append({'uuid': schedule.uuid, 'name': schedule.name, 'category': {'id': category.id, 'name': category.name},
-                                  'start': schedule.start.timestamp(), 'end': schedule.end.timestamp()})
+            schedule_dict = {'uuid': schedule.uuid, 'name': schedule.name,
+                             'category': {'id': category.id, 'name': category.name},
+                             'start': schedule.start.timestamp(), 'end': schedule.end.timestamp()}
+            if schedule.pos_name is not None and schedule.pos_latitude is not None and schedule.pos_longitude is not None:
+                schedule_dict['position'] = {'name': schedule.pos_name, 'latitude': float(schedule.pos_latitude),
+                                             'longitude': float(schedule.pos_longitude)}
+            schedule_list.append(schedule_dict)
         status = 1
         if status == 1:
             return json.dumps({'status': status, 'schedule': schedule_list}, ensure_ascii=False)

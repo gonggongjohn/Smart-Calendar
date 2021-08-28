@@ -8,9 +8,11 @@ class User(db.Model):
     phone = db.Column(db.String(50))
     nickname = db.Column(db.String(50))
     regtime = db.Column(db.DateTime)
+    avatar = db.Column(db.Text)
     occupation = db.Column(db.Integer)
     major = db.Column(db.Integer)
     school = db.Column(db.Integer)
+    meqfeature = db.Column(db.Integer)
 
 
 class Schedule(db.Model):
@@ -21,8 +23,9 @@ class Schedule(db.Model):
     category = db.Column(db.Integer)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
-    pos_alt = db.Column(db.DECIMAL(16, 13))
-    pos_long = db.Column(db.DECIMAL(16, 13))
+    pos_name = db.Column(db.String(100))
+    pos_latitude = db.Column(db.DECIMAL(16, 13))
+    pos_longitude = db.Column(db.DECIMAL(16, 13))
 
 
 class Category(db.Model):
