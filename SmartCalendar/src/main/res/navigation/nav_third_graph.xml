@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nav_third_graph"
+            app:startDestination="@id/mineFragment">
+
+    <fragment
+            android:id="@+id/mineFragment"
+            android:name="team.time.smartcalendar.fragmentsthird.MineFragment"
+            android:label="MineFragment">
+        <action
+                android:id="@+id/action_mineFragment_to_accountFragment"
+                app:destination="@id/accountFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment
+            android:id="@+id/accountFragment"
+            android:name="team.time.smartcalendar.fragmentsthird.AccountFragment"
+            android:label="AccountFragment"/>
+</navigation>

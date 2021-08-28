@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,6 +34,7 @@ import team.time.smartcalendar.dataBeans.ScheduleItem;
 import team.time.smartcalendar.databinding.FragmentCalendarBinding;
 import team.time.smartcalendar.requests.ApiService;
 import team.time.smartcalendar.utils.DateUtils;
+import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.utils.UserUtils;
 import team.time.smartcalendar.viewmodels.CalendarViewModel;
 
@@ -96,6 +98,11 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater,R.layout.fragment_calendar,container,false);
+
+        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) binding.statusImage.getLayoutParams();
+        params.height= SystemUtils.STATUS_BAR_HEIGHT;
+        binding.statusImage.setLayoutParams(params);
+
         viewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
@@ -228,30 +235,32 @@ public class CalendarFragment extends Fragment {
             List<CalendarItem>calendarItems=dao.getSycCalendarItems(UserUtils.USERNAME);
             for(CalendarItem item:calendarItems){
                 boolean isSuccess=false;
-                if (item.dirty==1){
-                    ScheduleItem scheduleItem=new ScheduleItem(item);
-                    JSONObject body=new JSONObject();
-                    try {
-                        body.put("uuid",scheduleItem.uuid);
-                        body.put("name",scheduleItem.name);
-                        body.put("category",scheduleItem.categoryId);
-                        body.put("start",scheduleItem.start);
-                        body.put("end",scheduleItem.end);
-                        // 位置信息
-                        if(!scheduleItem.position.equals("")){
-                            JSONObject position=new JSONObject();
-                            position.put("name",scheduleItem.position);
-                            position.put("latitude",scheduleItem.latitude);
-                            position.put("longitude",scheduleItem.longitude);
-                            body.put("position",position);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+                ScheduleItem scheduleItem=new ScheduleItem(item);
+                JSONObject body=new JSONObject();
+                try {
+                    body.put("uuid",scheduleItem.uuid);
+                    body.put("name",scheduleItem.name);
+                    body.put("category",scheduleItem.categoryId);
+                    body.put("start",scheduleItem.start);
+                    body.put("end",scheduleItem.end);
+                    // 位置信息
+                    if(!scheduleItem.position.equals("")){
+                        JSONObject position=new JSONObject();
+                        position.put("name",scheduleItem.position);
+                        position.put("latitude",scheduleItem.latitude);
+                        position.put("longitude",scheduleItem.longitude);
+                        body.put("position",position);
                     }
-                    RequestBody requestBody=RequestBody.create(
-                            body.toString(),
-                            MediaType.parse("application/json;charset=utf-8")
-                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                RequestBody requestBody=RequestBody.create(
+                        body.toString(),
+                        MediaType.parse("application/json;charset=utf-8")
+                );
+
+                if (item.dirty==1){
                     try {
                         Response<ResponseBody> response=apiService.add(requestBody).execute();
                         try {
@@ -263,6 +272,22 @@ public class CalendarFragment extends Fragment {
                             }
                         }catch (JSONException e){
                             Log.d("lmx", "requestAddItems: "+e);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else if(item.dirty==2){
+                    try {
+                        Response<ResponseBody> response=apiService.update(requestBody).execute();
+                        try {
+                            JSONObject result=new JSONObject(response.body().string());
+                            Log.d("lmx", "requestUpdateItems: "+result);
+                            int status=result.getInt("status");
+                            if(status==1){
+                                isSuccess=true;
+                            }
+                        }catch (JSONException e){
+                            Log.d("lmx", "requestUpdateItems: "+e);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -294,8 +319,8 @@ public class CalendarFragment extends Fragment {
                             requestCalendarItems.add(new CalendarItem(new ScheduleItem(scheduleItems.getJSONObject(i))));
                         }
                     }
-                } catch (JSONException e) {
-                    Log.d("lmx", "requestCalendarItems: "+e);
+                } catch (Exception e) {
+                    Log.d("lmx", "requestCalendarItemsException: "+e);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

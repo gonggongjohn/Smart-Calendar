@@ -13,5 +13,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <!-- 沉浸式状态栏 -->
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

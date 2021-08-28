@@ -8,13 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amap.api.maps.model.Marker;
+import com.amap.api.services.core.LatLonPoint;
 import org.jetbrains.annotations.NotNull;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.dataBeans.POIItem;
 import team.time.smartcalendar.databinding.ItemPoiBinding;
 import team.time.smartcalendar.fragmentsfirst.PositionFragment;
 import team.time.smartcalendar.utils.LocationUtils;
-import team.time.smartcalendar.viewmodels.ScheduleViewModel;
 
 import java.util.List;
 
@@ -27,11 +27,8 @@ public class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerView
     private int checkPosition=-1;
     private Marker marker;
     private boolean[] canFinish;
-    private ScheduleViewModel scheduleViewModel;
-
-    private String oldPosition;
-    private double oldLatitude;
-    private double oldLongitude;
+    private String[] positionName;
+    private LatLonPoint point;
 
     public POIRecyclerViewAdapter(@NotNull PositionFragment fragment, RecyclerView mainView, List<POIItem> items) {
         this.parentActivity=fragment.requireActivity();
@@ -39,11 +36,8 @@ public class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerView
         this.mainView=mainView;
         this.items = items;
         this.canFinish=fragment.canFinish;
-        this.scheduleViewModel=fragment.scheduleViewModel;
-
-        oldPosition=fragment.scheduleViewModel.getPosition().getValue();
-        oldLatitude=fragment.scheduleViewModel.latitude;
-        oldLongitude=fragment.scheduleViewModel.longitude;
+        this.positionName=fragment.positionName;
+        this.point=fragment.point;
     }
 
     @NonNull
@@ -76,10 +70,10 @@ public class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerView
                 checkPosition=position;
                 moveAndMark(items.get(position));
 
-                // 新的位置信息
-                scheduleViewModel.getPosition().setValue(items.get(position).name);
-                scheduleViewModel.latitude=items.get(position).latitude;
-                scheduleViewModel.longitude=items.get(position).longitude;
+                positionName[0]=items.get(position).name;
+                point.setLatitude(items.get(position).latitude);
+                point.setLongitude(items.get(position).longitude);
+
                 canFinish[0]=true;
             }else {
                 if(marker!=null){
@@ -88,10 +82,6 @@ public class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerView
                 holder.binding.imageIcon.setImageResource(R.drawable.ic_baseline_location_on_24);
                 checkPosition=-1;
 
-                // 恢复为原来的经纬度
-                scheduleViewModel.getPosition().setValue(oldPosition);
-                scheduleViewModel.latitude=oldLatitude;
-                scheduleViewModel.longitude=oldLongitude;
                 canFinish[0]=false;
             }
         });

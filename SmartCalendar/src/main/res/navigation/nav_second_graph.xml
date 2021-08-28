@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nav_second_graph"
+            app:startDestination="@id/statFragment">
+
+    <fragment
+            android:id="@+id/statFragment"
+            android:name="team.time.smartcalendar.fragmentssecond.StatFragment"
+            android:label="StatFragment"/>
+</navigation>

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
@@ -58,8 +59,10 @@ public class PositionFragment extends Fragment {
 
     private int lastLength=0;
     public boolean[] canFinish;
+    public String[] positionName;
+    public LatLonPoint point;
 
-    public ScheduleViewModel scheduleViewModel;
+    private ScheduleViewModel scheduleViewModel;
 
     @Inject
     SharedPreferences sp;
@@ -69,7 +72,11 @@ public class PositionFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         parentActivity=requireActivity();
+
         canFinish=new boolean[1];
+        positionName=new String[1];
+        positionName[0]="";
+        point=new LatLonPoint(0.0,0.0);
 
         Bundle bundle=getArguments();
         if(bundle!=null){
@@ -86,6 +93,11 @@ public class PositionFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(PositionViewModel.class);
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_position,container,false);
+
+        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) binding.statusImage.getLayoutParams();
+        params.height= SystemUtils.STATUS_BAR_HEIGHT;
+        binding.statusImage.setLayoutParams(params);
+
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
@@ -148,8 +160,12 @@ public class PositionFragment extends Fragment {
         });
 
         binding.imageFinish.setOnClickListener(v -> {
-            if(canFinish[0]){
-                SystemUtils.hideKeyBoard(parentActivity,getEditTextList());
+            SystemUtils.hideKeyBoard(parentActivity,getEditTextList());
+            if(canFinish[0] && !positionName[0].equals("")){
+                scheduleViewModel.getPosition().setValue(positionName[0]);
+                scheduleViewModel.latitude=point.getLatitude();
+                scheduleViewModel.longitude=point.getLongitude();
+
                 controller.popBackStack();
             }else {
                 Toast.makeText(parentActivity, "请选择地点", Toast.LENGTH_SHORT).show();
@@ -226,6 +242,11 @@ public class PositionFragment extends Fragment {
                 if(i==1000){
                    RegeocodeAddress address=regeocodeResult.getRegeocodeAddress();
                     viewModel.getCity().setValue(address.getCity());
+                    // 可编辑
+                    binding.editTextSearch.setEnabled(true);
+                    binding.editTextCity.setEnabled(true);
+                }else {
+                    Toast.makeText(parentActivity, "获取位置失败", Toast.LENGTH_SHORT).show();
                 }
             }
 

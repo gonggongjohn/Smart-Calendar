@@ -26,4 +26,7 @@ public interface ApiService {
 
     @POST("/calendar/add")
     Call<ResponseBody> add(@Body RequestBody body);
+
+    @POST("/calendar/update")
+    Call<ResponseBody> update(@Body RequestBody body);
 }

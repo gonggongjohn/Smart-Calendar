@@ -12,6 +12,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import java.util.List;
 
 public class SystemUtils {
+    public static int STATUS_BAR_HEIGHT;
+
     // 隐藏键盘
     public static void hideKeyBoard(Context context,List<View>viewList){
         if (viewList == null) return;

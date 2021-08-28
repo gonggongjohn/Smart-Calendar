@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,9 +94,12 @@ public class ScheduleFragment extends Fragment {
         // 重写回退键
         SystemUtils.setBack(this);
 
+        viewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_schedule,container,false);
 
-        viewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
+        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) binding.statusImage.getLayoutParams();
+        params.height= SystemUtils.STATUS_BAR_HEIGHT;
+        binding.statusImage.setLayoutParams(params);
 
         if(isFirst){
             isFirst=false;
@@ -174,6 +179,14 @@ public class ScheduleFragment extends Fragment {
         binding.textEndTime.setOnClickListener(v -> {
             showPicker(viewModel.getEndTime().getValue(),false);
         });
+
+        binding.imagePositionIcon.setOnClickListener(v -> {
+            if(!viewModel.getPosition().getValue().equals("")){
+                viewModel.getPosition().setValue("");
+                viewModel.latitude=0.0;
+                viewModel.longitude=0.0;
+            }
+        });
     }
 
     private void showPicker(Date time,boolean isStart) {
@@ -241,8 +254,14 @@ public class ScheduleFragment extends Fragment {
     private void updateItem(){
         doItem();
         // 通知服务器修改日程
+        boolean[] isSuccess=new boolean[1];
+        requestUpdateItems(isSuccess);
         // 判断dirty值
-        item.dirty=2;
+        if(isSuccess[0]){
+            item.dirty=0;
+        }else {
+            item.dirty=2;
+        }
         // 更新数据库
         updateLocalItems();
     }
@@ -290,6 +309,9 @@ public class ScheduleFragment extends Fragment {
 
     // 计算服务器提供的category的ID
     private int getCategoryId(int index){
+        if(categories.size()==1){
+            return 1;
+        }
         return (index+2) % categories.size();
     }
 
@@ -310,10 +332,6 @@ public class ScheduleFragment extends Fragment {
                         for(int i=1;i<categoryArray.length();i++){
                             categories.add(categoryArray.getJSONObject(i).getString("name"));
                         }
-                    }else {
-                        parentActivity.runOnUiThread(() -> {
-                            Toast.makeText(getActivity(), "未登录", Toast.LENGTH_SHORT).show();
-                        });
                     }
                     categories.add("其他");
                 } catch (JSONException e) {
@@ -322,9 +340,6 @@ public class ScheduleFragment extends Fragment {
             } catch (IOException e) {
                 // 请求失败
                 categories.add("其他");
-                parentActivity.runOnUiThread(() -> {
-                    Toast.makeText(getActivity(), "网络未连接", Toast.LENGTH_SHORT).show();
-                });
             }
         });
 
@@ -337,38 +352,71 @@ public class ScheduleFragment extends Fragment {
         }
     }
 
+    @NotNull
+    private RequestBody createRequestBody(){
+        ScheduleItem scheduleItem=new ScheduleItem(item);
+        JSONObject body=new JSONObject();
+        try {
+            body.put("uuid",scheduleItem.uuid);
+            body.put("name",scheduleItem.name);
+            body.put("category",scheduleItem.categoryId);
+            body.put("start",scheduleItem.start);
+            body.put("end",scheduleItem.end);
+            // 位置信息
+            if(!scheduleItem.position.equals("")){
+                JSONObject position=new JSONObject();
+                position.put("name",scheduleItem.position);
+                position.put("latitude",scheduleItem.latitude);
+                position.put("longitude",scheduleItem.longitude);
+                body.put("position",position);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return RequestBody.create(
+                body.toString(),
+                MediaType.parse("application/json;charset=utf-8")
+        );
+    }
+
     private void requestAddItems(boolean[] isSuccess) {
         Thread thread=new Thread(() -> {
-            ScheduleItem scheduleItem=new ScheduleItem(item);
-            JSONObject body=new JSONObject();
+            RequestBody requestBody=createRequestBody();
             try {
-                body.put("uuid",scheduleItem.uuid);
-                body.put("name",scheduleItem.name);
-                body.put("category",scheduleItem.categoryId);
-                body.put("start",scheduleItem.start);
-                body.put("end",scheduleItem.end);
-                // 位置信息
-                if(!scheduleItem.position.equals("")){
-                    JSONObject position=new JSONObject();
-                    position.put("name",scheduleItem.position);
-                    position.put("latitude",scheduleItem.latitude);
-                    position.put("longitude",scheduleItem.longitude);
-                    body.put("position",position);
+                Response<ResponseBody> response=apiService.update(requestBody).execute();
+                try {
+                    JSONObject result=new JSONObject(response.body().string());
+                    Log.d("lmx", "requestUpdateItems: "+result);
+                    int status=result.getInt("status");
+                    if(status==1){
+                        isSuccess[0]=true;
+                    }
+                }catch (JSONException e){
+                    Log.d("lmx", "requestUpdateItems: "+e);
                 }
-            } catch (JSONException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+        });
 
-            RequestBody requestBody=RequestBody.create(
-                    body.toString(),
-                    MediaType.parse("application/json;charset=utf-8")
-            );
+        thread.start();
 
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void requestUpdateItems(boolean[] isSuccess) {
+        Thread thread=new Thread(() -> {
+            RequestBody requestBody=createRequestBody();
             try {
                 Response<ResponseBody> response=apiService.add(requestBody).execute();
                 try {
                     JSONObject result=new JSONObject(response.body().string());
-                    Log.d("lmx", "requestAddItems: "+result);
+                    Log.d("lmx", "requestUpdateItems: "+result);
                     int status=result.getInt("status");
                     if(status==1){
                         isSuccess[0]=true;

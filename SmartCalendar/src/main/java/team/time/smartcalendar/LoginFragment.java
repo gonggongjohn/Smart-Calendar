@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -25,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import team.time.smartcalendar.databinding.FragmentLoginBinding;
 import team.time.smartcalendar.requests.ApiService;
+import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.utils.UserUtils;
 
 import javax.inject.Inject;
@@ -44,13 +46,27 @@ public class LoginFragment extends Fragment {
     @Inject
     SharedPreferences sp;
 
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        parentActivity=getActivity();
+
+        // 获取状态栏高度
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            //根据资源ID获取响应的尺寸值
+            SystemUtils.STATUS_BAR_HEIGHT = getResources().getDimensionPixelSize(resourceId);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        parentActivity=getActivity();
-
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
+
+        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) binding.statusImage.getLayoutParams();
+        params.height= SystemUtils.STATUS_BAR_HEIGHT;
+        binding.statusImage.setLayoutParams(params);
 
         return binding.getRoot();
     }
@@ -81,11 +97,16 @@ public class LoginFragment extends Fragment {
         binding.btnRegister.setOnClickListener(v -> {
             controller.navigate(R.id.action_loginFragment_to_registerDialog);
         });
+
+        binding.btnDirect.setOnClickListener(v -> {
+            controller.navigate(R.id.action_loginFragment_to_mainFragment);
+        });
     }
 
     private void showLoginAndRegister(){
         binding.btnLogin.setVisibility(View.VISIBLE);
         binding.btnRegister.setVisibility(View.VISIBLE);
+        binding.btnDirect.setVisibility(View.VISIBLE);
     }
 
     private void login() {

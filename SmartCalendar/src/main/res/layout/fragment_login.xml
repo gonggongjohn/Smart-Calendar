@@ -13,11 +13,20 @@
             android:layout_height="match_parent"
             tools:context=".LoginFragment">
 
+        <ImageView
+                android:id="@+id/statusImage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/DodgerBlue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:background="@color/DodgerBlue"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/statusImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/constraintLayout"
@@ -96,6 +105,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout"/>
+
+        <TextView
+                android:text="直接进入"
+                android:textColor="@color/DodgerBlue"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnDirect"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline3"
+                android:layout_marginTop="60dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
