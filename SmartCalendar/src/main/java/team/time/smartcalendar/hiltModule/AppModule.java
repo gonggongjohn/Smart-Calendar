@@ -54,6 +54,13 @@ public class AppModule {
         return new HashMap<>();
     }
 
+    @Named("category")
+    @Provides
+    @Singleton
+    List<String> getCategories(){
+        return new ArrayList<>();
+    }
+
     @Provides
     @Singleton
     CookieManager provideCookieManager(Map<HttpUrl, List<Cookie>> cookieStore){

@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -24,10 +23,8 @@ import androidx.navigation.Navigation;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import dagger.hilt.android.AndroidEntryPoint;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,14 +32,10 @@ import retrofit2.Response;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.dao.CalendarItemDao;
 import team.time.smartcalendar.dataBeans.CalendarItem;
-import team.time.smartcalendar.dataBeans.ScheduleItem;
 import team.time.smartcalendar.databinding.FragmentScheduleBinding;
 import team.time.smartcalendar.requests.ApiService;
 import team.time.smartcalendar.service.MyLocationService;
-import team.time.smartcalendar.utils.ColorUtils;
-import team.time.smartcalendar.utils.DateUtils;
-import team.time.smartcalendar.utils.SystemUtils;
-import team.time.smartcalendar.utils.UserUtils;
+import team.time.smartcalendar.utils.*;
 import team.time.smartcalendar.viewmodels.ScheduleViewModel;
 
 import javax.inject.Inject;
@@ -60,7 +53,6 @@ public class ScheduleFragment extends Fragment {
     private CalendarItem item;
     private long time;
     private Activity parentActivity;
-    private List<String> categories;
     private boolean isFirst;
 
     @Inject
@@ -70,13 +62,15 @@ public class ScheduleFragment extends Fragment {
     List<CalendarItem> calendarItems;
     @Inject
     CalendarItemDao dao;
+    @Named("category")
+    @Inject
+    List<String> categories;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         parentActivity = getActivity();
-        categories=new ArrayList<>();
 
         isFirst = true;
 
@@ -97,15 +91,17 @@ public class ScheduleFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_schedule,container,false);
 
-        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) binding.statusImage.getLayoutParams();
-        params.height= SystemUtils.STATUS_BAR_HEIGHT;
-        binding.statusImage.setLayoutParams(params);
+        SystemUtils.setStatusImage(binding.statusImage);
+        SystemUtils.setAction(binding.action,"日程",R.drawable.ic_baseline_close_24,R.drawable.ic_baseline_check_24);
 
         if(isFirst){
             isFirst=false;
 
             // 工作线程发起网络请求，同步方法
-            requestCategories();
+            if(categories.isEmpty() || categories.size()==1){
+                categories.clear();
+                requestCategories();
+            }
             setSpinnerAdapter();
 
             // 接收参数
@@ -142,12 +138,12 @@ public class ScheduleFragment extends Fragment {
 
         controller = Navigation.findNavController(view);
 
-        binding.imageDrop.setOnClickListener(v -> {
+        binding.action.imageLeft.setOnClickListener(v -> {
             SystemUtils.hideKeyBoard(getContext(),getEditTextList());
             controller.popBackStack();
         });
 
-        binding.imageFinish.setOnClickListener(v -> {
+        binding.action.imageRight.setOnClickListener(v -> {
             SystemUtils.hideKeyBoard(getContext(),getEditTextList());
 
             if((viewModel.getStartTime().getValue().getTime())>(viewModel.getEndTime().getValue().getTime())){
@@ -352,37 +348,9 @@ public class ScheduleFragment extends Fragment {
         }
     }
 
-    @NotNull
-    private RequestBody createRequestBody(){
-        ScheduleItem scheduleItem=new ScheduleItem(item);
-        JSONObject body=new JSONObject();
-        try {
-            body.put("uuid",scheduleItem.uuid);
-            body.put("name",scheduleItem.name);
-            body.put("category",scheduleItem.categoryId);
-            body.put("start",scheduleItem.start);
-            body.put("end",scheduleItem.end);
-            // 位置信息
-            if(!scheduleItem.position.equals("")){
-                JSONObject position=new JSONObject();
-                position.put("name",scheduleItem.position);
-                position.put("latitude",scheduleItem.latitude);
-                position.put("longitude",scheduleItem.longitude);
-                body.put("position",position);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return RequestBody.create(
-                body.toString(),
-                MediaType.parse("application/json;charset=utf-8")
-        );
-    }
-
     private void requestAddItems(boolean[] isSuccess) {
         Thread thread=new Thread(() -> {
-            RequestBody requestBody=createRequestBody();
+            RequestBody requestBody= RequestUtils.createAddOrUpdateRequestBody(item);
             try {
                 Response<ResponseBody> response=apiService.update(requestBody).execute();
                 try {
@@ -411,7 +379,7 @@ public class ScheduleFragment extends Fragment {
 
     private void requestUpdateItems(boolean[] isSuccess) {
         Thread thread=new Thread(() -> {
-            RequestBody requestBody=createRequestBody();
+            RequestBody requestBody= RequestUtils.createAddOrUpdateRequestBody(item);
             try {
                 Response<ResponseBody> response=apiService.add(requestBody).execute();
                 try {

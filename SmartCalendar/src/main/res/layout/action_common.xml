@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@color/DodgerBlue"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:id="@+id/cl1"
+            >
+
+        <ImageView
+                android:tint="@color/white"
+                android:scaleType="centerInside"
+                android:background="@drawable/bg_ripple"
+                android:src="@drawable/ic_baseline_close_24"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/imageLeft"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/guideline5"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.15"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/guideline7"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85"/>
+
+        <ImageView
+                android:tint="@color/white"
+                android:scaleType="centerInside"
+                android:background="@drawable/bg_ripple"
+                android:src="@drawable/ic_baseline_check_24"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/imageRight"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+                android:text="日程"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textTitle"
+                app:layout_constraintEnd_toStartOf="@+id/guideline7"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
@@ -94,9 +93,8 @@ public class PositionFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(PositionViewModel.class);
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_position,container,false);
 
-        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) binding.statusImage.getLayoutParams();
-        params.height= SystemUtils.STATUS_BAR_HEIGHT;
-        binding.statusImage.setLayoutParams(params);
+        SystemUtils.setStatusImage(binding.statusImage);
+        SystemUtils.setAction(binding.action,"位置",R.drawable.ic_baseline_close_24,R.drawable.ic_baseline_check_24);
 
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
@@ -154,12 +152,12 @@ public class PositionFragment extends Fragment {
             LocationUtils.animateCamera(map,UserUtils.USER_LATITUDE,UserUtils.USER_LONGITUDE);
         });
 
-        binding.imageDrop.setOnClickListener(v -> {
+        binding.action.imageLeft.setOnClickListener(v -> {
             SystemUtils.hideKeyBoard(parentActivity,getEditTextList());
             controller.popBackStack();
         });
 
-        binding.imageFinish.setOnClickListener(v -> {
+        binding.action.imageRight.setOnClickListener(v -> {
             SystemUtils.hideKeyBoard(parentActivity,getEditTextList());
             if(canFinish[0] && !positionName[0].equals("")){
                 scheduleViewModel.getPosition().setValue(positionName[0]);

@@ -8,21 +8,18 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import team.time.smartcalendar.R;
-import team.time.smartcalendar.databinding.ItemMineBinding;
-import team.time.smartcalendar.fragmentsthird.MineFragment;
+import team.time.smartcalendar.databinding.ItemCommonBinding;
 
 import java.util.List;
 
-public class MineRecyclerViewAdapter extends RecyclerView.Adapter<MineRecyclerViewAdapter.innerHolder> {
+public  abstract class CommonRecyclerViewAdapter extends RecyclerView.Adapter<CommonRecyclerViewAdapter.innerHolder> {
     Activity parentActivity;
-    MineFragment fragment;
 
     List<String>strings;
     List<Integer>icons;
 
-    public MineRecyclerViewAdapter(MineFragment fragment,List<String> strings, List<Integer> icons) {
-        this.parentActivity=fragment.requireActivity();
-        this.fragment=fragment;
+    public CommonRecyclerViewAdapter(Activity parentActivity,List<String> strings, List<Integer> icons) {
+        this.parentActivity= parentActivity;
         this.strings = strings;
         this.icons = icons;
     }
@@ -31,9 +28,9 @@ public class MineRecyclerViewAdapter extends RecyclerView.Adapter<MineRecyclerVi
     @NotNull
     @Override
     public innerHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        ItemMineBinding binding= DataBindingUtil.inflate(
+        ItemCommonBinding binding= DataBindingUtil.inflate(
                 LayoutInflater.from(parentActivity),
-                R.layout.item_mine,
+                R.layout.item_common,
                 parent,
                 false
         );
@@ -43,8 +40,9 @@ public class MineRecyclerViewAdapter extends RecyclerView.Adapter<MineRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull @NotNull innerHolder holder, int position) {
         holder.setData(strings.get(position),icons.get(position));
+        setItemView(holder.binding,position);
         holder.binding.viewItem.setOnClickListener(v -> {
-            go(position);
+            onItemClick(strings,icons,position);
         });
     }
 
@@ -54,9 +52,9 @@ public class MineRecyclerViewAdapter extends RecyclerView.Adapter<MineRecyclerVi
     }
 
     public class innerHolder extends RecyclerView.ViewHolder {
-        private ItemMineBinding binding;
+        private ItemCommonBinding binding;
 
-        public innerHolder(@NotNull ItemMineBinding binding) {
+        public innerHolder(@NotNull ItemCommonBinding binding) {
             super(binding.getRoot());
             this.binding=binding;
         }
@@ -67,11 +65,8 @@ public class MineRecyclerViewAdapter extends RecyclerView.Adapter<MineRecyclerVi
         }
     }
 
-    private void go(int position) {
-        switch (position){
-            case 0:
-                fragment.controller.navigate(R.id.action_mineFragment_to_accountFragment);
-                break;
-        }
+    protected abstract void onItemClick(List<String> strings,List<Integer>icons,int position);
+
+    protected void setItemView(ItemCommonBinding binding, int position) {
     }
 }

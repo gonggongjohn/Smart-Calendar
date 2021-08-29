@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 import dagger.hilt.android.AndroidEntryPoint;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import org.json.JSONArray;
@@ -34,6 +32,7 @@ import team.time.smartcalendar.dataBeans.ScheduleItem;
 import team.time.smartcalendar.databinding.FragmentCalendarBinding;
 import team.time.smartcalendar.requests.ApiService;
 import team.time.smartcalendar.utils.DateUtils;
+import team.time.smartcalendar.utils.RequestUtils;
 import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.utils.UserUtils;
 import team.time.smartcalendar.viewmodels.CalendarViewModel;
@@ -99,9 +98,7 @@ public class CalendarFragment extends Fragment {
         binding = DataBindingUtil.inflate(
                 inflater,R.layout.fragment_calendar,container,false);
 
-        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) binding.statusImage.getLayoutParams();
-        params.height= SystemUtils.STATUS_BAR_HEIGHT;
-        binding.statusImage.setLayoutParams(params);
+        SystemUtils.setStatusImage(binding.statusImage);
 
         viewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
         binding.setViewModel(viewModel);
@@ -236,29 +233,7 @@ public class CalendarFragment extends Fragment {
             for(CalendarItem item:calendarItems){
                 boolean isSuccess=false;
 
-                ScheduleItem scheduleItem=new ScheduleItem(item);
-                JSONObject body=new JSONObject();
-                try {
-                    body.put("uuid",scheduleItem.uuid);
-                    body.put("name",scheduleItem.name);
-                    body.put("category",scheduleItem.categoryId);
-                    body.put("start",scheduleItem.start);
-                    body.put("end",scheduleItem.end);
-                    // 位置信息
-                    if(!scheduleItem.position.equals("")){
-                        JSONObject position=new JSONObject();
-                        position.put("name",scheduleItem.position);
-                        position.put("latitude",scheduleItem.latitude);
-                        position.put("longitude",scheduleItem.longitude);
-                        body.put("position",position);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                RequestBody requestBody=RequestBody.create(
-                        body.toString(),
-                        MediaType.parse("application/json;charset=utf-8")
-                );
+                RequestBody requestBody= RequestUtils.createAddOrUpdateRequestBody(item);
 
                 if (item.dirty==1){
                     try {

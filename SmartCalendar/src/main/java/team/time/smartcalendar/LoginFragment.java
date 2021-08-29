@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -64,9 +63,7 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
 
-        ConstraintLayout.LayoutParams params= (ConstraintLayout.LayoutParams) binding.statusImage.getLayoutParams();
-        params.height= SystemUtils.STATUS_BAR_HEIGHT;
-        binding.statusImage.setLayoutParams(params);
+        SystemUtils.setStatusImage(binding.statusImage);
 
         return binding.getRoot();
     }
