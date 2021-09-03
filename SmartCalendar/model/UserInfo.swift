@@ -16,6 +16,7 @@ class UserInfo: NSObject, NSSecureCoding, ObservableObject {
     @Published var occupation: IdNameRow?
     @Published var major: IdNameRow?
     @Published var school: IdNameRow?
+    var meqScore: Int?
     
     required init?(coder: NSCoder) {
         self.username = coder.decodeObject(forKey: "username") as? String ?? ""
@@ -24,6 +25,10 @@ class UserInfo: NSObject, NSSecureCoding, ObservableObject {
         self.occupation = coder.decodeObject(forKey: "occupation") as? IdNameRow
         self.major = coder.decodeObject(forKey: "major") as? IdNameRow
         self.school = coder.decodeObject(forKey: "school") as? IdNameRow
+        let meq_decoded = coder.decodeInteger(forKey: "meq_score")
+        if(meq_decoded >= 0){
+            self.meqScore = meq_decoded
+        }
     }
     
     init(username: String, password: String) {
@@ -45,6 +50,12 @@ class UserInfo: NSObject, NSSecureCoding, ObservableObject {
         }
         if(school != nil){
             coder.encode(school, forKey: "school")
+        }
+        if(meqScore != nil){
+            coder.encode(meqScore!, forKey: "meq_score")
+        }
+        else{
+            coder.encode(-1, forKey: "meq_score")
         }
     }
     

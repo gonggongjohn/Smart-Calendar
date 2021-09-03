@@ -118,7 +118,7 @@ struct ProfileCollectView: View {
                                 }
                                 return uiScreen?.delegate as? UIWindowSceneDelegate
                             }()
-                            delegate?.window!?.rootViewController = UIHostingController(rootView: MainView(lazy: false))
+                            delegate?.window!?.rootViewController = UIHostingController(rootView: MEQView())
                         }
                     }
                 })

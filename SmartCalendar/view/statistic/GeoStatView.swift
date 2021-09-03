@@ -8,96 +8,67 @@ import MapKit
 import Photos
 
 struct GeoStatView: View {
-    private var geoUtils: GeoUtils
-    private var profileUtils: StorageUtils
-    private var locHistory: GeoHistory?
-    private var geoItems: [GeoItem] = []
+    @State private var geo_items: [GeoItem] = []
+    @State private var map_state = MapStateWrapper(latitude: 31.230685, longitude: 121.475207, latitudeDelta: 0.06, longitudeDelta: 0.06)
     
-    init() {
-        self.geoUtils = GeoUtils()
-        self.profileUtils = StorageUtils()
-        let fromDate = DateUtils.getDate(year: 2021, month: 3, day: 20)
-        let toDate = DateUtils.getDate(time: Date())
-        self.locHistory = self.profileUtils.getGeoHistory(from: fromDate, to: toDate)
-        if locHistory != nil{
-            for item in self.locHistory!.getHistoryList() {
-                let time = item.geo.timestamp
-                let name = item.name
-                self.geoItems.append(GeoItem(place: name, time: DateUtils.getDateString(date: time)))
-            }
-        }
-    }
     var body: some View {
         VStack{
-            //MapView(locations: self.locHistory)
+            MapView(state: self.map_state)
+                .frame(maxHeight: 300)
             List{
-                ForEach(self.geoItems){ geoItem in GeoItemRow(geoItem: geoItem)
+                ForEach(self.geo_items.sorted(by: { $0.start <= $1.start })){ geo_item in GeoItemRow(geoItem: geo_item)
                 }
             }
         }
+        .onAppear(perform: {
+            let schedule_local = StorageUtils.getScheduleFromLocal()
+            if(schedule_local != nil){
+                let schedule_list = Array(schedule_local!.schedules.values)
+                for schedule in schedule_list{
+                    if(schedule.position != nil){
+                        let geo_item = GeoItem(place: schedule.position!, start:  schedule.start, end: schedule.end)
+                        self.geo_items.append(geo_item)
+                    }
+                }
+            }
+            self.map_state.pointList = []
+            for item in self.geo_items{
+                self.map_state.pointList!.append(item.place)
+                self.map_state.updateFlag = true
+            }
+        })
     }
 }
 
 struct GeoItem: Identifiable {
     var id = UUID()
-    var place: String
-    var time: String
+    var place: GeoPoint
+    var start: Date
+    var end: Date
 }
 
 struct GeoItemRow: View {
     var geoItem: GeoItem
     
     var body: some View {
-        HStack{
-            Text("地点：\(geoItem.place)")
-            Spacer()
-            Text("时间：\(geoItem.time)")
+        VStack{
+            Text("地点：\(geoItem.place.name)")
+            Text("开始时间：\(DateUtils.date2str(date: geoItem.start))")
+            Text("开始时间：\(DateUtils.date2str(date: geoItem.end))")
         }
         .padding(.all)
-        .background(/*@START_MENU_TOKEN@*//*@PLACEHOLDER=View@*/Color.green/*@END_MENU_TOKEN@*/)
-        .cornerRadius(20.0)
-        .shadow(radius: 3)
-    }
-}
-
-/*
-struct MapView: UIViewRepresentable {
-    var locations: GeoHistory?
-    let geoUtils = GeoUtils()
-    
-    func makeUIView(context: Context) -> MKMapView {
-        let mapView = MKMapView()
-        mapView.delegate = context.coordinator
-        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 31.229055, longitude: 121.406704), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-        mapView.setRegion(region, animated: true)
-        if locations != nil{
-            for location in locations!.getHistoryList(){
-                let annotation = MKPointAnnotation()
-                annotation.title = location.name
-                let fixedCoord = geoUtils.transformWGSToGCJ(wgsLocation: location.geo.coordinate)
-                annotation.coordinate = fixedCoord
-                mapView.addAnnotation(annotation)
+        .background(
+            HStack{
+                RoundedRectangle(cornerRadius: 8)
+                        .fill(Color(.systemGreen))
+                        .frame(width: 5)
+                Spacer()
             }
-        }
-        return mapView
-    }
-    
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator: NSObject, MKMapViewDelegate{
-        var parent: MapView
-        init(_ parent: MapView) {
-            self.parent = parent
-        }
+        )
+        .cornerRadius(20.0)
+        .shadow(radius: 2)
     }
 }
-*/
 
 struct GeoStatView_Previews: PreviewProvider {
     static var previews: some View {

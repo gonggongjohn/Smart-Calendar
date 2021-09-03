@@ -127,26 +127,32 @@ class StorageUtils {
     }
     
     public static func saveScheduleToLocal(container: ScheduleContainer){
-        do{
-            let data = try NSKeyedArchiver.archivedData(withRootObject: container, requiringSecureCoding: true)
-            let key = "schedule_local"
-            UserDefaults.standard.setValue(data, forKey: key)
-        }
-        catch{
-            print("Error ocurred when saving schedule history!")
+        let user_info = StorageUtils.getUserInfo()
+        if(user_info != nil){
+            do{
+                let data = try NSKeyedArchiver.archivedData(withRootObject: container, requiringSecureCoding: true)
+                let key = "schedule_local_" + user_info!.getUsername()
+                UserDefaults.standard.setValue(data, forKey: key)
+            }
+            catch{
+                print("Error ocurred when saving schedule history!")
+            }
         }
     }
     
     public static func getScheduleFromLocal() -> ScheduleContainer?{
-        let key = "schedule_local"
-        let data = UserDefaults.standard.data(forKey: key)
+        let user_info = StorageUtils.getUserInfo()
         var container: ScheduleContainer?
-        if data != nil {
-            do{
-                container = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data!) as? ScheduleContainer
-            }
-            catch{
-                print("Error occurred when getting schedule history!")
+        if(user_info != nil){
+            let key = "schedule_local_" + user_info!.getUsername()
+            let data = UserDefaults.standard.data(forKey: key)
+            if data != nil {
+                do{
+                    container = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data!) as? ScheduleContainer
+                }
+                catch{
+                    print("Error occurred when getting schedule history!")
+                }
             }
         }
         return container

@@ -95,6 +95,20 @@ class DateUtils{
         return seq
     }
     
+    public static func getTimeSeq(from: Date, to: Date, intervalDay: Int, delta: Int) -> [Date]{
+        var seq: [Date] = []
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: from)
+        let startFromDate = calendar.date(from: components)!
+        let nextSchedule = calendar.date(byAdding: Calendar.Component.second, value: delta, to: startFromDate)!
+        var cur = nextSchedule
+        while cur.timeIntervalSince1970 <= to.timeIntervalSince1970 {
+            seq.append(cur)
+            cur = calendar.date(byAdding: Calendar.Component.day, value: intervalDay, to: cur)!
+        }
+        return seq
+    }
+    
     public static func getDayNextWeek(from: Date) -> Date{
         let calendar = Calendar.current
         var target = calendar.date(byAdding: Calendar.Component.day, value: 7, to: from)!

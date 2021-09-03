@@ -19,7 +19,7 @@ struct MainView: View {
             if(self.complete_flag){
                 VStack{
                     TabView {
-                        CalendarView().tabItem {
+                        CalendarSimpleView().tabItem {
                             Image(systemName: "calendar")
                             Text("日程")
                         }

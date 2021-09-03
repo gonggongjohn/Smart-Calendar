@@ -195,4 +195,69 @@ class ScheduleUtils{
             }
         }
     }
+    
+    public static func getOptimalSchedule(feature: DynamicSchedule, completion: @escaping (Bool, [Schedule]) -> Void){
+        let server = Config.host + "/calendar/arrange"
+        let body: [String: Any] = ["name": feature.name, "category": feature.category.id, "duration": feature.duration, "from": feature.from.timeIntervalSince1970, "to": feature.to.timeIntervalSince1970]
+        AF.request(server, method: .post, parameters: body, encoding: JSONEncoding.default, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
+            if(response.error == nil && response.value != nil){
+                let result = JSON(response.value!)
+                if(result["status"].intValue == 1){
+                    var schedule_list: [Schedule] = []
+                    for (_, item): (String, JSON) in result["schedule"]{
+                        let name = item["name"].stringValue
+                        let category_id = item["category"]["id"].intValue
+                        let category_name = item["category"]["name"].stringValue
+                        let start = item["start"].floatValue
+                        let end = item["end"].floatValue
+                        let schedule = Schedule(name: name, categoryId: category_id, categoryName: category_name, start: Date(timeIntervalSince1970: TimeInterval(start)), end: Date(timeIntervalSince1970: TimeInterval(end)), pos: nil)
+                        schedule_list.append(schedule)
+                    }
+                    completion(true, schedule_list)
+                }
+                else{
+                    print("Error occurred when phasing response json!")
+                    completion(false, [])
+                }
+            }
+            else{
+                print(response.error!)
+                print("Error occurred when requesting server!")
+                completion(false, [])
+            }
+        }
+    }
+    
+    public static func getSharePicture(completion: @escaping (Bool, UIImage?) -> Void){
+        let server = Config.host + "/calendar/share"
+        AF.request(server, method: .get, requestModifier: { $0.timeoutInterval = 30}).validate().responseJSON { response in
+            if(response.error == nil && response.value != nil){
+                let result = JSON(response.value!)
+                if(result["status"].intValue == 1){
+                    let picture_base64 = result["picture"].stringValue
+                    let picture_data = Data(base64Encoded: picture_base64, options: .ignoreUnknownCharacters)
+                    if(picture_data != nil){
+                        let picture = UIImage.init(data: picture_data!)
+                        if(picture != nil){
+                            UIImageWriteToSavedPhotosAlbum(picture!, nil, nil, nil)
+                            completion(true, picture)
+                        }
+                        else{
+                            completion(false, nil)
+                        }
+                    }
+                    else{
+                        completion(false, nil)
+                    }
+                }
+                else{
+                    completion(false, nil)
+                }
+            }
+            else{
+                print(response.error!)
+                completion(false, nil)
+            }
+        }
+    }
 }

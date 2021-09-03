@@ -70,6 +70,54 @@ struct AccountView: View {
                         UserInfoSubmitButton(toggle: $toggle_schoolSheet, info: user_info)
                     }
                 }
+                
+                HStack{
+                    Text("MEQ指数")
+                    Spacer()
+                    Button(action:{
+                        /*
+                        DispatchQueue.main.async{
+                            let delegate: UIWindowSceneDelegate? = {
+                                var uiScreen: UIScene?
+                                UIApplication.shared.connectedScenes.forEach {
+                                    (screen) in
+                                    uiScreen = screen
+                                }
+                                return uiScreen?.delegate as? UIWindowSceneDelegate
+                            }()
+                            delegate?.window!?.rootViewController = UIHostingController(rootView: MEQView())
+                        }
+                         */
+                    }){
+                        Text("\(self.user_info.meqScore == nil ? "No Record" : String(self.user_info.meqScore!))")
+                    }.sheet(isPresented: $toggle_schoolSheet){
+                        SchoolSelectView(school_chosen: $user_info.school)
+                        UserInfoSubmitButton(toggle: $toggle_schoolSheet, info: user_info)
+                    }
+                }
+                
+                Spacer().frame(maxHeight: 50)
+                
+                Button(action: {
+                    DispatchQueue.main.async{
+                        let delegate: UIWindowSceneDelegate? = {
+                            var uiScreen: UIScene?
+                            UIApplication.shared.connectedScenes.forEach {
+                                (screen) in
+                                uiScreen = screen
+                            }
+                            return uiScreen?.delegate as? UIWindowSceneDelegate
+                        }()
+                        delegate?.window!?.rootViewController = UIHostingController(rootView: LoginView())
+                    }
+                }){
+                    Text("退出登录")
+                        .font(.title2)
+                        .frame(maxWidth: 300, maxHeight: 60, alignment: .center)
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(15.0)
+                }
             }
         }.padding()
         .onAppear(perform: {
@@ -77,7 +125,19 @@ struct AccountView: View {
                 (status, info) -> Void in
                 if(status){
                     DispatchQueue.main.async {
-                        self.user_info.nickname = info!["nickname"]!
+                        self.user_info.nickname = info!["nickname"] as? String
+                        if(info!["occupation"] != nil){
+                            self.user_info.occupation = IdNameRow(id: 1, name: info!["occupation"] as? String ?? "Occupation")
+                        }
+                        if(info!["major"] != nil){
+                            self.user_info.major = IdNameRow(id: 1, name: info!["major"] as? String ?? "Major")
+                        }
+                        if(info!["school"] != nil){
+                            self.user_info.school = IdNameRow(id: 1, name: info!["school"] as? String ?? "School")
+                        }
+                        if(info!["meq_feature"] != nil){
+                            self.user_info.meqScore = info!["meq_feature"] as? Int
+                        }
                     }
                 }
             })

@@ -4,13 +4,13 @@
 //
 
 import SwiftUI
-import SwiftUICharts
 
 struct ScheduleStatView: View {
-    var chartData: ChartData
-    var schedules: [ScheduleItem] = []
+    @State var chart_data: [(String, Double)] = []
+    @State var schedules: [ScheduleStatItem] = []
     
     init() {
+        /*
         chartData = ChartData(values: [("作息", 65), ("课程", 60), ("娱乐", 26), ("其他", 24)])
         schedules.append(ScheduleItem(name: "睡眠", category: "作息", last: 45))
         schedules.append(ScheduleItem(name: "三餐", category: "作息", last: 20))
@@ -22,41 +22,76 @@ struct ScheduleStatView: View {
         schedules.append(ScheduleItem(name: "离散数学 课程", category: "课程", last: 4))
         schedules.append(ScheduleItem(name: "数据科学与工程数学基础 课程", category: "课程", last: 4))
         schedules.append(ScheduleItem(name: "数据伦理 课程", category: "课程", last: 2))
+ */
     }
     var body: some View {
         VStack{
-            BarChartView(data: chartData, title: "日程分布", legend: "Quarterly", form: ChartForm.extraLarge)
+            if(self.chart_data.count > 0){
+                /*
+                BarChartView(data: chart_data!, title: "日程分布", legend: "Quarterly", form: ChartForm.extraLarge)
+ */
+                BarChart()
+                    .data(chart_data)
+                    .chartStyle(ChartStyle(backgroundColor: .accentColor, foregroundColor: ColorGradient(.blue, .purple)))
+            }
             List{
-                ForEach(self.schedules){ schedule in
-                    ScheduleItemRow(item: schedule)
+                if(self.schedules.count > 0){
+                    ForEach(self.schedules){ schedule in
+                        ScheduleItemRow(item: schedule)
+                    }
                 }
             }
         }
+        .onAppear(perform: {
+            let schedule_local = StorageUtils.getScheduleFromLocal()
+            if(schedule_local != nil){
+                var stat_dict: [String: Double] = [:]
+                for schedule in schedule_local!.schedules.values{
+                    if(stat_dict[schedule.category.name] == nil){
+                        stat_dict[schedule.category.name] = 0.0
+                    }
+                    let duration = (schedule.end.timeIntervalSince1970 - schedule.start.timeIntervalSince1970) / 3600.0
+                    stat_dict[schedule.category.name]! += duration
+                }
+                var stat_list: [(String, Double)] = []
+                self.schedules = []
+                for (title, stat) in stat_dict{
+                    stat_list.append((title, stat))
+                    self.schedules.append(ScheduleStatItem(name: title, category: title, duration: stat))
+                }
+                self.chart_data = stat_list
+            }
+        })
     }
 }
 
-struct ScheduleItem: Identifiable {
+struct ScheduleStatItem: Identifiable {
     var id = UUID()
     var name: String
     var category: String
-    var last: Int
+    var duration: Double
 }
 
 struct ScheduleItemRow: View {
-    var item: ScheduleItem
+    var item: ScheduleStatItem
     
     var body: some View{
-        HStack{
-            Text("日程：\(item.name)")
-            Spacer()
+        VStack{
             Text("类别：\(item.category)")
             Spacer()
-            Text("时长：\(item.last) 小时")
+            Text("总计时长：\(String(format: "%.2f", item.duration)) 小时")
         }
         .padding(.all)
-        .background(/*@START_MENU_TOKEN@*//*@PLACEHOLDER=View@*/Color.green/*@END_MENU_TOKEN@*/)
+        .background(
+            HStack{
+                RoundedRectangle(cornerRadius: 8)
+                        .fill(Color(.systemGreen))
+                        .frame(width: 5)
+                Spacer()
+            }
+        )
         .cornerRadius(20.0)
-        .shadow(radius: 3)
+        .shadow(radius: 2)
     }
 }
 

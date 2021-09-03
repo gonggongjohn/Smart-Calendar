@@ -11,6 +11,7 @@ struct AddNormalView: View {
     @State private var category_chosen: Int = -1
     @State private var category_options: [(id: Int, name: String)] = []
     @State private var is_periodic: Bool = false
+    @State private var is_personal: Bool = false
     @State private var period_chosen: Int = -1
     @State private var period_options: [(id: Int, name: String)] = []
     @State private var start: Date = Date()
@@ -105,29 +106,46 @@ struct AddNormalView: View {
                 }
             }
             
+            Toggle(isOn: $is_personal){
+                Text("设置为个人日程")
+                    .font(.title3)
+            }
+            
             Spacer().frame(maxHeight: 30)
             
             HStack{
                 Button(action: {
                     if(self.name != "" && self.category_chosen != -1) {
                         if(self.is_periodic){
-                            let from_date = DateUtils.getDate(time: self.from)
-                            let to_date = DateUtils.getDate(time: self.to)
-                            let day = self.period_options[self.period_chosen].id
-                            let start_delta = Int(self.start.timeIntervalSince(DateUtils.getDate(time: self.start)))
-                            let end_delta = Int(self.end.timeIntervalSince(DateUtils.getDate(time: self.end)))
-                            let start_seq = DateUtils.getTimeSeq(from: from_date, to: to_date, day: day, delta: start_delta)
-                            let end_seq = DateUtils.getTimeSeq(from: from_date, to: to_date, day: day, delta: end_delta)
-                            if(start_seq.count == end_seq.count){
-                                for i in 0 ..< start_seq.count {
-                                    let schedule = Schedule(name: self.name, categoryId: self.category_options[self.category_chosen].id, categoryName: self.category_options[self.category_chosen].name, start: start_seq[i], end: end_seq[i], pos: self.pos)
-                                    self.schedules.append(schedule)
-                                    ScheduleUtils.addStorage(schedule: schedule, local_container: self.schedule_local, completion: {
-                                        (status) -> Void in
-                                        if(status){
-                                            print("Server synchronization succeeded!")
-                                        }
-                                    })
+                            if(self.period_chosen != -1){
+                                let from_date = DateUtils.getDate(time: self.from)
+                                let to_date = DateUtils.getDate(time: self.to)
+                                let period_index = self.period_options[self.period_chosen].id
+                                let start_delta = Int(self.start.timeIntervalSince(DateUtils.getDate(time: self.start)))
+                                let end_delta = Int(self.end.timeIntervalSince(DateUtils.getDate(time: self.end)))
+                                var start_seq: [Date] = []
+                                var end_seq: [Date] = []
+                                if(period_index == 0){
+                                    /* Every day */
+                                    start_seq = DateUtils.getTimeSeq(from: from_date, to: to_date, intervalDay: 1, delta: start_delta)
+                                    end_seq = DateUtils.getTimeSeq(from: from_date, to: to_date, intervalDay: 1, delta: end_delta)
+                                }
+                                else if(period_index >= 1 && period_index <= 7){
+                                    /* Every specific day of a week */
+                                    start_seq = DateUtils.getTimeSeq(from: from_date, to: to_date, day: period_index, delta: start_delta)
+                                    end_seq = DateUtils.getTimeSeq(from: from_date, to: to_date, day: period_index, delta: end_delta)
+                                }
+                                if(start_seq.count == end_seq.count){
+                                    for i in 0 ..< start_seq.count {
+                                        let schedule = Schedule(name: self.name, categoryId: self.category_options[self.category_chosen].id, categoryName: self.category_options[self.category_chosen].name, start: start_seq[i], end: end_seq[i], pos: self.pos)
+                                        self.schedules.append(schedule)
+                                        ScheduleUtils.addStorage(schedule: schedule, local_container: self.schedule_local, completion: {
+                                            (status) -> Void in
+                                            if(status){
+                                                print("Server synchronization succeeded!")
+                                            }
+                                        })
+                                    }
                                 }
                             }
                         }

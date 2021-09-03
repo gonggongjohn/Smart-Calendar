@@ -16,19 +16,26 @@
 		2C0BC49426010A1B004387A1 /* ScheduleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0BC49326010A1B004387A1 /* ScheduleStatView.swift */; };
 		2C0FC42B2609964C009A0431 /* HistoryDateWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0FC42A2609964C009A0431 /* HistoryDateWrapper.swift */; };
 		2C0FC42E2609B8FA009A0431 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0FC42D2609B8FA009A0431 /* DateUtils.swift */; };
+		2C18923E26E1B37F00A29BDD /* ScheduleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C18923D26E1B37F00A29BDD /* ScheduleRow.swift */; };
 		2C1C412F25E16C2F000B7712 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1C412E25E16C2F000B7712 /* CalendarView.swift */; };
 		2C1C413325E17981000B7712 /* StatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1C413225E17981000B7712 /* StatisticView.swift */; };
 		2C1C413C25E179D8000B7712 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1C413B25E179D8000B7712 /* UserView.swift */; };
 		2C24CEE825F5106F00068178 /* GeoHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C24CEE725F5106F00068178 /* GeoHistory.swift */; };
+		2C2DDC9326DF6F82008DDE17 /* CalendarSimpleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2DDC9226DF6F82008DDE17 /* CalendarSimpleView.swift */; };
 		2C34244C26C388D2009771A8 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C34244B26C388D2009771A8 /* UserInfo.swift */; };
 		2C34244E26C3AC06009771A8 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C34244D26C3AC06009771A8 /* Config.swift */; };
 		2C34245326C3B1FA009771A8 /* AddScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C34245226C3B1FA009771A8 /* AddScheduleView.swift */; };
 		2C34245526C3B444009771A8 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C34245426C3B444009771A8 /* Schedule.swift */; };
 		2C34245726C3B497009771A8 /* ScheduleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C34245626C3B497009771A8 /* ScheduleUtils.swift */; };
 		2C34245926C4240E009771A8 /* AddLessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C34245826C4240E009771A8 /* AddLessonView.swift */; };
+		2C3DB8C426DA3D4A00E03DA2 /* ElegantCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3DB8C326DA3D4A00E03DA2 /* ElegantCalendar */; };
+		2C3DB8C626DA3E5700E03DA2 /* ElegantCalendar.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C3DB8C526DA3E5700E03DA2 /* ElegantCalendar.xcassets */; };
+		2C479D3E26DA667900E3B3C8 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C479D3D26DA667900E3B3C8 /* ScheduleView.swift */; };
 		2C5F22E225FB4512004684E6 /* PhotoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5F22E125FB4512004684E6 /* PhotoUtils.swift */; };
 		2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */; };
 		2C739E0025FC9AB5005F7E6A /* GeoStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C739DFF25FC9AB5005F7E6A /* GeoStatView.swift */; };
+		2C8803BC26DBE908009FFBC4 /* MEQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8803BB26DBE908009FFBC4 /* MEQView.swift */; };
+		2C8803BE26DBF226009FFBC4 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8803BD26DBF226009FFBC4 /* Question.swift */; };
 		2C901D7126D28D0A006B9FEB /* ProfileCollectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C901D7026D28D0A006B9FEB /* ProfileCollectView.swift */; };
 		2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */; };
 		2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9756C225BD2D1A006378D0 /* LoginView.swift */; };
@@ -45,8 +52,42 @@
 		2CC6F7AC25FFACE4004434D1 /* scene_1615560045.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6F7AB25FFACE4004434D1 /* scene_1615560045.mlmodel */; };
 		2CC8553D25ED37ED00D892D4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CC8553C25ED37ED00D892D4 /* MapKit.framework */; };
 		2CCFB71326C2BF3100BB7523 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCFB71226C2BF3100BB7523 /* RegisterView.swift */; };
-		2CD3F0772602119D00EB15F8 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 2CD3F0762602119D00EB15F8 /* SwiftUICharts */; };
+		2CE22A2F26DE256700FF4D3E /* DynamicSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE22A2E26DE256700FF4D3E /* DynamicSchedule.swift */; };
 		2CE448B126CF7EAB00C91A5D /* ScheduleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE448B026CF7EAB00C91A5D /* ScheduleContainer.swift */; };
+		2CF4F82326DF93CE000225FB /* BarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F7F726DF93CE000225FB /* BarChart.swift */; };
+		2CF4F82426DF93CE000225FB /* BarChartRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F7F826DF93CE000225FB /* BarChartRow.swift */; };
+		2CF4F82526DF93CE000225FB /* BarChartCellShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F7F926DF93CE000225FB /* BarChartCellShape.swift */; };
+		2CF4F82626DF93CE000225FB /* BarChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F7FA26DF93CE000225FB /* BarChartCell.swift */; };
+		2CF4F82726DF93CE000225FB /* RingsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F7FC26DF93CE000225FB /* RingsChart.swift */; };
+		2CF4F82826DF93CE000225FB /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F7FD26DF93CE000225FB /* Ring.swift */; };
+		2CF4F82926DF93CE000225FB /* RingsChartRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F7FE26DF93CE000225FB /* RingsChartRow.swift */; };
+		2CF4F82A26DF93CE000225FB /* PieChartRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80026DF93CE000225FB /* PieChartRow.swift */; };
+		2CF4F82B26DF93CE000225FB /* PieChartHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80126DF93CE000225FB /* PieChartHelpers.swift */; };
+		2CF4F82C26DF93CE000225FB /* PieChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80226DF93CE000225FB /* PieChartCell.swift */; };
+		2CF4F82D26DF93CE000225FB /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80326DF93CE000225FB /* PieChart.swift */; };
+		2CF4F82E26DF93CE000225FB /* IndicatorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80526DF93CE000225FB /* IndicatorPoint.swift */; };
+		2CF4F82F26DF93CE000225FB /* LineBackgroundShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80626DF93CE000225FB /* LineBackgroundShapeView.swift */; };
+		2CF4F83026DF93CE000225FB /* LineShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80726DF93CE000225FB /* LineShape.swift */; };
+		2CF4F83126DF93CE000225FB /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80826DF93CE000225FB /* LineChart.swift */; };
+		2CF4F83226DF93CE000225FB /* LineBackgroundShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80926DF93CE000225FB /* LineBackgroundShape.swift */; };
+		2CF4F83326DF93CE000225FB /* LineShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80A26DF93CE000225FB /* LineShapeView.swift */; };
+		2CF4F83426DF93CE000225FB /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80B26DF93CE000225FB /* Line.swift */; };
+		2CF4F83526DF93CE000225FB /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80E26DF93CE000225FB /* ChartData.swift */; };
+		2CF4F83626DF93CE000225FB /* ChartBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F80F26DF93CE000225FB /* ChartBase.swift */; };
+		2CF4F83726DF93CE000225FB /* ChartValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81026DF93CE000225FB /* ChartValue.swift */; };
+		2CF4F83826DF93CE000225FB /* ChartLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81226DF93CE000225FB /* ChartLabel.swift */; };
+		2CF4F83926DF93CE000225FB /* ChartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81426DF93CE000225FB /* ChartStyle.swift */; };
+		2CF4F83A26DF93CE000225FB /* ColorGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81526DF93CE000225FB /* ColorGradient.swift */; };
+		2CF4F83B26DF93CE000225FB /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81626DF93CE000225FB /* Colors.swift */; };
+		2CF4F83C26DF93CE000225FB /* ChartBase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81826DF93CE000225FB /* ChartBase+Extension.swift */; };
+		2CF4F83D26DF93CE000225FB /* Path+QuadCurve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81926DF93CE000225FB /* Path+QuadCurve.swift */; };
+		2CF4F83E26DF93CE000225FB /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81A26DF93CE000225FB /* Color+Extension.swift */; };
+		2CF4F83F26DF93CE000225FB /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81B26DF93CE000225FB /* CGPoint+Extension.swift */; };
+		2CF4F84026DF93CE000225FB /* CGRect+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81C26DF93CE000225FB /* CGRect+Extension.swift */; };
+		2CF4F84126DF93CE000225FB /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81D26DF93CE000225FB /* View+Extension.swift */; };
+		2CF4F84226DF93CE000225FB /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F81E26DF93CE000225FB /* Array+Extension.swift */; };
+		2CF4F84326DF93CE000225FB /* StatisticCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F82026DF93CE000225FB /* StatisticCardView.swift */; };
+		2CF4F84426DF93CE000225FB /* ChartGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF4F82226DF93CE000225FB /* ChartGrid.swift */; };
 		2CF6C63E26D3919F0040D2F1 /* SetLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6C63D26D3919F0040D2F1 /* SetLocationView.swift */; };
 		2CF7B57726C54235002AF014 /* AddNormalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF7B57626C54235002AF014 /* AddNormalView.swift */; };
 		2CF7B57926C54DEB002AF014 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF7B57826C54DEB002AF014 /* Lesson.swift */; };
@@ -65,19 +106,25 @@
 		2C0BC49326010A1B004387A1 /* ScheduleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleStatView.swift; sourceTree = "<group>"; };
 		2C0FC42A2609964C009A0431 /* HistoryDateWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDateWrapper.swift; sourceTree = "<group>"; };
 		2C0FC42D2609B8FA009A0431 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
+		2C18923D26E1B37F00A29BDD /* ScheduleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleRow.swift; sourceTree = "<group>"; };
 		2C1C412E25E16C2F000B7712 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		2C1C413225E17981000B7712 /* StatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticView.swift; sourceTree = "<group>"; };
 		2C1C413B25E179D8000B7712 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		2C24CEE725F5106F00068178 /* GeoHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoHistory.swift; sourceTree = "<group>"; };
+		2C2DDC9226DF6F82008DDE17 /* CalendarSimpleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSimpleView.swift; sourceTree = "<group>"; };
 		2C34244B26C388D2009771A8 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		2C34244D26C3AC06009771A8 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		2C34245226C3B1FA009771A8 /* AddScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleView.swift; sourceTree = "<group>"; };
 		2C34245426C3B444009771A8 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		2C34245626C3B497009771A8 /* ScheduleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleUtils.swift; sourceTree = "<group>"; };
 		2C34245826C4240E009771A8 /* AddLessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLessonView.swift; sourceTree = "<group>"; };
+		2C3DB8C526DA3E5700E03DA2 /* ElegantCalendar.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = ElegantCalendar.xcassets; path = ../../../SourcePackages/checkouts/ElegantCalendar/ElegantCalendar.xcassets; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C479D3D26DA667900E3B3C8 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		2C5F22E125FB4512004684E6 /* PhotoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUtils.swift; sourceTree = "<group>"; };
 		2C6E7F4325BDA58E00AEC5BC /* GeoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeoUtils.swift; path = SmartCalendar/GeoUtils.swift; sourceTree = SOURCE_ROOT; };
 		2C739DFF25FC9AB5005F7E6A /* GeoStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoStatView.swift; sourceTree = "<group>"; };
+		2C8803BB26DBE908009FFBC4 /* MEQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MEQView.swift; sourceTree = "<group>"; };
+		2C8803BD26DBF226009FFBC4 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		2C901D7026D28D0A006B9FEB /* ProfileCollectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectView.swift; sourceTree = "<group>"; };
 		2C9756BD25BD2D1A006378D0 /* SmartCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C9756C025BD2D1A006378D0 /* SmartCalendarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartCalendarApp.swift; sourceTree = "<group>"; };
@@ -96,7 +143,42 @@
 		2CC6F7AB25FFACE4004434D1 /* scene_1615560045.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = scene_1615560045.mlmodel; sourceTree = "<group>"; };
 		2CC8553C25ED37ED00D892D4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		2CCFB71226C2BF3100BB7523 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		2CE22A2E26DE256700FF4D3E /* DynamicSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicSchedule.swift; sourceTree = "<group>"; };
 		2CE448B026CF7EAB00C91A5D /* ScheduleContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleContainer.swift; sourceTree = "<group>"; };
+		2CF4F7F726DF93CE000225FB /* BarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChart.swift; sourceTree = "<group>"; };
+		2CF4F7F826DF93CE000225FB /* BarChartRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartRow.swift; sourceTree = "<group>"; };
+		2CF4F7F926DF93CE000225FB /* BarChartCellShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartCellShape.swift; sourceTree = "<group>"; };
+		2CF4F7FA26DF93CE000225FB /* BarChartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartCell.swift; sourceTree = "<group>"; };
+		2CF4F7FC26DF93CE000225FB /* RingsChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingsChart.swift; sourceTree = "<group>"; };
+		2CF4F7FD26DF93CE000225FB /* Ring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
+		2CF4F7FE26DF93CE000225FB /* RingsChartRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingsChartRow.swift; sourceTree = "<group>"; };
+		2CF4F80026DF93CE000225FB /* PieChartRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartRow.swift; sourceTree = "<group>"; };
+		2CF4F80126DF93CE000225FB /* PieChartHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartHelpers.swift; sourceTree = "<group>"; };
+		2CF4F80226DF93CE000225FB /* PieChartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartCell.swift; sourceTree = "<group>"; };
+		2CF4F80326DF93CE000225FB /* PieChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
+		2CF4F80526DF93CE000225FB /* IndicatorPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorPoint.swift; sourceTree = "<group>"; };
+		2CF4F80626DF93CE000225FB /* LineBackgroundShapeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineBackgroundShapeView.swift; sourceTree = "<group>"; };
+		2CF4F80726DF93CE000225FB /* LineShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineShape.swift; sourceTree = "<group>"; };
+		2CF4F80826DF93CE000225FB /* LineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
+		2CF4F80926DF93CE000225FB /* LineBackgroundShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineBackgroundShape.swift; sourceTree = "<group>"; };
+		2CF4F80A26DF93CE000225FB /* LineShapeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineShapeView.swift; sourceTree = "<group>"; };
+		2CF4F80B26DF93CE000225FB /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		2CF4F80E26DF93CE000225FB /* ChartData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
+		2CF4F80F26DF93CE000225FB /* ChartBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartBase.swift; sourceTree = "<group>"; };
+		2CF4F81026DF93CE000225FB /* ChartValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartValue.swift; sourceTree = "<group>"; };
+		2CF4F81226DF93CE000225FB /* ChartLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartLabel.swift; sourceTree = "<group>"; };
+		2CF4F81426DF93CE000225FB /* ChartStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartStyle.swift; sourceTree = "<group>"; };
+		2CF4F81526DF93CE000225FB /* ColorGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorGradient.swift; sourceTree = "<group>"; };
+		2CF4F81626DF93CE000225FB /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		2CF4F81826DF93CE000225FB /* ChartBase+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChartBase+Extension.swift"; sourceTree = "<group>"; };
+		2CF4F81926DF93CE000225FB /* Path+QuadCurve.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Path+QuadCurve.swift"; sourceTree = "<group>"; };
+		2CF4F81A26DF93CE000225FB /* Color+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
+		2CF4F81B26DF93CE000225FB /* CGPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
+		2CF4F81C26DF93CE000225FB /* CGRect+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Extension.swift"; sourceTree = "<group>"; };
+		2CF4F81D26DF93CE000225FB /* View+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		2CF4F81E26DF93CE000225FB /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		2CF4F82026DF93CE000225FB /* StatisticCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticCardView.swift; sourceTree = "<group>"; };
+		2CF4F82226DF93CE000225FB /* ChartGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartGrid.swift; sourceTree = "<group>"; };
 		2CF6C63D26D3919F0040D2F1 /* SetLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLocationView.swift; sourceTree = "<group>"; };
 		2CF7B57626C54235002AF014 /* AddNormalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNormalView.swift; sourceTree = "<group>"; };
 		2CF7B57826C54DEB002AF014 /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
@@ -114,7 +196,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CD3F0772602119D00EB15F8 /* SwiftUICharts in Frameworks */,
+				2C3DB8C426DA3D4A00E03DA2 /* ElegantCalendar in Frameworks */,
 				2CC8553D25ED37ED00D892D4 /* MapKit.framework in Frameworks */,
 				11A71AECE45294E6F32BEDA5 /* libPods-SmartCalendar.a in Frameworks */,
 			);
@@ -126,14 +208,17 @@
 		2C34244F26C3B1A8009771A8 /* calendar */ = {
 			isa = PBXGroup;
 			children = (
+				2C2DDC9226DF6F82008DDE17 /* CalendarSimpleView.swift */,
 				2C1C412E25E16C2F000B7712 /* CalendarView.swift */,
 				2CF7B57A26C55357002AF014 /* CalendarBoardView.swift */,
+				2C479D3D26DA667900E3B3C8 /* ScheduleView.swift */,
 				2C34245226C3B1FA009771A8 /* AddScheduleView.swift */,
 				2C34245826C4240E009771A8 /* AddLessonView.swift */,
 				2CF7B57626C54235002AF014 /* AddNormalView.swift */,
 				2CF6C63D26D3919F0040D2F1 /* SetLocationView.swift */,
 				2C9F4C0026D66C42002A5298 /* MapView.swift */,
 				2C05FBBF26C6579400D665C0 /* AddDynamicView.swift */,
+				2C18923D26E1B37F00A29BDD /* ScheduleRow.swift */,
 			);
 			path = calendar;
 			sourceTree = "<group>";
@@ -158,6 +243,7 @@
 		2C9756B425BD2D1A006378D0 = {
 			isa = PBXGroup;
 			children = (
+				2C3DB8C526DA3E5700E03DA2 /* ElegantCalendar.xcassets */,
 				2C9756BF25BD2D1A006378D0 /* SmartCalendar */,
 				2C9756BE25BD2D1A006378D0 /* Products */,
 				3158BDF6441040863DE0EC57 /* Pods */,
@@ -176,6 +262,7 @@
 		2C9756BF25BD2D1A006378D0 /* SmartCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				2CF4F7F426DF93CE000225FB /* SwiftUICharts */,
 				2CA1BD6426782B57004990B2 /* view */,
 				2CC6F7A525FF9EEA004434D1 /* model */,
 				2C6E7F4125BDA55700AEC5BC /* utils */,
@@ -215,12 +302,14 @@
 				2CF7B57326C532EA002AF014 /* inference */,
 				2C34244B26C388D2009771A8 /* UserInfo.swift */,
 				2C34245426C3B444009771A8 /* Schedule.swift */,
+				2CE22A2E26DE256700FF4D3E /* DynamicSchedule.swift */,
 				2CE448B026CF7EAB00C91A5D /* ScheduleContainer.swift */,
 				2C24CEE725F5106F00068178 /* GeoHistory.swift */,
 				2C01800A260972B400AB698F /* PhotoHistory.swift */,
 				2CF7B57826C54DEB002AF014 /* Lesson.swift */,
 				2CBD795A26D4D479005027BE /* GeoPoint.swift */,
 				2C9F4C0426D68736002A5298 /* IdNameRow.swift */,
+				2C8803BD26DBF226009FFBC4 /* Question.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -245,8 +334,146 @@
 				2C901D7026D28D0A006B9FEB /* ProfileCollectView.swift */,
 				2C9F4C0226D6858A002A5298 /* MajorSelectView.swift */,
 				2C9F4C0626D68F83002A5298 /* SchoolSelectView.swift */,
+				2C8803BB26DBE908009FFBC4 /* MEQView.swift */,
 			);
 			path = user;
+			sourceTree = "<group>";
+		};
+		2CF4F7F426DF93CE000225FB /* SwiftUICharts */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F7F526DF93CE000225FB /* Charts */,
+				2CF4F80C26DF93CE000225FB /* Base */,
+			);
+			path = SwiftUICharts;
+			sourceTree = "<group>";
+		};
+		2CF4F7F526DF93CE000225FB /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F7F626DF93CE000225FB /* BarChart */,
+				2CF4F7FB26DF93CE000225FB /* RingsChart */,
+				2CF4F7FF26DF93CE000225FB /* PieChart */,
+				2CF4F80426DF93CE000225FB /* LineChart */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		2CF4F7F626DF93CE000225FB /* BarChart */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F7F726DF93CE000225FB /* BarChart.swift */,
+				2CF4F7F826DF93CE000225FB /* BarChartRow.swift */,
+				2CF4F7F926DF93CE000225FB /* BarChartCellShape.swift */,
+				2CF4F7FA26DF93CE000225FB /* BarChartCell.swift */,
+			);
+			path = BarChart;
+			sourceTree = "<group>";
+		};
+		2CF4F7FB26DF93CE000225FB /* RingsChart */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F7FC26DF93CE000225FB /* RingsChart.swift */,
+				2CF4F7FD26DF93CE000225FB /* Ring.swift */,
+				2CF4F7FE26DF93CE000225FB /* RingsChartRow.swift */,
+			);
+			path = RingsChart;
+			sourceTree = "<group>";
+		};
+		2CF4F7FF26DF93CE000225FB /* PieChart */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F80026DF93CE000225FB /* PieChartRow.swift */,
+				2CF4F80126DF93CE000225FB /* PieChartHelpers.swift */,
+				2CF4F80226DF93CE000225FB /* PieChartCell.swift */,
+				2CF4F80326DF93CE000225FB /* PieChart.swift */,
+			);
+			path = PieChart;
+			sourceTree = "<group>";
+		};
+		2CF4F80426DF93CE000225FB /* LineChart */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F80526DF93CE000225FB /* IndicatorPoint.swift */,
+				2CF4F80626DF93CE000225FB /* LineBackgroundShapeView.swift */,
+				2CF4F80726DF93CE000225FB /* LineShape.swift */,
+				2CF4F80826DF93CE000225FB /* LineChart.swift */,
+				2CF4F80926DF93CE000225FB /* LineBackgroundShape.swift */,
+				2CF4F80A26DF93CE000225FB /* LineShapeView.swift */,
+				2CF4F80B26DF93CE000225FB /* Line.swift */,
+			);
+			path = LineChart;
+			sourceTree = "<group>";
+		};
+		2CF4F80C26DF93CE000225FB /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F80D26DF93CE000225FB /* Chart */,
+				2CF4F81126DF93CE000225FB /* Label */,
+				2CF4F81326DF93CE000225FB /* Style */,
+				2CF4F81726DF93CE000225FB /* Extensions */,
+				2CF4F81F26DF93CE000225FB /* CardView */,
+				2CF4F82126DF93CE000225FB /* Grid */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		2CF4F80D26DF93CE000225FB /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F80E26DF93CE000225FB /* ChartData.swift */,
+				2CF4F80F26DF93CE000225FB /* ChartBase.swift */,
+				2CF4F81026DF93CE000225FB /* ChartValue.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		2CF4F81126DF93CE000225FB /* Label */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F81226DF93CE000225FB /* ChartLabel.swift */,
+			);
+			path = Label;
+			sourceTree = "<group>";
+		};
+		2CF4F81326DF93CE000225FB /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F81426DF93CE000225FB /* ChartStyle.swift */,
+				2CF4F81526DF93CE000225FB /* ColorGradient.swift */,
+				2CF4F81626DF93CE000225FB /* Colors.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
+		2CF4F81726DF93CE000225FB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F81826DF93CE000225FB /* ChartBase+Extension.swift */,
+				2CF4F81926DF93CE000225FB /* Path+QuadCurve.swift */,
+				2CF4F81A26DF93CE000225FB /* Color+Extension.swift */,
+				2CF4F81B26DF93CE000225FB /* CGPoint+Extension.swift */,
+				2CF4F81C26DF93CE000225FB /* CGRect+Extension.swift */,
+				2CF4F81D26DF93CE000225FB /* View+Extension.swift */,
+				2CF4F81E26DF93CE000225FB /* Array+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2CF4F81F26DF93CE000225FB /* CardView */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F82026DF93CE000225FB /* StatisticCardView.swift */,
+			);
+			path = CardView;
+			sourceTree = "<group>";
+		};
+		2CF4F82126DF93CE000225FB /* Grid */ = {
+			isa = PBXGroup;
+			children = (
+				2CF4F82226DF93CE000225FB /* ChartGrid.swift */,
+			);
+			path = Grid;
 			sourceTree = "<group>";
 		};
 		2CF7B57326C532EA002AF014 /* inference */ = {
@@ -293,7 +520,7 @@
 			);
 			name = SmartCalendar;
 			packageProductDependencies = (
-				2CD3F0762602119D00EB15F8 /* SwiftUICharts */,
+				2C3DB8C326DA3D4A00E03DA2 /* ElegantCalendar */,
 			);
 			productName = SmartCalendar;
 			productReference = 2C9756BD25BD2D1A006378D0 /* SmartCalendar.app */;
@@ -323,7 +550,7 @@
 			);
 			mainGroup = 2C9756B425BD2D1A006378D0;
 			packageReferences = (
-				2CD3F0752602119D00EB15F8 /* XCRemoteSwiftPackageReference "ChartView" */,
+				2C3DB8C226DA3D4A00E03DA2 /* XCRemoteSwiftPackageReference "ElegantCalendar" */,
 			);
 			productRefGroup = 2C9756BE25BD2D1A006378D0 /* Products */;
 			projectDirPath = "";
@@ -341,6 +568,7 @@
 			files = (
 				2C9756C825BD2D1A006378D0 /* Preview Assets.xcassets in Resources */,
 				2C9756C525BD2D1A006378D0 /* Assets.xcassets in Resources */,
+				2C3DB8C626DA3E5700E03DA2 /* ElegantCalendar.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,12 +605,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C9F4C0526D68736002A5298 /* IdNameRow.swift in Sources */,
+				2C18923E26E1B37F00A29BDD /* ScheduleRow.swift in Sources */,
+				2CF4F83E26DF93CE000225FB /* Color+Extension.swift in Sources */,
+				2CF4F83F26DF93CE000225FB /* CGPoint+Extension.swift in Sources */,
+				2CF4F83B26DF93CE000225FB /* Colors.swift in Sources */,
+				2CF4F82E26DF93CE000225FB /* IndicatorPoint.swift in Sources */,
+				2CF4F83326DF93CE000225FB /* LineShapeView.swift in Sources */,
+				2CF4F82D26DF93CE000225FB /* PieChart.swift in Sources */,
 				2CF6C63E26D3919F0040D2F1 /* SetLocationView.swift in Sources */,
+				2CF4F83826DF93CE000225FB /* ChartLabel.swift in Sources */,
 				2C34245926C4240E009771A8 /* AddLessonView.swift in Sources */,
+				2CF4F84126DF93CE000225FB /* View+Extension.swift in Sources */,
 				2CFCB3AC26DA2F0B00623073 /* SettingView.swift in Sources */,
 				2CF7B57B26C55357002AF014 /* CalendarBoardView.swift in Sources */,
+				2CF4F82426DF93CE000225FB /* BarChartRow.swift in Sources */,
+				2CF4F84326DF93CE000225FB /* StatisticCardView.swift in Sources */,
+				2CF4F82A26DF93CE000225FB /* PieChartRow.swift in Sources */,
 				2C1C413325E17981000B7712 /* StatisticView.swift in Sources */,
 				2C0FC42E2609B8FA009A0431 /* DateUtils.swift in Sources */,
+				2CF4F84026DF93CE000225FB /* CGRect+Extension.swift in Sources */,
+				2CF4F83626DF93CE000225FB /* ChartBase.swift in Sources */,
+				2CF4F83C26DF93CE000225FB /* ChartBase+Extension.swift in Sources */,
+				2CF4F82726DF93CE000225FB /* RingsChart.swift in Sources */,
 				2C0BC49426010A1B004387A1 /* ScheduleStatView.swift in Sources */,
 				2CBD795B26D4D479005027BE /* GeoPoint.swift in Sources */,
 				2C34244C26C388D2009771A8 /* UserInfo.swift in Sources */,
@@ -390,33 +634,57 @@
 				2C05FBC026C6579400D665C0 /* AddDynamicView.swift in Sources */,
 				2C08406D260F3892004C5274 /* AccountView.swift in Sources */,
 				2C01800B260972B400AB698F /* PhotoHistory.swift in Sources */,
+				2CE22A2F26DE256700FF4D3E /* DynamicSchedule.swift in Sources */,
 				2C0FC42B2609964C009A0431 /* HistoryDateWrapper.swift in Sources */,
+				2CF4F82B26DF93CE000225FB /* PieChartHelpers.swift in Sources */,
+				2CF4F82326DF93CE000225FB /* BarChart.swift in Sources */,
 				2C9756C325BD2D1A006378D0 /* LoginView.swift in Sources */,
 				4004B01A25E290CE0063FA89 /* SwiftyJSON.swift in Sources */,
 				2C9F4C0126D66C42002A5298 /* MapView.swift in Sources */,
 				2C9F4C0326D6858A002A5298 /* MajorSelectView.swift in Sources */,
+				2CF4F82626DF93CE000225FB /* BarChartCell.swift in Sources */,
 				2C1C413C25E179D8000B7712 /* UserView.swift in Sources */,
 				2C1C412F25E16C2F000B7712 /* CalendarView.swift in Sources */,
 				2C739E0025FC9AB5005F7E6A /* GeoStatView.swift in Sources */,
+				2CF4F84426DF93CE000225FB /* ChartGrid.swift in Sources */,
+				2CF4F83026DF93CE000225FB /* LineShape.swift in Sources */,
+				2CF4F82926DF93CE000225FB /* RingsChartRow.swift in Sources */,
 				2CAAA6DA25C98A5E00B1AEB9 /* MainView.swift in Sources */,
+				2CF4F84226DF93CE000225FB /* Array+Extension.swift in Sources */,
+				2C2DDC9326DF6F82008DDE17 /* CalendarSimpleView.swift in Sources */,
 				2C97CB87266EFC6C00E763DB /* AboutView.swift in Sources */,
+				2CF4F83726DF93CE000225FB /* ChartValue.swift in Sources */,
 				2CC6F7AC25FFACE4004434D1 /* scene_1615560045.mlmodel in Sources */,
 				2C6E7F4425BDA58E00AEC5BC /* GeoUtils.swift in Sources */,
 				2C24CEE825F5106F00068178 /* GeoHistory.swift in Sources */,
 				2C34244E26C3AC06009771A8 /* Config.swift in Sources */,
+				2CF4F83A26DF93CE000225FB /* ColorGradient.swift in Sources */,
+				2CF4F82826DF93CE000225FB /* Ring.swift in Sources */,
+				2CF4F82F26DF93CE000225FB /* LineBackgroundShapeView.swift in Sources */,
+				2CF4F83226DF93CE000225FB /* LineBackgroundShape.swift in Sources */,
+				2CF4F83126DF93CE000225FB /* LineChart.swift in Sources */,
+				2CF4F83D26DF93CE000225FB /* Path+QuadCurve.swift in Sources */,
+				2CF4F83926DF93CE000225FB /* ChartStyle.swift in Sources */,
 				2CF7B57926C54DEB002AF014 /* Lesson.swift in Sources */,
 				2C9756C125BD2D1A006378D0 /* SmartCalendarApp.swift in Sources */,
+				2C8803BE26DBF226009FFBC4 /* Question.swift in Sources */,
+				2C479D3E26DA667900E3B3C8 /* ScheduleView.swift in Sources */,
+				2CF4F82526DF93CE000225FB /* BarChartCellShape.swift in Sources */,
 				2C5F22E225FB4512004684E6 /* PhotoUtils.swift in Sources */,
 				2CE448B126CF7EAB00C91A5D /* ScheduleContainer.swift in Sources */,
 				4004B01725E28CA50063FA89 /* BaiduOcr.swift in Sources */,
 				2C901D7126D28D0A006B9FEB /* ProfileCollectView.swift in Sources */,
+				2CF4F82C26DF93CE000225FB /* PieChartCell.swift in Sources */,
 				2CCFB71326C2BF3100BB7523 /* RegisterView.swift in Sources */,
 				2C05BE7226199C5100287B1A /* LessonWrapper.swift in Sources */,
 				2C9F4C0726D68F83002A5298 /* SchoolSelectView.swift in Sources */,
 				2CF7B57726C54235002AF014 /* AddNormalView.swift in Sources */,
+				2CF4F83426DF93CE000225FB /* Line.swift in Sources */,
 				2C01800826096E2C00AB698F /* StorageUtils.swift in Sources */,
 				2C34245726C3B497009771A8 /* ScheduleUtils.swift in Sources */,
 				2C34245526C3B444009771A8 /* Schedule.swift in Sources */,
+				2C8803BC26DBE908009FFBC4 /* MEQView.swift in Sources */,
+				2CF4F83526DF93CE000225FB /* ChartData.swift in Sources */,
 				2C34245326C3B1FA009771A8 /* AddScheduleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,7 +815,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"SmartCalendar/Preview Content\"";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_ASSET_PATHS = "SmartCalendar/Preview\\ Content";
 				DEVELOPMENT_TEAM = UCR33W9Y9W;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SmartCalendar/Info.plist;
@@ -556,6 +825,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = timemaster.SmartCalendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -570,7 +840,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"SmartCalendar/Preview Content\"";
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_ASSET_PATHS = "SmartCalendar/Preview\\ Content";
 				DEVELOPMENT_TEAM = UCR33W9Y9W;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SmartCalendar/Info.plist;
@@ -579,6 +850,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = timemaster.SmartCalendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -610,21 +882,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2CD3F0752602119D00EB15F8 /* XCRemoteSwiftPackageReference "ChartView" */ = {
+		2C3DB8C226DA3D4A00E03DA2 /* XCRemoteSwiftPackageReference "ElegantCalendar" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AppPear/ChartView";
+			repositoryURL = "https://github.com/ThasianX/ElegantCalendar";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.4;
+				minimumVersion = 4.3.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2CD3F0762602119D00EB15F8 /* SwiftUICharts */ = {
+		2C3DB8C326DA3D4A00E03DA2 /* ElegantCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2CD3F0752602119D00EB15F8 /* XCRemoteSwiftPackageReference "ChartView" */;
-			productName = SwiftUICharts;
+			package = 2C3DB8C226DA3D4A00E03DA2 /* XCRemoteSwiftPackageReference "ElegantCalendar" */;
+			productName = ElegantCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

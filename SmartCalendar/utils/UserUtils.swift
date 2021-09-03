@@ -54,7 +54,7 @@ class UserUtils{
         task.resume()
     }
     
-    public static func getInfo(completion: @escaping (Bool, [String: String]?) -> Void){
+    public static func getInfo(completion: @escaping (Bool, [String: Any]?) -> Void){
         let server = Config.host + "/user/info"
         var request = URLRequest(url: URL(string: server)!)
         request.httpMethod = "GET"
@@ -68,7 +68,19 @@ class UserUtils{
                 if(result["status"] == 1){
                     let username = result["info"]["username"].stringValue
                     let nickname = result["info"]["nickname"].stringValue
-                    let info_dict: [String: String] = ["username": username, "nickname": nickname]
+                    var info_dict: [String: Any] = ["username": username, "nickname": nickname]
+                    if (result["info"]["occupation"].exists()){
+                        info_dict["occupation"] = result["info"]["occupation"].stringValue
+                    }
+                    if (result["info"]["major"].exists()){
+                        info_dict["major"] = result["info"]["major"].stringValue
+                    }
+                    if (result["info"]["school"].exists()){
+                        info_dict["school"] = result["info"]["school"].stringValue
+                    }
+                    if (result["info"]["meq_feature"].exists()){
+                        info_dict["meq_feature"] = result["info"]["meq_feature"].intValue
+                    }
                     completion(true, info_dict)
                 }
                 else{
@@ -157,6 +169,49 @@ class UserUtils{
         }
     }
     
+    public static func getMEQ(completion: @escaping (Bool, [Question]) -> Void){
+        let server = Config.host + "/user/meq"
+        AF.request(server, method: .get, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
+            if(response.error == nil && response.value != nil){
+                let result = JSON(response.value!)
+                if(result["status"].intValue == 1){
+                    var question_list: [Question] = []
+                    for(_, item): (String, JSON) in result["question"] {
+                        let id = item["id"].intValue
+                        let description = item["description"].stringValue
+                        var option_list: [QuestionOption] = []
+                        for(_, option_item): (String, JSON) in item["option"] {
+                            let option_id = option_item["id"].intValue
+                            let option_description = option_item["description"].stringValue
+                            let option_score = option_item["score"].intValue
+                            option_list.append(QuestionOption(optionId: option_id, description: option_description, score: option_score))
+                        }
+                        question_list.append(Question(questionId: id, description: description, options: option_list))
+                    }
+                    completion(true, question_list)
+                }
+                else{
+                    completion(false, [])
+                }
+            }
+            else{
+                print(response.error!)
+                print("Error occurred when requesting server!")
+                completion(false, [])
+            }
+        }
+    }
+    
+    public static func evalMEQScore(chosens: [QuestionOption?]) -> Int{
+        var score = 0
+        for chosen in chosens{
+            if(chosen != nil){
+                score += chosen!.score
+            }
+        }
+        return score
+    }
+    
     public static func updateInfo(info: UserInfo, completion: @escaping (Bool) -> Void){
         StorageUtils.saveUserInfo(info: info)
         let server = Config.host + "/user/update"
@@ -172,6 +227,9 @@ class UserUtils{
         }
         if(info.school != nil){
             body["school"] = info.school!.contentId
+        }
+        if(info.meqScore != nil){
+            body["meq_feature"] = info.meqScore!
         }
         AF.request(server, method: .post, parameters: body, encoding: JSONEncoding.default, requestModifier: { $0.timeoutInterval = 20}).validate().responseJSON { response in
             if(response.error == nil){

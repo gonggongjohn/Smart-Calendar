@@ -9,6 +9,7 @@ import MapKit
 class MapStateWrapper: ObservableObject{
     @Published var coordinateRegion: MKCoordinateRegion
     @Published var targetPoint: GeoPoint?
+    @Published var pointList: [GeoPoint]?
     @Published var updateFlag: Bool
     
     init(latitude: Double, longitude: Double, latitudeDelta: Double, longitudeDelta: Double) {
@@ -56,6 +57,14 @@ struct MapView: UIViewRepresentable {
             annotation.coordinate = self.state.targetPoint!.coordinate
             mapView.addAnnotation(annotation)
         }
+        else if(self.state.pointList != nil){
+            for point in self.state.pointList!{
+                let annotation = MKPointAnnotation()
+                annotation.title = point.name
+                annotation.coordinate = point.coordinate
+                mapView.addAnnotation(annotation)
+            }
+        }
         return mapView
     }
     
@@ -73,6 +82,14 @@ struct MapView: UIViewRepresentable {
                 annotation.title = self.state.targetPoint!.name
                 annotation.coordinate = self.state.targetPoint!.coordinate
                 uiView.addAnnotation(annotation)
+            }
+            else if(self.state.pointList != nil){
+                for point in self.state.pointList!{
+                    let annotation = MKPointAnnotation()
+                    annotation.title = point.name
+                    annotation.coordinate = point.coordinate
+                    uiView.addAnnotation(annotation)
+                }
             }
             self.state.updateFlag = false
         }
