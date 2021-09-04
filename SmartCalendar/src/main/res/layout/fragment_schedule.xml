@@ -277,43 +277,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:minHeight="80dp"
-                        android:layout_height="wrap_content">
-
-                    <ImageView
-                            android:src="@drawable/ic_baseline_mode_edit_24"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline10"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginTop="30dp"/>
-
-                    <androidx.constraintlayout.widget.Guideline
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/guideline10"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.15"/>
-
-                    <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:hint="说明"
-                            android:text="@={viewModel.getDetails}"
-                            android:textSize="15dp"
-                            android:id="@+id/editTextDetail"
-                            app:layout_constraintStart_toStartOf="@+id/guideline10"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="35dp"/>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
             </LinearLayout>
         </ScrollView>
 

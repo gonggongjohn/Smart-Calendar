@@ -22,12 +22,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit2.Response;
 import team.time.smartcalendar.R;
+import team.time.smartcalendar.dataBeans.CalendarItem;
 import team.time.smartcalendar.databinding.ItemCalendarBinding;
 import team.time.smartcalendar.fragmentsfirst.CalendarFragment;
 import team.time.smartcalendar.utils.ColorUtils;
 import team.time.smartcalendar.utils.DateUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRecyclerViewAdapter.innerHolder> {
     private Activity parentActivity;
@@ -59,7 +62,9 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull innerHolder holder, int position) {
-        holder.binding.setItem(fragment.curCalendarItems.get(position));
+        CalendarItem item=fragment.curCalendarItems.get(position);
+
+        holder.binding.setItem(item);
         holder.binding.setTime(DateUtils.getTimeStamp(calendarView.getSelectedCalendar()));
 
         ColorDrawable color= (ColorDrawable) holder.binding.itemBackgroundLayout.getBackground();
@@ -91,23 +96,41 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
 
         holder.binding.imageItemDelete.setOnClickListener(v -> {
             if(color.getColor()==ColorUtils.OrangeRed){
-                // 得到UUID
-                String uuid=fragment.curCalendarItems.get(position).uuid;
-                // 通知服务器删除日程
-                boolean[] isSuccess=new boolean[1];
-                requestDeleteItems(isSuccess,uuid);
-                // 判断是否删除成功
-                if(isSuccess[0]){
-                    // 此处有bug
+                List<CalendarItem>items=new ArrayList<>();
+
+                switch (item.type){
+                    case 0:
+                        items.add(item);
+                        break;
+                    case 1:
+                        for(CalendarItem i:fragment.calendarItems){
+                            if(i.type==1 && i.listId==item.listId){
+                                items.add(i);
+                            }
+                        }
+                        break;
+                    case 2:
+                        break;
                 }
-                // 从当前列表中删除日程
-                fragment.curCalendarItems.remove(position);
+                for(CalendarItem i:items){
+                    // 得到UUID
+                    String uuid=i.uuid;
+                    // 通知服务器删除日程
+                    boolean[] isSuccess=new boolean[1];
+                    requestDeleteItems(isSuccess,uuid);
+                    // 判断是否删除成功
+                    if(isSuccess[0]){
+                        // 此处有bug
+                    }
+                    // 从当前列表中删除日程
+                    fragment.curCalendarItems.remove(i);
+                    // 从总列表中删除日程
+                    fragment.calendarItems.remove(DateUtils.findItemById(uuid,fragment.calendarItems));
+                    // 从数据库删除日程
+                    new Thread(() -> fragment.dao.deleteCalendarItemByUUID(uuid)).start();
+                }
                 // 重新加载数据
                 this.notifyDataSetChanged();
-                // 从总列表中删除日程
-                fragment.calendarItems.remove(DateUtils.findItemById(uuid,fragment.calendarItems));
-                // 从数据库删除日程
-                new Thread(() -> fragment.dao.deleteCalendarItemByUUID(uuid)).start();
                 // 更新日历上的日程标签
                 setMonthSchedule(
                         calendarView.getSelectedCalendar().getYear(),
@@ -122,8 +145,18 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
         holder.binding.itemLayout.setOnClickListener(v -> {
             NavController controller= Navigation.findNavController((Activity) v.getContext(),R.id.firstNavHostFragment);
             Bundle bundle=new Bundle();
-            bundle.putSerializable("item",fragment.curCalendarItems.get(position));
-            controller.navigate(R.id.action_calendarFragment_to_scheduleFragment,bundle);
+            bundle.putSerializable("item",item);
+            switch (item.type){
+                case 0:
+                    controller.navigate(R.id.action_calendarFragment_to_scheduleFragment,bundle);
+                    break;
+                case 1:
+                    controller.navigate(R.id.action_calendarFragment_to_repeatScheduleFragment,bundle);
+                    break;
+                case 2:
+                    controller.navigate(R.id.action_calendarFragment_to_dynamicScheduleFragment,bundle);
+                    break;
+            }
             isUpdated[0]=true;
         });
     }

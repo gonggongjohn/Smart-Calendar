@@ -56,6 +56,8 @@ public class LoginFragment extends Fragment {
             //根据资源ID获取响应的尺寸值
             SystemUtils.STATUS_BAR_HEIGHT = getResources().getDimensionPixelSize(resourceId);
         }
+        // 获取屏幕宽度
+        SystemUtils.WINDOW_WIDTH = getContext().getResources().getDisplayMetrics().widthPixels;
     }
 
     @Override

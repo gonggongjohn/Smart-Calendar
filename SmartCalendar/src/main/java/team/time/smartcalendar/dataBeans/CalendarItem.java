@@ -19,6 +19,10 @@ public class CalendarItem implements Serializable {
     public int id;
     @ColumnInfo(name = "dirty",typeAffinity = ColumnInfo.INTEGER)
     public int dirty; // 0 已同步，1 添加后未同步，2 修改后未同步
+    @ColumnInfo(name = "type",typeAffinity = ColumnInfo.INTEGER)
+    public int type=0; // 0 常规，1 定时，2 动态
+    @ColumnInfo(name = "list_id",typeAffinity = ColumnInfo.INTEGER)
+    public long listId=0L; // 用时间戳表示日程链的ID
     @ColumnInfo(name = "username",typeAffinity = ColumnInfo.TEXT)
     public String username;
 
@@ -34,8 +38,6 @@ public class CalendarItem implements Serializable {
     @ColumnInfo(name = "longitude",typeAffinity = ColumnInfo.REAL)
     public double longitude=0.0;
 
-    @ColumnInfo(name = "details",typeAffinity = ColumnInfo.TEXT)
-    public String details="";
     @ColumnInfo(name = "category_id",typeAffinity = ColumnInfo.INTEGER)
     public int categoryId=1;
     @ColumnInfo(name = "category_name",typeAffinity = ColumnInfo.TEXT)
@@ -45,9 +47,11 @@ public class CalendarItem implements Serializable {
     @ColumnInfo(name = "end_time",typeAffinity = ColumnInfo.INTEGER)
     public long endTime=0;
 
-    public CalendarItem(int id,int dirty,String uuid,String info,String position,double latitude,double longitude,String details,int categoryId,String categoryName,long startTime,long endTime) {
+    public CalendarItem(int id,int dirty,int type,long listId,String uuid,String info,String position,double latitude,double longitude,int categoryId,String categoryName,long startTime,long endTime) {
         this.id = id;
         this.dirty = dirty;
+        this.type = type;
+        this.listId = listId;
         this.username = UserUtils.USERNAME;
         this.uuid = uuid;
         this.info = info;
@@ -56,7 +60,6 @@ public class CalendarItem implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
 
-        this.details = details;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.startTime = startTime;
@@ -69,6 +72,8 @@ public class CalendarItem implements Serializable {
     @Ignore
     public CalendarItem(@NotNull ScheduleItem scheduleItem){
         this.dirty=0;
+        this.type=0;
+        this.listId=0;
         this.username=UserUtils.USERNAME;
         this.uuid=scheduleItem.uuid;
         this.info=scheduleItem.name;
@@ -77,30 +82,45 @@ public class CalendarItem implements Serializable {
         this.latitude=scheduleItem.latitude;
         this.longitude=scheduleItem.longitude;
 
-        this.details="";
         this.categoryId=scheduleItem.categoryId;
         this.categoryName=scheduleItem.categoryName;
         this.startTime=(long) scheduleItem.start * 1000;
         this.endTime=(long) scheduleItem.end * 1000;
     }
 
-    @NotNull
     @Override
     public String toString() {
         return "CalendarItem{" +
                 "id=" + id +
                 ", dirty=" + dirty +
+                ", type=" + type +
+                ", listId=" + listId +
                 ", username='" + username + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", info='" + info + '\'' +
                 ", position='" + position + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", details='" + details + '\'' +
                 ", categoryId=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 '}';
+    }
+
+    public String getTypeName(){
+        String typeName;
+        switch (type){
+            case 1:
+                typeName="定时";
+                break;
+            case 2:
+                typeName="动态";
+                break;
+            default:
+                typeName="常规";
+                break;
+        }
+        return typeName;
     }
 }

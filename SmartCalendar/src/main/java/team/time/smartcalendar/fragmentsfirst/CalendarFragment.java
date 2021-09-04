@@ -51,6 +51,7 @@ public class CalendarFragment extends Fragment {
     private CalendarViewModel viewModel;
     private boolean isFirst;
     private boolean isAdded;
+    private boolean visible;
     private boolean[] isUpdated;
     private Activity parentActivity;
     private CalendarRecyclerViewAdapter adapter;
@@ -69,6 +70,7 @@ public class CalendarFragment extends Fragment {
     public Map<String, Calendar> map;
     @Inject
     public CalendarItemDao dao;
+    private NavController controller;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,8 +90,6 @@ public class CalendarFragment extends Fragment {
         isFirst = true;
         isAdded = false;
         isUpdated=new boolean[1];
-
-        Log.d("lmx", "onCreate: ");
     }
 
     @Override
@@ -124,6 +124,10 @@ public class CalendarFragment extends Fragment {
             viewModel.getCurrentDay().setValue(binding.calendarView.getCurDay());
         }
         /* first end */
+
+        visible=false;
+
+        controller = Navigation.findNavController(view);
 
         setMonthSchedule(
                 binding.calendarView.getSelectedCalendar().getYear(),
@@ -175,15 +179,61 @@ public class CalendarFragment extends Fragment {
         });
 
         binding.btnSchedule.setOnClickListener(v -> {
+            if(!visible){
+                setBtnVisible();
+            }else {
+                setBtnInvisible();
+            }
+
+        });
+
+        binding.btnNormal.setOnClickListener(v -> {
             // 传参
             Bundle bundle=new Bundle();
             bundle.putLong("time",DateUtils.getMinDate(new Date(binding.calendarView.getSelectedCalendar().getTimeInMillis())).getTime());
             // 跳转
-            NavController controller= Navigation.findNavController(v);
             controller.navigate(R.id.action_calendarFragment_to_scheduleFragment,bundle);
             // 标记
             isAdded=true;
         });
+
+        binding.btnTime.setOnClickListener(v -> {
+            // 传参
+            Bundle bundle=new Bundle();
+            bundle.putLong("time",DateUtils.getMinDate(new Date(binding.calendarView.getSelectedCalendar().getTimeInMillis())).getTime());
+            // 跳转
+            controller.navigate(R.id.action_calendarFragment_to_repeatScheduleFragment,bundle);
+            // 标记
+            isAdded=true;
+        });
+
+        binding.btnDynamic.setOnClickListener(v->{
+            // 传参
+            Bundle bundle=new Bundle();
+            bundle.putLong("time",DateUtils.getMinDate(new Date(binding.calendarView.getSelectedCalendar().getTimeInMillis())).getTime());
+            // 跳转
+            controller.navigate(R.id.action_calendarFragment_to_dynamicScheduleFragment,bundle);
+            // 标记
+            isAdded=true;
+        });
+    }
+
+    private void setBtnVisible(){
+        binding.btnNormal.setVisibility(View.VISIBLE);
+        binding.btnTime.setVisibility(View.VISIBLE);
+        binding.btnDynamic.setVisibility(View.VISIBLE);
+        binding.imageMask.setVisibility(View.VISIBLE);
+        visible=true;
+        binding.btnSchedule.setImageResource(R.drawable.ic_baseline_horizontal_rule_24);
+    }
+
+    private void setBtnInvisible(){
+        binding.btnNormal.setVisibility(View.INVISIBLE);
+        binding.btnTime.setVisibility(View.INVISIBLE);
+        binding.btnDynamic.setVisibility(View.INVISIBLE);
+        binding.imageMask.setVisibility(View.INVISIBLE);
+        visible=false;
+        binding.btnSchedule.setImageResource(R.drawable.ic_baseline_add_24);
     }
 
     // 在日历上显示日程标签
@@ -197,7 +247,6 @@ public class CalendarFragment extends Fragment {
     }
 
     private void setCurrentScheduleList(long time) {
-        Log.d("lmx", "setCurrentScheduleList: "+calendarItems);
         // 清空当前日程列表
         curCalendarItems.clear();
         // 遍历总日程列表，加入符合条件的日程
@@ -206,6 +255,7 @@ public class CalendarFragment extends Fragment {
                 curCalendarItems.add(item);
             }
         }
+        Log.d("lmx", "setCurrentScheduleList: "+curCalendarItems);
     }
 
     private void readLocalCalendarItems() {

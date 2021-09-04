@@ -1,6 +1,7 @@
 package team.time.smartcalendar.fragmentsthird;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,13 +18,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.hilt.android.AndroidEntryPoint;
 import org.jetbrains.annotations.NotNull;
+import team.time.smartcalendar.MainActivity;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.adapters.CommonRecyclerViewAdapter;
+import team.time.smartcalendar.dataBeans.CalendarItem;
 import team.time.smartcalendar.databinding.FragmentSettingsBinding;
 import team.time.smartcalendar.databinding.ItemCommonBinding;
 import team.time.smartcalendar.utils.SystemUtils;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,14 @@ public class SettingsFragment extends Fragment {
 
     List<String> strings=new ArrayList<>();
     List<Integer> icons=new ArrayList<>();
+
+    @Named("all")
+    @Inject
+    List<CalendarItem> calendarItems;
+
+    @Named("current")
+    @Inject
+    List<CalendarItem> curCalendarItems;
 
     @Inject
     SharedPreferences sp;
@@ -105,12 +117,18 @@ public class SettingsFragment extends Fragment {
 
     private void logOff(boolean[] flag) {
         if(flag[0]){
+            // 清除日程数据
+            calendarItems.clear();
+            curCalendarItems.clear();
+            // 清除用户数据
             SharedPreferences.Editor editor=sp.edit();
             editor.putString("username","");
             editor.putString("password","");
             editor.commit();
-            System.exit(0);
-//            controller.navigate(R.id.action_settingsFragment_to_loginFragment2);
+            // 跳转
+            Intent intent=new Intent(parentActivity, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }else {
             Toast.makeText(parentActivity, "再点一次退出登录", Toast.LENGTH_SHORT).show();
         }

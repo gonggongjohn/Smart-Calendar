@@ -29,4 +29,10 @@ public interface ApiService {
 
     @POST("/calendar/update")
     Call<ResponseBody> update(@Body RequestBody body);
+
+    @GET("/user/info")
+    Call<ResponseBody>getInfo();
+
+    @POST("/calendar/arrange")
+    Call<ResponseBody> arrange(@Body RequestBody body);
 }

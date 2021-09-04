@@ -1,21 +1,27 @@
 package team.time.smartcalendar.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import org.jetbrains.annotations.NotNull;
 import team.time.smartcalendar.databinding.ActionCommonBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SystemUtils {
+    public static int WINDOW_WIDTH;
     public static int STATUS_BAR_HEIGHT;
 
     // 填充statusBar
@@ -67,5 +73,25 @@ public class SystemUtils {
     public static void checkPermission(Activity activity,List<String> permissionList){
         String[] permissions=permissionList.toArray(new String[0]);
         ActivityCompat.requestPermissions(activity,permissions,0);
+    }
+
+    // 检查定位权限
+    public static void checkLocatePermission(Activity activity){
+        if(Build.VERSION.SDK_INT>=23 && activity.getApplicationInfo().targetSdkVersion>=23){
+            List<String> permissionList=new ArrayList<>();
+            if(ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED){
+                permissionList.add(Manifest.permission.READ_PHONE_STATE);
+            }
+            if(ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+                permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if(ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+                permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            }
+
+            if (!permissionList.isEmpty()){
+                checkPermission(activity,permissionList);
+            }
+        }
     }
 }

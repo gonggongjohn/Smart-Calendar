@@ -13,5 +13,6 @@
     <color name="RoyalBlue">#4169E1</color>
     <color name="OrangeRed">#FFFF4500</color>
     <color name="Azure">#FFF0FFFF</color>
+    <color name="MaskBlack">#3F000000</color>
     <color name="WhiteSmoke">#FFF5F5F5</color>
 </resources>

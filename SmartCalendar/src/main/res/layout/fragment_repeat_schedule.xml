@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="viewModel"
+                type="team.time.smartcalendar.viewmodels.RepeatScheduleViewModel"/>
+        <import type="team.time.smartcalendar.utils.DateUtils"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".fragmentsfirst.RepeatScheduleFragment">
+
+        <ImageView
+                android:id="@+id/statusImage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/DodgerBlue"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <include
+                android:id="@+id/action"
+                layout="@layout/action_common"
+                android:layout_height="52dp"
+                android:layout_width="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/statusImage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.0"/>
+
+        <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/action"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:minHeight="80dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_title_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline8"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+<!--                    android:text="@={viewModel.getInfo}"-->
+
+                    <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="标题"
+                            android:text="@={viewModel.getInfo}"
+                            android:textSize="15sp"
+                            android:id="@+id/editTextTittle"
+                            app:layout_constraintStart_toStartOf="@+id/guideline8"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:id="@+id/imagePositionIcon"
+                            android:background="@drawable/bg_ripple"
+                            android:src="@drawable/ic_baseline_add_location_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline9"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+<!--                    android:text="@={viewModel.getPosition}"-->
+
+                    <EditText
+                            android:enabled="false"
+                            android:clickable="true"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="地点"
+                            android:text="@={viewModel.getPosition}"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextPosition"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintStart_toStartOf="@+id/guideline9"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                    <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="20dp"
+                            android:id="@+id/imagePosition"
+                            app:layout_constraintStart_toStartOf="@+id/guideline9"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_category_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline100"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:id="@+id/imageView2"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline100"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="类别"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextCategory"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintStart_toStartOf="@+id/guideline100"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spinnerCategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="25dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_av_timer_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline12"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="30dp"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline12"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="开始"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextStart"
+                            app:layout_constraintStart_toStartOf="@+id/guideline12"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline16"
+                            android:layout_marginEnd="25dp"/>
+
+                    <TextView
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textStartTime"
+                            android:text="@{DateUtils.getClockTime(viewModel.getStartTime())}"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline16"
+                            android:layout_marginEnd="30dp"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline16"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.575"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="结束"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextEnd"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="35dp"
+                            app:layout_constraintStart_toStartOf="@+id/guideline16"/>
+
+                    <TextView
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textEndTime"
+                            android:text="@{DateUtils.getClockTime(viewModel.getEndTime)}"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="40dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_repeat_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline43"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="30dp"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline43"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="重复"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextRepeat"
+                            app:layout_constraintStart_toStartOf="@id/guideline43"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+                    <TextView
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textRepeatTime"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="40dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutFirstStart"
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <ImageView
+                            android:src="@drawable/ic_baseline_date_range_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline23"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="30dp"/>
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline23"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="起始"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextFirstStart"
+                            app:layout_constraintStart_toStartOf="@+id/guideline23"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+<!--                    android:text="@{DateUtils.getDayTime(viewModel.getFirstStartTime)}"-->
+
+                    <TextView
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textFirstStartTime"
+                            android:text="@{DateUtils.getDayTime(viewModel.getFirstStartTime)}"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="40dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutLastEnd"
+                        android:layout_width="match_parent"
+                        android:minHeight="80dp"
+                        android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.Guideline
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/guideline33"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.15"/>
+
+                    <EditText
+                            android:enabled="false"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="截止"
+                            android:textSize="15dp"
+                            android:id="@+id/editTextLastEnd"
+                            app:layout_constraintStart_toStartOf="@id/guideline33"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="35dp"/>
+
+<!--                    android:text="@{DateUtils.getDayTime(viewModel.getLastEndTime)}"-->
+
+                    <TextView
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textLastEndTime"
+                            android:text="@{DateUtils.getDayTime(viewModel.getLastEndTime)}"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="40dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

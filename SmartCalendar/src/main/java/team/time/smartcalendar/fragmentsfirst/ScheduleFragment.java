@@ -1,20 +1,15 @@
 package team.time.smartcalendar.fragmentsfirst;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,12 +18,6 @@ import androidx.navigation.Navigation;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import dagger.hilt.android.AndroidEntryPoint;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import retrofit2.Response;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.dao.CalendarItemDao;
 import team.time.smartcalendar.dataBeans.CalendarItem;
@@ -40,12 +29,10 @@ import team.time.smartcalendar.viewmodels.ScheduleViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.IOException;
 import java.util.*;
 
 @AndroidEntryPoint
 public class ScheduleFragment extends Fragment {
-
     private FragmentScheduleBinding binding;
     private NavController controller;
     private ScheduleViewModel viewModel;
@@ -74,7 +61,7 @@ public class ScheduleFragment extends Fragment {
 
         isFirst = true;
 
-        checkPermission();
+        SystemUtils.checkLocatePermission(parentActivity);
 
         // 启动定位服务
         Intent intent=new Intent(parentActivity, MyLocationService.class);
@@ -92,7 +79,7 @@ public class ScheduleFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_schedule,container,false);
 
         SystemUtils.setStatusImage(binding.statusImage);
-        SystemUtils.setAction(binding.action,"日程",R.drawable.ic_baseline_close_24,R.drawable.ic_baseline_check_24);
+        SystemUtils.setAction(binding.action,"常规日程",R.drawable.ic_baseline_close_24,R.drawable.ic_baseline_check_24);
 
         if(isFirst){
             isFirst=false;
@@ -102,7 +89,7 @@ public class ScheduleFragment extends Fragment {
                 categories.clear();
                 requestCategories();
             }
-            setSpinnerAdapter();
+            ViewUtils.setSpinnerAdapter(binding.spinnerCategory,categories);
 
             // 接收参数
             bundle = getArguments();
@@ -123,7 +110,7 @@ public class ScheduleFragment extends Fragment {
                 }
             }
         }else {
-            setSpinnerAdapter();
+            ViewUtils.setSpinnerAdapter(binding.spinnerCategory,categories);
         }
 
         binding.setViewModel(viewModel);
@@ -199,6 +186,8 @@ public class ScheduleFragment extends Fragment {
         })
                 .setDate(calendar)
                 .setSubmitColor(ColorUtils.DoDodgerBlue)
+                .setSubCalSize(16)
+                .setContentTextSize(16)
                 .setCancelColor(ColorUtils.DoDodgerBlue)
                 .setType(new boolean[]{true,true,true,true,true,false}) // 年、月、日、时、分、秒
                 .setOutSideCancelable(true) // 点击外围取消
@@ -209,13 +198,16 @@ public class ScheduleFragment extends Fragment {
                 .setLineSpacingMultiplier(3.0F) // 间距
                 .isDialog(true) // 以Dialog形式显示
                 .build();
+        ViewGroup container=view.getDialogContainerLayout();
+        ViewGroup.LayoutParams params=container.getLayoutParams();
+        params.width=900;
+        container.setLayoutParams(params);
         view.show();
     }
 
     private List<View> getEditTextList(){
         List<View> viewList=new ArrayList<>();
         viewList.add(binding.editTextTittle);
-        viewList.add(binding.editTextDetail);
         return viewList;
     }
 
@@ -228,14 +220,12 @@ public class ScheduleFragment extends Fragment {
 
         viewModel.getStartTime().setValue(new Date(item.startTime));
         viewModel.getEndTime().setValue(new Date(item.endTime));
-        viewModel.getDetails().setValue(item.details);
     }
 
     private void doItem(){
         item.info=viewModel.getInfo().getValue();
         item.startTime=viewModel.getStartTime().getValue().getTime();
         item.endTime=viewModel.getEndTime().getValue().getTime();
-        item.details=viewModel.getDetails().getValue();
 
         item.position=viewModel.getPosition().getValue();
         item.latitude= viewModel.latitude;
@@ -243,8 +233,6 @@ public class ScheduleFragment extends Fragment {
 
         item.categoryId=getCategoryId(binding.spinnerCategory.getSelectedItemPosition());
         item.categoryName=binding.spinnerCategory.getSelectedItem().toString();
-
-        item.username= UserUtils.USERNAME;
     }
 
     private void updateItem(){
@@ -265,6 +253,9 @@ public class ScheduleFragment extends Fragment {
     private void createItem(){
         item=new CalendarItem();
         item.uuid=UUID.randomUUID().toString().toUpperCase();
+        item.type=0;
+        item.listId=0L;
+        item.username= UserUtils.USERNAME;
         doItem();
 
         // 通知服务器添加日程
@@ -281,17 +272,6 @@ public class ScheduleFragment extends Fragment {
         Log.d("lmx", "createItem: "+calendarItems);
         // 添加到数据库
         addLocalItems();
-    }
-
-    private void setSpinnerAdapter(){
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(
-                getContext(),
-                android.R.layout.simple_spinner_item,
-                categories
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        binding.spinnerCategory.setAdapter(adapter);
     }
 
     private void setSpinnerSelection() {
@@ -311,32 +291,9 @@ public class ScheduleFragment extends Fragment {
         return (index+2) % categories.size();
     }
 
-    private int getCategoryIndex(int id){
-        return id==1?categories.size()-1:id-2;
-    }
-
     private void requestCategories() {
         Thread thread=new Thread(() -> {
-            try {
-                retrofit2.Response<ResponseBody> response=apiService.getCategory().execute();
-                try {
-                    JSONObject result=new JSONObject(response.body().string());
-                    int status=result.getInt("status");
-                    if(status==1){
-                        JSONArray categoryArray=result.getJSONArray("category");
-
-                        for(int i=1;i<categoryArray.length();i++){
-                            categories.add(categoryArray.getJSONObject(i).getString("name"));
-                        }
-                    }
-                    categories.add("其他");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                // 请求失败
-                categories.add("其他");
-            }
+            RequestUtils.requestCategories(apiService,categories);
         });
 
         thread.start();
@@ -350,22 +307,7 @@ public class ScheduleFragment extends Fragment {
 
     private void requestAddItems(boolean[] isSuccess) {
         Thread thread=new Thread(() -> {
-            RequestBody requestBody= RequestUtils.createAddOrUpdateRequestBody(item);
-            try {
-                Response<ResponseBody> response=apiService.update(requestBody).execute();
-                try {
-                    JSONObject result=new JSONObject(response.body().string());
-                    Log.d("lmx", "requestUpdateItems: "+result);
-                    int status=result.getInt("status");
-                    if(status==1){
-                        isSuccess[0]=true;
-                    }
-                }catch (JSONException e){
-                    Log.d("lmx", "requestUpdateItems: "+e);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            RequestUtils.requestAddItems(apiService,isSuccess,item);
         });
 
         thread.start();
@@ -379,22 +321,7 @@ public class ScheduleFragment extends Fragment {
 
     private void requestUpdateItems(boolean[] isSuccess) {
         Thread thread=new Thread(() -> {
-            RequestBody requestBody= RequestUtils.createAddOrUpdateRequestBody(item);
-            try {
-                Response<ResponseBody> response=apiService.add(requestBody).execute();
-                try {
-                    JSONObject result=new JSONObject(response.body().string());
-                    Log.d("lmx", "requestUpdateItems: "+result);
-                    int status=result.getInt("status");
-                    if(status==1){
-                        isSuccess[0]=true;
-                    }
-                }catch (JSONException e){
-                    Log.d("lmx", "requestAddItems: "+e);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            RequestUtils.requestUpdateItems(apiService,isSuccess,item);
         });
 
         thread.start();
@@ -434,25 +361,6 @@ public class ScheduleFragment extends Fragment {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void checkPermission() {
-        if(Build.VERSION.SDK_INT>=23 && parentActivity.getApplicationInfo().targetSdkVersion>=23){
-            List<String> permissionList=new ArrayList<>();
-            if(ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.READ_PHONE_STATE)!= PackageManager.PERMISSION_GRANTED){
-                permissionList.add(Manifest.permission.READ_PHONE_STATE);
-            }
-            if(ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-                permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if(ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-                permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
-
-            if (!permissionList.isEmpty()){
-                SystemUtils.checkPermission(parentActivity,permissionList);
-            }
         }
     }
 }

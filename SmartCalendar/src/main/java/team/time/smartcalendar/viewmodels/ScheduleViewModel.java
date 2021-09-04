@@ -11,7 +11,6 @@ public class ScheduleViewModel extends ViewModel implements Serializable {
     private MutableLiveData<String>position;
     public double latitude;
     public double longitude;
-    private MutableLiveData<String>details;
     private MutableLiveData<Date>startTime;
     private MutableLiveData<Date>endTime;
 
@@ -29,14 +28,6 @@ public class ScheduleViewModel extends ViewModel implements Serializable {
             position.setValue("");
         }
         return position;
-    }
-
-    public MutableLiveData<String> getDetails() {
-        if(details==null){
-            details=new MutableLiveData<>();
-            details.setValue("");
-        }
-        return details;
     }
 
     public MutableLiveData<Date> getStartTime() {

@@ -1,6 +1,7 @@
 package team.time.smartcalendar.utils;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import com.haibin.calendarview.Calendar;
 import team.time.smartcalendar.dataBeans.CalendarItem;
 
@@ -16,6 +17,18 @@ public class DateUtils {
     public static String getFormatTime(Date date){
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat format=new SimpleDateFormat("yyyy年 MM月dd日 HH:mm");
+        return format.format(date);
+    }
+
+    public static String getDayTime(Date date){
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat format=new SimpleDateFormat("yyyy年 MM月dd日");
+        return format.format(date);
+    }
+
+    public static String getClockTime(Date date){
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat format=new SimpleDateFormat("HH:mm");
         return format.format(date);
     }
 
@@ -61,7 +74,16 @@ public class DateUtils {
         );
     }
 
+    public static Date getDayDate(Date date){
+        return new Date(
+                date.getYear(),
+                date.getMonth(),
+                date.getDate()
+        );
+    }
+
     public static boolean includeItem(CalendarItem item,long dayStart){
+        Log.d("lmx", "includeItem: "+dayStart);
         long dayEnd=dayStart + A_DAY_MILLISECOND;
         if(item.endTime==dayStart){
             return item.startTime == dayStart;

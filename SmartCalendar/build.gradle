@@ -66,6 +66,10 @@ dependencies {
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
+    // https://mvnrepository.com/artifact/com.github.bumptech.glide/glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+
     // https://github.com/Bigkoo/Android-PickerView/wiki
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
 
@@ -79,7 +83,7 @@ dependencies {
 //    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
 //    annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0-alpha03'
 
-    // https://github.com/gzu-liyujiang/AndroidPicker/tree/master
+    // https://github.com/gzu-liyujiang/AndroidPicker
     implementation 'com.github.gzu-liyujiang.AndroidPicker:ImagePicker:3.1.0'
 
     implementation 'androidx.room:room-runtime:2.2.5'

@@ -29,10 +29,52 @@
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+                android:id="@+id/action_calendarFragment_to_repeatScheduleFragment"
+                app:destination="@id/repeatScheduleFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+                android:id="@+id/action_calendarFragment_to_dynamicScheduleFragment"
+                app:destination="@id/dynamicScheduleFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
             android:id="@+id/positionFragment"
             android:name="team.time.smartcalendar.fragmentsfirst.PositionFragment"
             android:label="fragment_position"
             tools:layout="@layout/fragment_position"/>
+    <fragment
+            android:id="@+id/repeatScheduleFragment"
+            android:name="team.time.smartcalendar.fragmentsfirst.RepeatScheduleFragment"
+            android:label="fragment_repeat_schedule"
+            tools:layout="@layout/fragment_repeat_schedule">
+        <action
+                android:id="@+id/action_repeatScheduleFragment_to_positionFragment"
+                app:destination="@id/positionFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+                android:id="@+id/action_repeatScheduleFragment_to_weekChooseDialog"
+                app:destination="@id/weekChooseDialog"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment
+            android:id="@+id/dynamicScheduleFragment"
+            android:name="team.time.smartcalendar.fragmentsfirst.DynamicScheduleFragment"
+            android:label="DynamicScheduleFragment"/>
+    <dialog
+            android:id="@+id/weekChooseDialog"
+            android:name="team.time.smartcalendar.dialogs.WeekChooseDialog"
+            android:label="WeekChooseDialog"/>
 </navigation>
