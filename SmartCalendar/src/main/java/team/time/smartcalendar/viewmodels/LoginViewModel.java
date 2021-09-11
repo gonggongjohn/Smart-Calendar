@@ -7,6 +7,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<String>userName;
     private MutableLiveData<String>passWord;
     private MutableLiveData<String>phone;
+    private MutableLiveData<String>nickName;
 
     public MutableLiveData<String> getUserName() {
         if(userName==null){
@@ -30,5 +31,13 @@ public class LoginViewModel extends ViewModel {
             phone.setValue("");
         }
         return phone;
+    }
+
+    public MutableLiveData<String> getNickName() {
+        if(nickName==null){
+            nickName=new MutableLiveData<>();
+            nickName.setValue("");
+        }
+        return nickName;
     }
 }

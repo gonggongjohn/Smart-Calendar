@@ -128,6 +128,37 @@ public class RequestUtils {
         }
     }
 
+    public static void requestDeleteItems(ApiService apiService, boolean[] isSuccess, String uuid){
+        JSONObject body=new JSONObject();
+        try {
+            body.put("uuid",uuid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestBody requestBody=RequestBody.create(
+                body.toString(),
+                MediaType.parse("application/json;charset=utf-8")
+        );
+
+        try {
+            Response<ResponseBody> response=apiService.remove(requestBody).execute();
+            try {
+                JSONObject result=new JSONObject(response.body().string());
+                Log.d("lmx", "requestDeleteItems: "+result);
+                int status=result.getInt("status");
+                if(status==1){
+                    isSuccess[0]=true;
+                }
+            }catch (JSONException e){
+                Log.d("lmx", "requestDeleteItems: "+e);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void requestArrangeItems(
             ApiService apiService, boolean[] isSuccess, List<CalendarItem> items, RequestBody requestBody, Activity activity) {
         try {

@@ -104,7 +104,7 @@ public class RepeatScheduleFragment extends Fragment {
                 // 修改日程
                 if(item!=null){
                     getItemList();
-                    sortItemList();
+                    DateUtils.sortItemList(items);
                     setUpdateViewModel();
                     setSpinnerSelection();
                 }
@@ -216,21 +216,6 @@ public class RepeatScheduleFragment extends Fragment {
         }
     }
 
-    private void sortItemList() {
-        Collections.sort(items, new Comparator<CalendarItem>() {
-            @Override
-            public int compare(CalendarItem o1, CalendarItem o2) {
-                if(o1.startTime<o2.startTime){
-                    return -1;
-                }else if(o1.startTime>o2.startTime){
-                    return 1;
-                }else {
-                    return 0;
-                }
-            }
-        });
-    }
-
     private void setRepeatText(@NotNull Boolean[] repeat) {
         String s0=repeat[0]?"周日 ":"";
         String s1=repeat[1]?"周一 ":"";
@@ -269,7 +254,7 @@ public class RepeatScheduleFragment extends Fragment {
                 .setCancelColor(ColorUtils.DoDodgerBlue)
                 .setType(new boolean[]{false,false,false,true,true,false}) // 年、月、日、时、分、秒
                 .setOutSideCancelable(true) // 点击外围取消
-                .setItemVisibleCount(5)
+                .setItemVisibleCount(3)
                 .isCyclic(true) // 循环
                 .setLabel("","","",":","","")
                 .isCenterLabel(true)
@@ -278,7 +263,7 @@ public class RepeatScheduleFragment extends Fragment {
                 .build();
         ViewGroup container=view.getDialogContainerLayout();
         ViewGroup.LayoutParams params=container.getLayoutParams();
-        params.width=500;
+        params.width=600;
         container.setLayoutParams(params);
         view.show();
     }
@@ -325,9 +310,12 @@ public class RepeatScheduleFragment extends Fragment {
     private void createItems() {
         long start=viewModel.getFirstStartTime().getValue().getTime();
         long end=viewModel.getLastEndTime().getValue().getTime();
-        for(long i=start;i<=end;i+=DateUtils.A_DAY_MILLISECOND){
+
+        // 加入限制，一次最多添加31个日程
+        for(long num=0,i=start;i<=end && num<=30;i+=DateUtils.A_DAY_MILLISECOND){
            if(viewModel.getRepeat().getValue()[new Date(i).getDay()]){
                createItem(i);
+               num++;
            }
         }
     }
@@ -503,13 +491,14 @@ public class RepeatScheduleFragment extends Fragment {
 
         // 暂时不支持修改重复、起始和截止时间
         binding.textRepeatTime.setEnabled(false);
+        binding.textRepeatTime.setTextColor(ColorUtils.DarkGray);
         binding.layoutFirstStart.setVisibility(View.INVISIBLE);
         binding.layoutLastEnd.setVisibility(View.INVISIBLE);
     }
 
     private void setCreateViewModel() {
         viewModel.getStartTime().setValue(new Date(time));
-        viewModel.getEndTime().setValue(new Date(time+30 * DateUtils.A_MIN_MILLISECOND));
+        viewModel.getEndTime().setValue(new Date(time));
         viewModel.getFirstStartTime().setValue(DateUtils.getDayDate(new Date(time)));
         viewModel.getLastEndTime().setValue(DateUtils.getDayDate(new Date(time)));
     }

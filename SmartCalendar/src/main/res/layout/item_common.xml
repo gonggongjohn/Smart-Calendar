@@ -73,5 +73,25 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
+        <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/guideline17"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
+
+        <TextView
+                android:text=""
+                android:id="@+id/textValue"
+                android:singleLine="true"
+                android:maxEms="16"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline17"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

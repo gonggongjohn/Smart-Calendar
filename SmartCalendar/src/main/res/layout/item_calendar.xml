@@ -21,25 +21,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/itemBackgroundLayout"
-                android:layout_width="50dp"
-                android:background="@color/DodgerBlue"
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
-            <ImageView
-                    android:background="@drawable/bg_ripple"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:srcCompat="@drawable/ic_baseline_delete_outline_24"
-                    android:id="@+id/imageItemDelete"
-                    android:scaleType="centerInside"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itemBackgroundLayout2"
+                    android:layout_width="50dp"
+                    android:background="@color/SpringGreen"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:background="@drawable/bg_ripple"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:srcCompat="@drawable/ic_baseline_create_24"
+                        android:id="@+id/imageItemUpdate"
+                        android:scaleType="centerInside"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itemBackgroundLayout1"
+                    android:layout_width="50dp"
+                    android:background="@color/DodgerBlue"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:background="@drawable/bg_ripple"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:srcCompat="@drawable/ic_baseline_delete_outline_24"
+                        android:id="@+id/imageItemDelete"
+                        android:scaleType="centerInside"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
 
         <!--  surface view  -->
 

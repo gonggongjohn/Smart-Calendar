@@ -12,16 +12,24 @@ import team.time.smartcalendar.databinding.ItemCommonBinding;
 
 import java.util.List;
 
-public  abstract class CommonRecyclerViewAdapter extends RecyclerView.Adapter<CommonRecyclerViewAdapter.innerHolder> {
+public abstract class CommonRecyclerViewAdapter extends RecyclerView.Adapter<CommonRecyclerViewAdapter.innerHolder> {
     Activity parentActivity;
 
     List<String>strings;
     List<Integer>icons;
+    List<String>values;
 
     public CommonRecyclerViewAdapter(Activity parentActivity,List<String> strings, List<Integer> icons) {
         this.parentActivity= parentActivity;
         this.strings = strings;
         this.icons = icons;
+    }
+
+    public CommonRecyclerViewAdapter(Activity parentActivity, List<String> strings, List<Integer> icons, List<String> values) {
+        this.parentActivity = parentActivity;
+        this.strings = strings;
+        this.icons = icons;
+        this.values = values;
     }
 
     @NonNull
@@ -39,7 +47,7 @@ public  abstract class CommonRecyclerViewAdapter extends RecyclerView.Adapter<Co
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull innerHolder holder, int position) {
-        holder.setData(strings.get(position),icons.get(position));
+        holder.setData(position);
         setItemView(holder.binding,position);
         holder.binding.viewItem.setOnClickListener(v -> {
             onItemClick(strings,icons,position);
@@ -59,9 +67,12 @@ public  abstract class CommonRecyclerViewAdapter extends RecyclerView.Adapter<Co
             this.binding=binding;
         }
 
-        public void setData(String string, int icon) {
-            binding.textItemName.setText(string);
-            binding.imageIcon.setImageResource(icon);
+        public void setData(int position) {
+            binding.textItemName.setText(strings.get(position));
+            binding.imageIcon.setImageResource(icons.get(position));
+            if(values!=null){
+                binding.textValue.setText(values.get(position));
+            }
         }
     }
 

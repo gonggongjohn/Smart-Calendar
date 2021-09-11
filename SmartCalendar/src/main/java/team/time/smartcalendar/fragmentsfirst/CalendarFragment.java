@@ -255,6 +255,7 @@ public class CalendarFragment extends Fragment {
                 curCalendarItems.add(item);
             }
         }
+        DateUtils.sortItemList(curCalendarItems);
         Log.d("lmx", "setCurrentScheduleList: "+curCalendarItems);
     }
 

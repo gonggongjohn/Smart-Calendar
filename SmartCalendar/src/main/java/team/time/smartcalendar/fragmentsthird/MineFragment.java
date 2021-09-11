@@ -52,6 +52,7 @@ public class MineFragment extends Fragment implements Serializable {
     private CommonRecyclerViewAdapter adapter;
     private NavController controller;
     public MineViewModel viewModel;
+    private boolean isFirst;
 
     @Inject
     SharedPreferences sp;
@@ -67,26 +68,33 @@ public class MineFragment extends Fragment implements Serializable {
 
         parentActivity = requireActivity();
 
+        isFirst=true;
+
         editor=sp.edit();
-        nickname=sp.getString(UserUtils.USERNAME+"nickname",UserUtils.USERNAME);
 
         strings.add("我的账户");strings.add("设置");
         strings.add("关于");
 
         icons.add(R.drawable.ic_baseline_manage_accounts_24);icons.add(R.drawable.ic_baseline_settings_24);
         icons.add(R.drawable.ic_baseline_link_24);
-
-        viewModel = new ViewModelProvider(this).get(MineViewModel.class);
-
-        requestUserInfo();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        viewModel = new ViewModelProvider(this).get(MineViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mine,container,false);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
+
+        nickname=sp.getString(UserUtils.USERNAME+"nickname",UserUtils.USERNAME);
+
+        if(isFirst){
+            isFirst=false;
+            requestUserInfo();
+        }else {
+            viewModel.getNickName().setValue(nickname);
+        }
 
         viewModel.getHead().observe(this, s -> {
             GlideUtils.loadLocalImage(s,binding.imageHead,R.drawable.head);
@@ -172,7 +180,7 @@ public class MineFragment extends Fragment implements Serializable {
                     if(status==1){
                         String reNickname=result.getJSONObject("info").getString("nickname");
                         Log.d("lmx", "nickname: "+reNickname);
-                        if(!reNickname.equals(nickname)){
+                        if(!reNickname.equals(UserUtils.USERNAME) && !reNickname.equals(nickname)){
                             editor.putString(UserUtils.USERNAME+"nickname",reNickname);
                             editor.commit();
                             nickname=reNickname;

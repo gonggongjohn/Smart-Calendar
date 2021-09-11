@@ -27,8 +27,8 @@
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <action
-                android:id="@+id/action_loginFragment_to_registerDialog"
-                app:destination="@id/registerDialog"
+                android:id="@+id/action_loginFragment_to_registerFragment"
+                app:destination="@id/registerFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -53,8 +53,8 @@
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </dialog>
-    <dialog
-            android:id="@+id/registerDialog"
-            android:name="team.time.smartcalendar.dialogs.RegisterDialog"
-            android:label="RegisterDialog"/>
+    <fragment
+            android:id="@+id/registerFragment"
+            android:name="team.time.smartcalendar.RegisterFragment"
+            android:label="RegisterFragment"/>
 </navigation>

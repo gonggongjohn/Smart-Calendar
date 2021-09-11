@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -15,20 +14,14 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.daimajia.swipe.SwipeLayout;
 import com.haibin.calendarview.CalendarView;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import org.json.JSONException;
-import org.json.JSONObject;
-import retrofit2.Response;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.dataBeans.CalendarItem;
 import team.time.smartcalendar.databinding.ItemCalendarBinding;
 import team.time.smartcalendar.fragmentsfirst.CalendarFragment;
 import team.time.smartcalendar.utils.ColorUtils;
 import team.time.smartcalendar.utils.DateUtils;
+import team.time.smartcalendar.utils.RequestUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,13 +60,13 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
         holder.binding.setItem(item);
         holder.binding.setTime(DateUtils.getTimeStamp(calendarView.getSelectedCalendar()));
 
-        ColorDrawable color= (ColorDrawable) holder.binding.itemBackgroundLayout.getBackground();
+        ColorDrawable color= (ColorDrawable) holder.binding.itemBackgroundLayout1.getBackground();
 
         holder.binding.itemSwipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
             @Override
             public void onStartOpen(SwipeLayout layout) {
                 if(color.getColor()== ColorUtils.OrangeRed) {
-                    holder.binding.itemBackgroundLayout.setBackgroundColor(ColorUtils.DoDodgerBlue);
+                    holder.binding.itemBackgroundLayout1.setBackgroundColor(ColorUtils.DoDodgerBlue);
                     holder.binding.imageItemDelete.setImageResource(R.drawable.ic_baseline_delete_outline_24);
                 }
             }
@@ -99,9 +92,6 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
                 List<CalendarItem>items=new ArrayList<>();
 
                 switch (item.type){
-                    case 0:
-                        items.add(item);
-                        break;
                     case 1:
                         for(CalendarItem i:fragment.calendarItems){
                             if(i.type==1 && i.listId==item.listId){
@@ -109,7 +99,10 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
                             }
                         }
                         break;
+                    case 0:
                     case 2:
+                    default:
+                        items.add(item);
                         break;
                 }
                 for(CalendarItem i:items){
@@ -137,12 +130,12 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
                         calendarView.getSelectedCalendar().getMonth()
                 );
             }else {
-                holder.binding.itemBackgroundLayout.setBackgroundColor(ColorUtils.OrangeRed);
+                holder.binding.itemBackgroundLayout1.setBackgroundColor(ColorUtils.OrangeRed);
                 holder.binding.imageItemDelete.setImageResource(R.drawable.ic_baseline_delete_forever_24);
             }
         });
 
-        holder.binding.itemLayout.setOnClickListener(v -> {
+        holder.binding.imageItemUpdate.setOnClickListener(v -> {
             NavController controller= Navigation.findNavController((Activity) v.getContext(),R.id.firstNavHostFragment);
             Bundle bundle=new Bundle();
             bundle.putSerializable("item",item);
@@ -154,7 +147,7 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
                     controller.navigate(R.id.action_calendarFragment_to_repeatScheduleFragment,bundle);
                     break;
                 case 2:
-                    controller.navigate(R.id.action_calendarFragment_to_dynamicScheduleFragment,bundle);
+                    controller.navigate(R.id.action_calendarFragment_to_arrangeScheduleFragment,bundle);
                     break;
             }
             isUpdated[0]=true;
@@ -186,34 +179,7 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
 
     private void requestDeleteItems(boolean[] isSuccess,String uuid){
         Thread thread=new Thread(() -> {
-            JSONObject body=new JSONObject();
-            try {
-                body.put("uuid",uuid);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            RequestBody requestBody=RequestBody.create(
-                    body.toString(),
-                    MediaType.parse("application/json;charset=utf-8")
-            );
-
-            try {
-                Response<ResponseBody> response=fragment.apiService.remove(requestBody).execute();
-                try {
-                    JSONObject result=new JSONObject(response.body().string());
-                    Log.d("lmx", "requestDeleteItems: "+result);
-                    int status=result.getInt("status");
-                    if(status==1){
-                        isSuccess[0]=true;
-                    }
-                }catch (JSONException e){
-                    Log.d("lmx", "requestDeleteItems: "+e);
-                }
-
-            } catch (IOException e) {
-               e.printStackTrace();
-            }
+            RequestUtils.requestDeleteItems(fragment.apiService, isSuccess,uuid);
         });
 
         thread.start();

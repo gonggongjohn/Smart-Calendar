@@ -15,4 +15,7 @@
     <color name="Azure">#FFF0FFFF</color>
     <color name="MaskBlack">#3F000000</color>
     <color name="WhiteSmoke">#FFF5F5F5</color>
+    <color name="Gainsboro">#DCDCDC</color>
+    <color name="SpringGreen">#3CB371</color>
+    <color name="Gold">#FFD700</color>
 </resources>

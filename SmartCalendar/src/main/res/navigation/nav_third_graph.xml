@@ -40,7 +40,15 @@
     <fragment
             android:id="@+id/accountFragment"
             android:name="team.time.smartcalendar.fragmentsthird.AccountFragment"
-            android:label="AccountFragment"/>
+            android:label="AccountFragment">
+        <action
+                android:id="@+id/action_accountFragment_to_editMineFragment"
+                app:destination="@id/editMineFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
     <fragment
             android:id="@+id/settingsFragment"
             android:name="team.time.smartcalendar.fragmentsthird.SettingsFragment"
@@ -53,4 +61,8 @@
             android:id="@+id/chooseDialog"
             android:name="team.time.smartcalendar.dialogs.ChooseDialog"
             android:label="ChooseDialog"/>
+    <fragment
+            android:id="@+id/editMineFragment"
+            android:name="team.time.smartcalendar.fragmentsthird.EditMineFragment"
+            android:label="EditMineFragment"/>
 </navigation>

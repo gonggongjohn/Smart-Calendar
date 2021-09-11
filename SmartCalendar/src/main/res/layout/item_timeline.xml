@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+                name="item"
+                type="team.time.smartcalendar.dataBeans.CalendarItem"/>
+        <import type="team.time.smartcalendar.utils.DateUtils"/>
+    </data>
+
+    <com.daimajia.swipe.SwipeLayout
+            app:show_mode="pull_out"
+            android:id="@+id/itemSwipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itemBackgroundLayout2"
+                    android:layout_width="50dp"
+                    android:background="@color/SpringGreen"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:background="@drawable/bg_ripple"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:srcCompat="@drawable/ic_baseline_create_24"
+                        android:id="@+id/imageItemUpdate"
+                        android:scaleType="centerInside"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itemBackgroundLayout3"
+                    android:layout_width="50dp"
+                    android:background="@color/Gold"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:background="@drawable/bg_ripple"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:srcCompat="@drawable/ic_baseline_playlist_add_24"
+                        android:id="@+id/imageItemAdd"
+                        android:scaleType="centerInside"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itemBackgroundLayout1"
+                    android:layout_width="50dp"
+                    android:background="@color/DodgerBlue"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:background="@drawable/bg_ripple"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:srcCompat="@drawable/ic_baseline_delete_outline_24"
+                        android:id="@+id/imageItemDelete"
+                        android:scaleType="centerInside"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <!--  surface view  -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/itemLayout"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:focusable="true">
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/guideline4"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="34dp"/>
+
+            <ImageView
+                    android:layout_width="3dp"
+                    android:layout_height="48dp"
+                    android:background="@color/DodgerBlue"
+                    android:id="@+id/imageLine"
+                    app:layout_constraintStart_toStartOf="@+id/guideline4"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                    android:text="@{DateUtils.getDayTime(item.startTime)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textItemDate"
+                    android:singleLine="true"
+                    android:maxEms="12"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageLine"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="34dp"/>
+
+            <TextView
+                    android:text="@{DateUtils.getWeekDay(item.startTime)}"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textItemWeek"
+                    android:singleLine="true"
+                    android:maxEms="12"
+                    app:layout_constraintStart_toEndOf="@+id/textItemDate"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="10dp"/>
+
+            <TextView
+                    android:text="@{DateUtils.getClockTime(item.startTime)}"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textItemStart"
+                    android:singleLine="true"
+                    android:maxEms="12"
+                    app:layout_constraintStart_toEndOf="@+id/textItemWeek"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="10dp"/>
+
+            <TextView
+                    android:text="--"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toStartOf="@+id/textItemEnd"
+                    app:layout_constraintStart_toEndOf="@+id/textItemStart"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                    android:text="@{DateUtils.getClockTime(item.endTime)}"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textItemEnd"
+                    android:singleLine="true"
+                    android:maxEms="12"
+                    app:layout_constraintStart_toEndOf="@+id/textItemWeek"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="60dp"/>
+
+            <ImageView
+                    android:tint="@color/DodgerBlue"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    app:srcCompat="@drawable/ic_baseline_circle_24"
+                    android:id="@+id/imageView4"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="28dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
+
+</layout>

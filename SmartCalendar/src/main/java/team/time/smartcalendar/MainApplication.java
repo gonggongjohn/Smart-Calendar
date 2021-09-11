@@ -9,5 +9,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 检测内存泄露
+//        LeakCanary.install(this);
     }
 }

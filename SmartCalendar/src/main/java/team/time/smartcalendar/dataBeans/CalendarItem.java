@@ -1,5 +1,6 @@
 package team.time.smartcalendar.dataBeans;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * schedule item data structure locally
  */
 @Entity(tableName = "calendar_item")
-public class CalendarItem implements Serializable {
+public class CalendarItem implements Serializable{
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id",typeAffinity = ColumnInfo.INTEGER)
     public int id;
@@ -64,6 +65,11 @@ public class CalendarItem implements Serializable {
         this.categoryName = categoryName;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    @Ignore
+    public CalendarItem(CalendarItem item){
+        this(item.id,item.dirty,item.type,item.listId,item.uuid,item.info,item.position,item.latitude,item.longitude,item.categoryId,item.categoryName,item.startTime,item.endTime);
     }
 
     @Ignore
@@ -122,5 +128,31 @@ public class CalendarItem implements Serializable {
                 break;
         }
         return typeName;
+    }
+
+    public void copy(CalendarItem item){
+        this.id = item.id;
+        this.dirty = item.dirty;
+        this.type = item.type;
+        this.listId = item.listId;
+        this.username = item.username;
+        this.uuid = item.uuid;
+        this.info = item.info;
+
+        this.position = item.position;
+        this.latitude = item.latitude;
+        this.longitude = item.longitude;
+
+        this.categoryId = item.categoryId;
+        this.categoryName = item.categoryName;
+        this.startTime = item.startTime;
+        this.endTime = item.endTime;
+    }
+
+    @NonNull
+    @NotNull
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

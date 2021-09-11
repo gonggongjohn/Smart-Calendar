@@ -3,9 +3,11 @@ package team.time.smartcalendar.dialogs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,6 +63,11 @@ public class WeekChooseDialog extends DialogFragment {
 
         controller=Navigation.findNavController(parentActivity,R.id.firstNavHostFragment);
 
+        binding.btnCancel.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
+        binding.btnCancel.getPaint().setStrokeWidth(0.7F);
+        binding.btnFinish.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
+        binding.btnFinish.getPaint().setStrokeWidth(0.7F);
+
         binding.btnCancel.setOnClickListener(v -> {
             controller.popBackStack();
         });
@@ -79,6 +86,16 @@ public class WeekChooseDialog extends DialogFragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         return dialog;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        WindowManager.LayoutParams attributes = getDialog().getWindow().getAttributes();
+        attributes.width = 920;
+        getDialog().getWindow().setAttributes(attributes);
     }
 
     private void setCheckBoxes() {

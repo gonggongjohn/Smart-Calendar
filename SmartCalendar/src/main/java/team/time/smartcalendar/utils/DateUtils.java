@@ -1,11 +1,11 @@
 package team.time.smartcalendar.utils;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import com.haibin.calendarview.Calendar;
 import team.time.smartcalendar.dataBeans.CalendarItem;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +18,10 @@ public class DateUtils {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat format=new SimpleDateFormat("yyyy年 MM月dd日 HH:mm");
         return format.format(date);
+    }
+
+    public static String getDayTime(long time){
+        return getDayTime(new Date(time));
     }
 
     public static String getDayTime(Date date){
@@ -46,6 +50,31 @@ public class DateUtils {
     public static String getEndClockTime(long time,long dayStart){
         long dayEnd=dayStart+A_DAY_MILLISECOND;
         return time>=dayEnd?"24:00":getClockTime(time);
+    }
+
+    public static String getWeekDay(long time){
+        return getWeekDay(new Date(time));
+    }
+
+    public static String getWeekDay(Date date){
+        switch (date.getDay()){
+            case 0:
+                return "周日";
+            case 1:
+                return "周一";
+            case 2:
+                return "周二";
+            case 3:
+                return "周三";
+            case 4:
+                return "周四";
+            case 5:
+                return "周五";
+            case 6:
+                return "周六";
+            default:
+                return "未知";
+        }
     }
 
     public static long getTimeStamp(Calendar calendar){
@@ -83,13 +112,24 @@ public class DateUtils {
     }
 
     public static boolean includeItem(CalendarItem item,long dayStart){
-        Log.d("lmx", "includeItem: "+dayStart);
         long dayEnd=dayStart + A_DAY_MILLISECOND;
         if(item.endTime==dayStart){
             return item.startTime == dayStart;
         }else {
             return item.endTime > dayStart && item.startTime < dayEnd;
         }
+    }
+
+    public static void sortItemList(List<CalendarItem>items){
+        Collections.sort(items, (o1, o2) -> {
+            if(o1.startTime<o2.startTime){
+                return -1;
+            }else if(o1.startTime>o2.startTime){
+                return 1;
+            }else {
+                return 0;
+            }
+        });
     }
 
     public static boolean includeItem(CalendarItem item,long monthStart,long monthEnd){

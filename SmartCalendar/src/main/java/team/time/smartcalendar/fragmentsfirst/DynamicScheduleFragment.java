@@ -37,7 +37,6 @@ public class DynamicScheduleFragment extends Fragment {
     private NavController controller;
     private Activity parentActivity;
     private DynamicScheduleViewModel viewModel;
-    private CalendarItem item;
     private List<CalendarItem> items;
     private long time;
     private Bundle bundle;
@@ -93,16 +92,7 @@ public class DynamicScheduleFragment extends Fragment {
             // 接收参数
             bundle = getArguments();
             if(bundle!=null) {
-                item = (CalendarItem) bundle.getSerializable("item");
                 time = bundle.getLong("time");
-
-                // 修改日程
-                if (item != null) {
-//                    getItemList();
-//                    sortItemList();
-//                    setUpdateViewModel();
-//                    setSpinnerSelection();
-                }
 
                 // 添加日程
                 if (time != 0) {
@@ -150,21 +140,15 @@ public class DynamicScheduleFragment extends Fragment {
                 return;
             }
 
-            if(item==null){
-                createItems();
-            }else {
-                updateItems();
+            createItems();
+
+            if(items!=null && !items.isEmpty()){
+                Bundle bundle=new Bundle();
+                bundle.putLong("listId",listId);
+                bundle.putSerializable("item",items.get(0));
+                bundle.putSerializable("items",(ArrayList<CalendarItem>)items);
+                controller.navigate(R.id.action_dynamicScheduleFragment_to_arrangeScheduleFragment,bundle);
             }
-
-            controller.popBackStack();
-        });
-
-        binding.textStartTime.setOnClickListener(v -> {
-            showTimePicker(viewModel.getStartTime().getValue(),true);
-        });
-
-        binding.textEndTime.setOnClickListener(v -> {
-            showTimePicker(viewModel.getEndTime().getValue(),false);
         });
 
         binding.textBegin.setOnClickListener(v -> {
@@ -174,39 +158,6 @@ public class DynamicScheduleFragment extends Fragment {
         binding.textDDL.setOnClickListener(v -> {
             showDatePicker(viewModel.getLastEndTime().getValue(),false);
         });
-    }
-
-    private void showTimePicker(Date time, boolean isStart) {
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(time);
-
-        TimePickerView view=new TimePickerBuilder(getContext(), (date, v) -> {
-            date=DateUtils.getMinDate(date);
-            if(isStart){
-                viewModel.getStartTime().setValue(date);
-            }else {
-                viewModel.getEndTime().setValue(date);
-            }
-        })
-                .setDate(calendar)
-                .setSubCalSize(16)
-                .setContentTextSize(16)
-                .setSubmitColor(ColorUtils.DoDodgerBlue)
-                .setCancelColor(ColorUtils.DoDodgerBlue)
-                .setType(new boolean[]{false,false,false,true,true,false}) // 年、月、日、时、分、秒
-                .setOutSideCancelable(true) // 点击外围取消
-                .setItemVisibleCount(5)
-                .isCyclic(true) // 循环
-                .setLabel("","","",":","","")
-                .isCenterLabel(true)
-                .setLineSpacingMultiplier(3.0F) // 间距
-                .isDialog(true) // 以Dialog形式显示
-                .build();
-        ViewGroup container=view.getDialogContainerLayout();
-        ViewGroup.LayoutParams params=container.getLayoutParams();
-        params.width=500;
-        container.setLayoutParams(params);
-        view.show();
     }
 
     private void showDatePicker(Date time,boolean isStart) {
@@ -271,70 +222,18 @@ public class DynamicScheduleFragment extends Fragment {
         viewModel.getLastEndTime().setValue(new Date(time+4 * DateUtils.A_DAY_MILLISECOND));
     }
 
-
-
-    private void updateItems() {
-
-    }
-
     private void createItems() {
+        items.clear();
         // 请求
         boolean[] isSuccess=new boolean[1];
         requestArrangeItems(isSuccess);
-        // 展示返回的日程列表，用户可以进行修改
-        showArrangeAdvice();
         // 添加日程
         if(isSuccess[0]){
             for(CalendarItem i:items){
-                i.type=3;
+                i.type=2;
                 i.listId=listId;
                 i.uuid= UUID.randomUUID().toString().toUpperCase();
-                createItem(i);
             }
-        }
-    }
-
-    private void createItem(CalendarItem i) {
-        // 通知服务器添加日程
-        boolean[] isSuccess=new boolean[1];
-        requestAddItems(i,isSuccess);
-        // 判断dirty值
-        if(isSuccess[0]){
-            item.dirty=0;
-        }else {
-            item.dirty=1;
-        }
-        // 本地创建日程
-        calendarItems.add(i);
-        // 添加到数据库
-        addLocalItems(i);
-    }
-
-    private void requestAddItems(CalendarItem i, boolean[] isSuccess) {
-        Thread thread=new Thread(() -> {
-            RequestUtils.requestAddItems(apiService,isSuccess,item);
-        });
-
-        thread.start();
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addLocalItems(CalendarItem i) {
-        Thread thread=new Thread(() -> {
-            dao.insertCalendarItem(i);
-        });
-
-        thread.start();
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
@@ -357,10 +256,6 @@ public class DynamicScheduleFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    private void showArrangeAdvice() {
-
     }
 
     // 计算服务器提供的category的ID

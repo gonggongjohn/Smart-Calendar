@@ -94,7 +94,7 @@ public class LoginFragment extends Fragment {
         });
 
         binding.btnRegister.setOnClickListener(v -> {
-            controller.navigate(R.id.action_loginFragment_to_registerDialog);
+            controller.navigate(R.id.action_loginFragment_to_registerFragment);
         });
 
         binding.btnDirect.setOnClickListener(v -> {
