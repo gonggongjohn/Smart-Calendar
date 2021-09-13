@@ -32,7 +32,9 @@ import team.time.smartcalendar.viewmodels.ArrangeViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @AndroidEntryPoint
 public class ArrangeScheduleFragment extends Fragment {

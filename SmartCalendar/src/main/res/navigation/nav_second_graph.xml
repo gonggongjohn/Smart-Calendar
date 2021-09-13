@@ -7,5 +7,28 @@
     <fragment
             android:id="@+id/statFragment"
             android:name="team.time.smartcalendar.fragmentssecond.StatFragment"
-            android:label="StatFragment"/>
+            android:label="StatFragment">
+        <action
+                android:id="@+id/action_statFragment_to_statGraphFragment"
+                app:destination="@id/statGraphFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+                android:id="@+id/action_statFragment_to_heatMapFragment"
+                app:destination="@id/heatMapFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment
+            android:id="@+id/statGraphFragment"
+            android:name="team.time.smartcalendar.fragmentssecond.StatGraphFragment"
+            android:label="StatGraphFragment"/>
+    <fragment
+            android:id="@+id/heatMapFragment"
+            android:name="team.time.smartcalendar.fragmentssecond.HeatMapFragment"
+            android:label="HeatMapFragment"/>
 </navigation>

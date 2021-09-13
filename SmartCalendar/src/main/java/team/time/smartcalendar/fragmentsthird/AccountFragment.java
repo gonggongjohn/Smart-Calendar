@@ -59,8 +59,8 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         String nickname=sp.getString(UserUtils.USERNAME+"nickname",UserUtils.USERNAME);
-        int meqScore=sp.getInt(UserUtils.USERNAME+"meqScore",43);
-        values.clear();values.add(nickname);values.add(String.valueOf(meqScore));
+        int meq=sp.getInt(UserUtils.USERNAME+"meq",43);
+        values.clear();values.add(nickname);values.add(String.valueOf(meq));
 
         // 重写回退键
         SystemUtils.setBack(this);

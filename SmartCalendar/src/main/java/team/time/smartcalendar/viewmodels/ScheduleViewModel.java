@@ -7,12 +7,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ScheduleViewModel extends ViewModel implements Serializable {
-    private MutableLiveData<String>info;
-    private MutableLiveData<String>position;
+    protected MutableLiveData<String>info;
+    protected MutableLiveData<String>position;
     public double latitude;
     public double longitude;
-    private MutableLiveData<Date>startTime;
-    private MutableLiveData<Date>endTime;
+    protected MutableLiveData<Date>startTime;
+    protected MutableLiveData<Date>endTime;
 
     public MutableLiveData<String> getInfo() {
         if(info==null){

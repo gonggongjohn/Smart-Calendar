@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import team.time.smartcalendar.databinding.FragmentRegisterBinding;
 import team.time.smartcalendar.requests.ApiService;
+import team.time.smartcalendar.utils.RequestUtils;
 import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.viewmodels.LoginViewModel;
 
@@ -80,6 +81,24 @@ public class RegisterFragment extends Fragment {
 
         binding.action.imageRight.setOnClickListener(v -> {
             SystemUtils.hideKeyBoard(parentActivity,getEditTextList());
+            // 检测合法性
+            if(viewModel.getUserName().getValue().equals("")){
+                Toast.makeText(parentActivity, "请输入用户名", Toast.LENGTH_SHORT).show();
+                return;
+            }else if(viewModel.getNickName().getValue().equals("")){
+                Toast.makeText(parentActivity, "请输入昵称", Toast.LENGTH_SHORT).show();
+                return;
+            }else if(viewModel.getPassWord().getValue().equals("")){
+                Toast.makeText(parentActivity, "请输入密码", Toast.LENGTH_SHORT).show();
+                return;
+            }else if(!viewModel.getPassWord().getValue().equals(binding.editTextPassWordAgain.getText().toString())){
+                Toast.makeText(parentActivity, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
+                return;
+            }else if(viewModel.getPhone().getValue().length()!=11){
+                Toast.makeText(parentActivity, "手机号格式不正确", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // 请求注册
             register();
         });
 
@@ -120,6 +139,7 @@ public class RegisterFragment extends Fragment {
                     JSONObject result=new JSONObject(response.body().string());
                     int status=result.getInt("status");
                     if(status==1){
+                        updateUser();
                         parentActivity.runOnUiThread(() -> {
                             Toast.makeText(parentActivity, "注册成功", Toast.LENGTH_SHORT).show();
                             controller.popBackStack();
@@ -147,5 +167,16 @@ public class RegisterFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private void updateUser() {
+        JSONObject body=new JSONObject();
+        try {
+            body.put("nickname",viewModel.getNickName().getValue());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestUtils.requestUpdateUser(apiService,body);
     }
 }

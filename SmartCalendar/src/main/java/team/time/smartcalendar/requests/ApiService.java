@@ -33,6 +33,9 @@ public interface ApiService {
     @GET("/user/info")
     Call<ResponseBody>getInfo();
 
+    @GET("/user/meq")
+    Call<ResponseBody>getMeq();
+
     @POST("/user/update")
     Call<ResponseBody> updateUser(@Body RequestBody body);
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -110,6 +111,10 @@ public class TimeFragment extends Fragment {
         });
 
         binding.action.imageRight.setOnClickListener(v -> {
+            if(viewModel.getStart().getValue().getTime()>viewModel.getEnd().getValue().getTime()){
+                Toast.makeText(parentActivity, "开始时间晚于结束时间", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if(isCreate){
                 create();
             }else {

@@ -15,8 +15,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import dagger.hilt.android.AndroidEntryPoint;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.databinding.FragmentEditMineBinding;
+import team.time.smartcalendar.requests.ApiService;
+import team.time.smartcalendar.utils.RequestUtils;
 import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.utils.UserUtils;
 import team.time.smartcalendar.viewmodels.EditMineViewModel;
@@ -35,6 +39,9 @@ public class EditMineFragment extends Fragment {
     @Inject
     SharedPreferences sp;
     SharedPreferences.Editor editor;
+
+    @Inject
+    ApiService apiService;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -81,16 +88,37 @@ public class EditMineFragment extends Fragment {
             updateMineInfo();
             controller.popBackStack();
         });
+
+        binding.imageMeq.setOnClickListener(v -> {
+            SystemUtils.hideKeyBoard(getContext(),getEditTextList());
+            controller.navigate(R.id.action_editMineFragment_to_meqFragment);
+        });
     }
 
     private void setViewModel() {
         String nickname=sp.getString(UserUtils.USERNAME+"nickname",UserUtils.USERNAME);
+        int meq=sp.getInt(UserUtils.USERNAME+"meq",43);
         viewModel.getNickname().setValue(nickname);
+        viewModel.getMeq().setValue(meq);
     }
 
     private void updateMineInfo() {
+        // 同步数据
+        requestUpdate();
+        // 本地更新
         editor.putString(UserUtils.USERNAME+"nickname",viewModel.getNickname().getValue());
         editor.commit();
+    }
+
+    private void requestUpdate() {
+        JSONObject body=new JSONObject();
+        try {
+            body.put("nickname",viewModel.getNickname().getValue());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestUtils.requestUpdateUser(apiService,body);
     }
 
     private List<View> getEditTextList(){

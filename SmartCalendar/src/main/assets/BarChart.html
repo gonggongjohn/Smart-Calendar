@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" style="width: 100%; height: 100%;">
+  <head>
+      <meta charset="UTF-8">
+      <title>BarChart</title>
+  </head>
+
+  <body style="width: 100%; height: 100%; padding: 0; margin: 0;">
+    <div id="main" style="width: 100%; height: 100%"></div>
+    <script src="./echarts.js"></script>
+    <script type="text/javascript">
+      let chartDom = document.getElementById('main');
+      let myChart = echarts.init(chartDom);
+      let option;
+
+      window.addEventListener("resize",function () {
+         myChart.resize();
+      });
+
+      function setOptionAndDraw(x,y1,y2,y3,y4,y5,y6){
+          option = {
+              title: {
+                  top:'2%',
+                  x:'center',
+                  text: '最近7天'
+              },
+              tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                      type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                  }
+              },
+              legend: {
+                  top:'8%',
+                  data: ['学习', '工作', '运动', '出行', '节律', '其他']
+              },
+              grid: {
+                  top: '20%',
+                  left: '3%',
+                  right: '5%',
+                  bottom: '3%',
+                  containLabel: true
+              },
+              xAxis: [
+                  {
+                      type: 'category',
+                      data: x, // ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                      axisLabel: {
+                          interval:0
+                      }
+                  }
+              ],
+              yAxis: [
+                  {
+                      type: 'value',
+                      axisLabel:{
+                          formatter:'{value} h'
+                      }
+                  }
+              ],
+              series: [
+                  {
+                      name: '学习',
+                      type: 'bar',
+                      stack: '1',
+                      emphasis: {
+                          focus: 'series'
+                      },
+                      data: y1 // [3, 3, 1, 4, 3, 0, 3]
+                  },
+                  {
+                      name: '工作',
+                      type: 'bar',
+                      stack: '1',
+                      emphasis: {
+                          focus: 'series'
+                      },
+                      data: y2 // [2, 1, 1, 4, 0, 2, 2]
+                  },
+                  {
+                      name: '运动',
+                      type: 'bar',
+                      stack: '1',
+                      emphasis: {
+                          focus: 'series'
+                      },
+                      data: y3 // [2, 8, 9, 4, 0, 3, 1]
+                  },
+                  {
+                      name: '出行',
+                      type: 'bar',
+                      stack: '1',
+                      emphasis: {
+                          focus: 'series'
+                      },
+                      data: y4 // [0, 2, 1, 4, 1, 3, 0]
+                  },
+                  {
+                      name: '节律',
+                      type: 'bar',
+                      stack: '1',
+                      emphasis: {
+                          focus: 'series'
+                      },
+                      data: y5 // [2, 1, 4, 6, 1, 0, 0]
+                  },
+                  {
+                      name: '其他',
+                      type: 'bar',
+                      stack: '1',
+                      emphasis: {
+                          focus: 'series'
+                      },
+                      data: y6 // [0, 2, 1, 4, 0, 1, 2]
+                  }
+              ]
+          };
+
+          option && myChart.setOption(option);
+      }
+    </script>
+  </body>
+</html>

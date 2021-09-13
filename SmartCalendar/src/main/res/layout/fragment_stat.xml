@@ -38,7 +38,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/action"
-                app:layout_constraintBottom_toTopOf="@+id/button">
+                app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -46,6 +46,7 @@
                     android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
+                        android:id="@+id/cardGo"
                         android:layout_margin="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -56,21 +57,21 @@
                         <ImageView
                                 android:src="@drawable/paper_plane"
                                 android:layout_width="match_parent"
-                                android:layout_height="300dp"/>
+                                android:layout_height="200dp"/>
                         <TextView
-                                android:text="轨迹图"
+                                android:text="热力图"
                                 android:textColor="@color/black"
-                                android:textSize="30sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold"
-                                android:layout_marginStart="30dp"
+                                android:layout_marginStart="20dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                         <TextView
-                                android:text="快来看看你都去过哪些地方"
-                                android:textSize="18sp"
-                                android:layout_marginStart="30dp"
-                                android:layout_marginBottom="20dp"
+                                android:text="快来看看你都去过哪些地方?"
+                                android:textSize="16sp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginBottom="15dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -78,6 +79,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                        android:id="@+id/cardStat"
                         android:layout_margin="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -88,21 +90,21 @@
                         <ImageView
                                 android:src="@drawable/calendar"
                                 android:layout_width="match_parent"
-                                android:layout_height="300dp"/>
+                                android:layout_height="200dp"/>
                         <TextView
                                 android:text="日程分布图"
                                 android:textColor="@color/black"
-                                android:textSize="30sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold"
-                                android:layout_marginStart="30dp"
+                                android:layout_marginStart="20dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                         <TextView
                                 android:text="最近我都干了些啥？"
-                                android:textSize="18sp"
-                                android:layout_marginStart="30dp"
-                                android:layout_marginBottom="20dp"
+                                android:textSize="16sp"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginBottom="15dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -111,15 +113,6 @@
 
             </LinearLayout>
         </ScrollView>
-
-        <Button
-                android:text="分享我的日程"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

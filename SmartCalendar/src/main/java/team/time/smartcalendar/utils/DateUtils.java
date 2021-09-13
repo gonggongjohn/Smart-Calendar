@@ -20,6 +20,16 @@ public class DateUtils {
         return format.format(date);
     }
 
+    public static String getOnlyDayTime(long time){
+        return getOnlyDayTime(new Date(time));
+    }
+
+    public static String getOnlyDayTime(Date date){
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat format=new SimpleDateFormat("MM.dd");
+        return format.format(date);
+    }
+
     public static String getDayTime(long time){
         return getDayTime(new Date(time));
     }

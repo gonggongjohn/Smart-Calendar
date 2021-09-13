@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+                name="item"
+                type="team.time.smartcalendar.dataBeans.MeqItem"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:textSize="15sp"
+                android:text="@{item.question}"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:id="@+id/textQuestion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textQuestion">
+
+            <RadioButton
+                    android:id="@+id/radio1"
+                    android:text="@{item.descriptions.get(0)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <RadioButton
+                    android:id="@+id/radio2"
+                    android:text="@{item.descriptions.get(1)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <RadioButton
+                    android:id="@+id/radio3"
+                    android:text="@{item.descriptions.get(2)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <RadioButton
+                    android:id="@+id/radio4"
+                    android:text="@{item.descriptions.get(3)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <RadioButton
+                    android:id="@+id/radio5"
+                    android:text="@{item.length>4?item.descriptions.get(4):``}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </RadioGroup>
+
+        <ImageView
+                android:background="@color/WhiteSmoke"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

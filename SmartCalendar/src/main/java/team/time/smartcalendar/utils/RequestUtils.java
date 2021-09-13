@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import team.time.smartcalendar.dataBeans.CalendarItem;
 import team.time.smartcalendar.dataBeans.ScheduleItem;
@@ -191,5 +193,20 @@ public class RequestUtils {
                 Toast.makeText(activity, "网络未连接", Toast.LENGTH_SHORT).show();
             });
         }
+    }
+
+    public static void requestUpdateUser(ApiService apiService,JSONObject body) {
+        RequestBody requestBody=RequestBody.create(
+                body.toString(),
+                MediaType.parse("application/json;charset=utf-8")
+        );
+
+        apiService.updateUser(requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) { }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) { }
+        });
     }
 }

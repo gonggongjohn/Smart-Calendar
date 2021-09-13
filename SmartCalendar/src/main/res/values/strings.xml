@@ -5,4 +5,7 @@
     <!-- 网络请求 -->
     <string name="USER_INFO">userInfo</string>
     <string name="URL">http://139.196.44.94:3000</string>
+    <string name="NORMAL_TEXT">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_</string>
+    <string name="PASSWD_TEXT">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_@+-</string>
+    <string name="NUMBER_TEXT">0123456789</string>
 </resources>

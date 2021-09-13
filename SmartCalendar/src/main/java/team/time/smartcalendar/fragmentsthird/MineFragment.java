@@ -178,17 +178,24 @@ public class MineFragment extends Fragment implements Serializable {
                     JSONObject result=new JSONObject(response.body().string());
                     int status=result.getInt("status");
                     if(status==1){
-                        String reNickname=result.getJSONObject("info").getString("nickname");
-                        Log.d("lmx", "nickname: "+reNickname);
+                        JSONObject reInfo=result.getJSONObject("info");
+                        String reNickname=reInfo.getString("nickname");
                         if(!reNickname.equals(UserUtils.USERNAME) && !reNickname.equals(nickname)){
                             editor.putString(UserUtils.USERNAME+"nickname",reNickname);
-                            editor.commit();
                             nickname=reNickname;
                         }
+                        int reMeq;
+                        try{
+                            reMeq=reInfo.getInt("meq_feature");
+                            editor.putInt(UserUtils.USERNAME+"meq",reMeq);
+                        }catch (JSONException e){
+                            Log.d("lmx", "JSONException: "+e);
+                        }
+                        editor.commit();
                     }
                     viewModel.getNickName().setValue(nickname);
                 }catch (JSONException | IOException e){
-                    e.printStackTrace();
+                    Log.d("lmx", "JSONException: "+e);
                 }
             }
 

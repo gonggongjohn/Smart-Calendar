@@ -75,6 +75,14 @@ public class LoginDialog extends DialogFragment {
             viewList.add(binding.editTextUserName);
             viewList.add(binding.editTextPassWord);
             SystemUtils.hideKeyBoard(parentActivity,viewList);
+            // 检测合法性
+            if(viewModel.getUserName().getValue().equals("")){
+                Toast.makeText(parentActivity, "请输入用户名", Toast.LENGTH_SHORT).show();
+                return;
+            }else if(viewModel.getPassWord().getValue().equals("")){
+                Toast.makeText(parentActivity, "请输入密码", Toast.LENGTH_SHORT).show();
+                return;
+            }
             // 储存USERNAME
             UserUtils.USERNAME=viewModel.getUserName().getValue();
             // 登录
