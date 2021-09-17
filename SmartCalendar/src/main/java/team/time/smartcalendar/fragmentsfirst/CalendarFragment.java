@@ -142,6 +142,11 @@ public class CalendarFragment extends Fragment {
         binding.calendarView.setOnMonthChangeListener((year, month) -> {
             setMonthSchedule(year,month);
         });
+
+        binding.calendarView.setOnYearChangeListener(year -> {
+            viewModel.getMonthDay().setValue(String.valueOf(year));
+        });
+
         binding.calendarView.setOnCalendarSelectListener(new CalendarView.OnCalendarSelectListener() {
             @Override
             public void onCalendarOutOfRange(Calendar calendar) {}
@@ -149,7 +154,14 @@ public class CalendarFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onCalendarSelect(Calendar calendar, boolean isClick) {
+                // 显示
+                binding.textLunar.setVisibility(View.VISIBLE);
+                binding.textYear.setVisibility(View.VISIBLE);
+                binding.calendarFrameLayout.setVisibility(View.VISIBLE);
+                binding.btnSchedule.setVisibility(View.VISIBLE);
+                // 处理
                 if(!lastCalendar.equals(calendar) || isAdded || isUpdated[0]){
+                    Log.d("lmx", "onCalendarSelect");
                     // 更新页面
                     viewModel.getMonthDay().setValue(calendar.getMonth() + "月" + calendar.getDay() + "日");
                     viewModel.getYear().setValue(calendar.getYear());
@@ -169,9 +181,17 @@ public class CalendarFragment extends Fragment {
             // 展开日历
             if(!binding.calendarLayout.isExpand()){
                 binding.calendarLayout.expand();
-            }else {
-                binding.calendarLayout.shrink();
+                return;
             }
+            // 显示年视图
+            binding.calendarView.showYearSelectLayout(viewModel.getYear().getValue());
+            // 隐藏
+            binding.calendarFrameLayout.setVisibility(View.GONE);
+            binding.textLunar.setVisibility(View.GONE);
+            binding.textYear.setVisibility(View.GONE);
+            binding.btnSchedule.setVisibility(View.GONE);
+            // 显示年
+            viewModel.getMonthDay().setValue(String.valueOf(viewModel.getYear().getValue()));
         });
 
         binding.calendarFrameLayout.setOnClickListener(v -> {

@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import team.time.smartcalendar.R;
 import team.time.smartcalendar.databinding.DialogLoginBinding;
 import team.time.smartcalendar.requests.ApiService;
+import team.time.smartcalendar.utils.RequestUtils;
 import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.utils.UserUtils;
 import team.time.smartcalendar.viewmodels.LoginViewModel;
@@ -134,6 +135,9 @@ public class LoginDialog extends DialogFragment {
                         editor.putString("password",PASSWORD);
                         editor.commit();
 
+                        // 更新用户nickname
+                        updateUser();
+
                         parentActivity.runOnUiThread(() -> {
                             Toast.makeText(parentActivity, "登录成功", Toast.LENGTH_SHORT).show();
                             controller.navigate(R.id.action_loginDialog_to_mainFragment);
@@ -165,5 +169,17 @@ public class LoginDialog extends DialogFragment {
                 });
             }
         });
+    }
+
+    private void updateUser() {
+        String nickname=sp.getString(UserUtils.USERNAME+"nickname",UserUtils.USERNAME);
+        JSONObject body=new JSONObject();
+        try {
+            body.put("nickname",nickname);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestUtils.requestUpdateUser(apiService,body);
     }
 }

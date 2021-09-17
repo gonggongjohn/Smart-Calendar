@@ -34,7 +34,8 @@ public class StatGraphFragment extends Fragment {
     private Activity parentActivity;
     private FragmentStatGraphBinding binding;
     private NavController controller;
-    private long today;
+    private long tomorrow;
+    private boolean isFirstResume;
 
     private String[] weekday=new String[7];
     private long[] weekTime=new long[7];
@@ -59,12 +60,12 @@ public class StatGraphFragment extends Fragment {
 
         parentActivity=requireActivity();
         weekItems=new ArrayList<>();
-        today= DateUtils.getDayDate(new Date()).getTime();
+        tomorrow= DateUtils.getDayDate(new Date()).getTime()+DateUtils.A_DAY_MILLISECOND;
 
         y[0]=yStudy; y[1]=yWork; y[2]=ySport;
         y[3]=yTravel;y[4]=yHabit;y[5]=yOther;
 
-        Log.d("lmx", "y: "+ Arrays.deepToString(y));
+        isFirstResume=true;
     }
 
     @Override
@@ -81,23 +82,6 @@ public class StatGraphFragment extends Fragment {
 
         binding.webBar.getSettings().setJavaScriptEnabled(true);
         binding.webBar.loadUrl("file:///android_asset/BarChart.html");
-        setDate();
-        setWeekItems();
-        setY();
-        binding.webBar.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                binding.webBar.loadUrl("javascript:setOptionAndDraw("
-                        +getJSString(weekday)+","
-                        +Arrays.toString(y[0])+","
-                        +Arrays.toString(y[1])+","
-                        +Arrays.toString(y[2])+","
-                        +Arrays.toString(y[3])+","
-                        +Arrays.toString(y[4])+","
-                        +Arrays.toString(y[5])+","
-                        + ");");
-            }
-        });
 
         return binding.getRoot();
     }
@@ -113,9 +97,47 @@ public class StatGraphFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setDate();
+        setWeekItems();
+        setY();
+
+        if(isFirstResume){
+            isFirstResume=false;
+
+            binding.webBar.setWebViewClient(new WebViewClient(){
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    binding.webBar.loadUrl("javascript:setOptionAndDraw("
+                            +getJSString(weekday)+","
+                            +Arrays.toString(y[0])+","
+                            +Arrays.toString(y[1])+","
+                            +Arrays.toString(y[2])+","
+                            +Arrays.toString(y[3])+","
+                            +Arrays.toString(y[4])+","
+                            +Arrays.toString(y[5])+","
+                            + ");");
+                }
+            });
+        }else {
+            binding.webBar.loadUrl("javascript:setOptionAndDraw("
+                    +getJSString(weekday)+","
+                    +Arrays.toString(y[0])+","
+                    +Arrays.toString(y[1])+","
+                    +Arrays.toString(y[2])+","
+                    +Arrays.toString(y[3])+","
+                    +Arrays.toString(y[4])+","
+                    +Arrays.toString(y[5])+","
+                    + ");");
+        }
+    }
+
     private void setDate() {
         for(int i=6,j=1;i>=0;i--,j++){
-            weekTime[i]=today-j*DateUtils.A_DAY_MILLISECOND;
+            weekTime[i]=tomorrow-j*DateUtils.A_DAY_MILLISECOND;
             weekday[i]=DateUtils.getOnlyDayTime(weekTime[i]);
         }
         Log.d("lmx", "setDate: "+ Arrays.toString(weekday));
@@ -123,16 +145,24 @@ public class StatGraphFragment extends Fragment {
     }
 
     private void setWeekItems() {
+        weekItems.clear();
         long start=weekTime[0];
-        long end=today;
+        long end=tomorrow;
         for(CalendarItem item:calendarItems){
             if(DateUtils.includeItem(item,start,end)){
                 weekItems.add(item);
             }
         }
+
+        Log.d("lmx", "setWeekItems: "+weekItems.size());
     }
 
     private void setY() {
+        for(int i=0;i<6;i++){
+            for(int j=0;j<7;j++){
+                y[i][j]=0;
+            }
+        }
         for(CalendarItem item:weekItems){
             int i=getIndexById(item.categoryId);
             for(int j=0; j<7;j++){

@@ -263,6 +263,6 @@ public class DynamicScheduleFragment extends Fragment {
         if(categories.size()==1){
             return 1;
         }
-        return (index+2) % categories.size();
+        return (index+2)>categories.size() ? (index+2)%categories.size() : (index+2);
     }
 }

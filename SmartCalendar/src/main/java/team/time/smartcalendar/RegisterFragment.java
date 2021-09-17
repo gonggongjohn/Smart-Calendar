@@ -1,6 +1,7 @@
 package team.time.smartcalendar;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import team.time.smartcalendar.databinding.FragmentRegisterBinding;
 import team.time.smartcalendar.requests.ApiService;
-import team.time.smartcalendar.utils.RequestUtils;
 import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.viewmodels.LoginViewModel;
 
@@ -41,11 +41,16 @@ public class RegisterFragment extends Fragment {
     @Inject
     ApiService apiService;
 
+    @Inject
+    SharedPreferences sp;
+    private SharedPreferences.Editor editor;
+
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         parentActivity=getActivity();
+        editor = sp.edit();
     }
 
     @Nullable
@@ -139,7 +144,9 @@ public class RegisterFragment extends Fragment {
                     JSONObject result=new JSONObject(response.body().string());
                     int status=result.getInt("status");
                     if(status==1){
-                        updateUser();
+                        // 本地存储
+                        setUserNickname();
+
                         parentActivity.runOnUiThread(() -> {
                             Toast.makeText(parentActivity, "注册成功", Toast.LENGTH_SHORT).show();
                             controller.popBackStack();
@@ -169,14 +176,8 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-    private void updateUser() {
-        JSONObject body=new JSONObject();
-        try {
-            body.put("nickname",viewModel.getNickName().getValue());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        RequestUtils.requestUpdateUser(apiService,body);
+    private void setUserNickname() {
+        editor.putString(viewModel.getUserName().getValue()+"nickname",viewModel.getNickName().getValue());
+        editor.commit();
     }
 }

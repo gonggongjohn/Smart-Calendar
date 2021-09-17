@@ -24,6 +24,7 @@ import team.time.smartcalendar.R;
 import team.time.smartcalendar.dataBeans.CalendarItem;
 import team.time.smartcalendar.databinding.FragmentHeatMapBinding;
 import team.time.smartcalendar.service.MyLocationService;
+import team.time.smartcalendar.utils.DateUtils;
 import team.time.smartcalendar.utils.LocationUtils;
 import team.time.smartcalendar.utils.SystemUtils;
 import team.time.smartcalendar.utils.UserUtils;
@@ -60,7 +61,6 @@ public class HeatMapFragment extends Fragment {
         parentActivity.startService(intent);
 
         latLngs=new ArrayList<>();
-        getLatlngs();
     }
 
     @Override
@@ -76,7 +76,6 @@ public class HeatMapFragment extends Fragment {
 
         setMapView(savedInstanceState);
         setMap();
-        setHeatMap();
 
         return binding.getRoot();
     }
@@ -93,6 +92,14 @@ public class HeatMapFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getLatlngs();
+        move();
+        setHeatMap();
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -100,9 +107,11 @@ public class HeatMapFragment extends Fragment {
     }
 
     private void getLatlngs() {
+        latLngs.clear();
         long now=new Date().getTime();
+        long oneMonthAgo=DateUtils.getDayDate(new Date()).getTime() - 30 * DateUtils.A_DAY_MILLISECOND;
         for(CalendarItem item:calendarItems){
-            if(!item.position.equals("") && item.startTime<=now){
+            if(!item.position.equals("") && item.startTime<=now && item.startTime>=oneMonthAgo){
                 latLngs.add(new LatLng(item.latitude,item.longitude));
             }
         }
@@ -123,15 +132,20 @@ public class HeatMapFragment extends Fragment {
         map.setMaxZoomLevel(16);
         // 禁止倾斜手势
         uiSettings.setTiltGesturesEnabled(false);
+    }
+
+    private void move() {
         // 移动地图
         if(latLngs.isEmpty()){
             LocationUtils.moveCamera(map, UserUtils.USER_LATITUDE,UserUtils.USER_LONGITUDE);
         }else {
-            LocationUtils.moveCamera(map, latLngs.get(0).latitude,latLngs.get(0).longitude);
+            int last= latLngs.size()-1;
+            LocationUtils.moveCamera(map, latLngs.get(last).latitude,latLngs.get(last).longitude);
         }
     }
 
     private void setHeatMap() {
+        map.clear();
         // 构建热力图 HeatmapTileProvider
         HeatmapTileProvider.Builder builder = new HeatmapTileProvider.Builder();
         builder.data(latLngs)
